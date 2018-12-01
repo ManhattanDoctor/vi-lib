@@ -1,0 +1,1 @@
+{"version":3,"file":"DestroyableComponent.js","sourceRoot":"","sources":["DestroyableComponent.ts"],"names":[],"mappings":";;;;;;;;;;;;;AACA,OAAO,EAAE,oBAAoB,EAAE,MAAM,mCAAmC,CAAC;AAEzE;IAA0C,wCAAoB;IAA9D;;IAcA,CAAC;IAPU,0CAAW,GAAlB;QACI,IAAI,CAAC,OAAO,EAAE,CAAC;IACnB,CAAC;IAEM,sCAAO,GAAd;QACI,iBAAM,OAAO,WAAE,CAAC;IACpB,CAAC;IACL,2BAAC;AAAD,CAAC,AAdD,CAA0C,oBAAoB,GAc7D"}

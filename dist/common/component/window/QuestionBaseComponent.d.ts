@@ -1,0 +1,36 @@
+import { OnInit, ViewContainerRef } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { LanguageService } from '../../../language/service/LanguageService';
+import { IWindowContent } from '../../../window/lib/IWindowContent';
+import { IQuestion, QuestionMode } from '../../IQuestion';
+export declare class QuestionBaseComponent extends IWindowContent implements IQuestion, OnInit {
+    protected language: LanguageService;
+    text: string;
+    notText: string;
+    yesText: string;
+    closeText: string;
+    checkText: string;
+    protected observer: Subject<string>;
+    protected _mode: QuestionMode;
+    protected _isChecked: boolean;
+    protected promise: Promise<void>;
+    protected promiseResolve: Function;
+    protected promiseReject: Function;
+    constructor(container: ViewContainerRef, language: LanguageService);
+    protected commitModeProperties(): void;
+    yesClickHandler(): void;
+    notClickHandler(): void;
+    ngOnInit(): void;
+    destroy(): void;
+    readonly events: Observable<string>;
+    readonly yesNotPromise: Promise<void>;
+    protected readonly defaultYesId: string;
+    protected readonly defaultNoId: string;
+    protected readonly defaultCloseId: string;
+    isChecked: boolean;
+    mode: QuestionMode;
+    closeTextId: string;
+    yesTextId: string;
+    notTextId: string;
+    checkTextId: string;
+}
