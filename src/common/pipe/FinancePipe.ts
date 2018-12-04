@@ -4,11 +4,11 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'viFinance'
 })
 export class FinancePipe implements PipeTransform {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public transform(value: number, format?: string, isNeedPlus: boolean = false): string {
         if (isNaN(value)) return '---';

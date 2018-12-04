@@ -1,52 +1,56 @@
 import { ApiError } from './ApiError';
 import { ApiRequest } from './ApiRequest';
 
-export class ApiResponse {
-    //--------------------------------------------------------------------------
+export class ApiResponse<T> {
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    protected _data: any;
+    protected _data: T;
     protected _name: string;
 
     protected _error: ApiError;
     protected _request: ApiRequest;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(data: any, request?: ApiRequest, language?: string) {
         this._data = data;
         this._request = request;
 
-        if (request) this._name = request.name;
+        if (request) {
+            this._name = request.name;
+        }
 
         this.parse(data, language);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected parse(data: any, language: string): void {
         this._data = this.parseData(data, language);
-        if (this.isErrorData(data)) this._error = this.parseError(data, language);
+        if (this.isErrorData(data)) {
+            this._error = this.parseError(data, language);
+        }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    protected parseData(data: any, language: string): any {
+    protected parseData(data: any, language: string): T {
         return data;
     }
 
@@ -64,11 +68,11 @@ export class ApiResponse {
         return data ? data.hasOwnProperty('error') : false;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get isHandleError(): boolean {
         return this._request ? this._request.isHandleError : false;
@@ -90,7 +94,7 @@ export class ApiResponse {
         return this._request;
     }
 
-    public get data(): any {
+    public get data(): T {
         return this._data;
     }
 

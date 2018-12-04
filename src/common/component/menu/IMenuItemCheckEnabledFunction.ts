@@ -1,5 +1,3 @@
 import { MenuItem } from './MenuItem';
 
-export interface IMenuItemCheckEnabledFunction {
-    (item: MenuItem): boolean;
-}
+export type IMenuItemCheckEnabledFunction = (item: MenuItem) => boolean;

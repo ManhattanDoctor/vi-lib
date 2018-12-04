@@ -5,11 +5,11 @@ import { IDestroyable } from '../../IDestroyable';
     selector: '[vi-resize]'
 })
 export class ResizeDirective implements IDestroyable, OnDestroy {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Output()
     public resize: EventEmitter<any> = new EventEmitter();
@@ -25,11 +25,11 @@ export class ResizeDirective implements IDestroyable, OnDestroy {
 
     private interactable: any;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(element: ElementRef) {
         this.interactable = interact(element.nativeElement);
@@ -44,21 +44,21 @@ export class ResizeDirective implements IDestroyable, OnDestroy {
         this.interactable.on('resizemove', this.resizeHandler);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private resizeHandler = (event: any) => {
-        if (event.dx != 0 || event.dy != 0) this.resize.emit(event);
+        if (event.dx !== 0 || event.dy !== 0) this.resize.emit(event);
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngOnDestroy(): void {
         this.destroy();

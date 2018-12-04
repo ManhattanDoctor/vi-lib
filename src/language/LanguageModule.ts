@@ -1,19 +1,28 @@
 import { HttpClientModule } from '@angular/common/http';
-import { Injector, NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { COOKIE_OPTIONS, CookieOptionsProvider, CookieService } from 'ngx-cookie';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { TranslateModule, TranslateParser } from '@ngx-translate/core';
+import { LanguageResolver } from '@vichatter-sdk/common/resolver/LanguageResolver';
+import { CookieModule } from 'ngx-cookie';
+import { LanguageMessageFormatParser } from './lib/LanguageMessageFormatParser';
 import { LanguageMatPaginatorIntl } from './service/LanguageMatPaginatorIntl';
 import { LanguageService } from './service/LanguageService';
 
+export let imports: Array<any> = [
+    HttpClientModule,
+    TranslateModule.forRoot({ parser: { provide: TranslateParser, useClass: LanguageMessageFormatParser } }),
+    CookieModule.forRoot()
+];
+export const exports: Array<any> = [TranslateModule];
+
 @NgModule({
-    imports: [HttpClientModule, LanguageService.forRoot()],
-    providers: [
-        LanguageService,
-        LanguageMatPaginatorIntl,
-        { provide: COOKIE_OPTIONS, useValue: {} },
-        { provide: CookieOptionsProvider, useClass: CookieOptionsProvider, deps: [COOKIE_OPTIONS, Injector] },
-        { provide: CookieService, useClass: CookieService, deps: [CookieOptionsProvider] }
-    ],
-    exports: [TranslateModule]
+    imports,
+    exports
 })
-export class LanguageModule {}
+export class LanguageModule {
+    public static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: LanguageModule,
+            providers: [LanguageService, LanguageResolver, LanguageMatPaginatorIntl]
+        };
+    }
+}

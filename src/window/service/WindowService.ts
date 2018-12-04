@@ -1,6 +1,6 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { IQuestion } from '../../common/IQuestion';
@@ -16,11 +16,11 @@ import { WindowProperties } from '../lib/WindowProperties';
 
 @Injectable()
 export class WindowService {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constants
+    // 	Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static GAP_X = 25;
     public static GAP_Y = 25;
@@ -37,11 +37,11 @@ export class WindowService {
     public static DEFAULT_VERTICAL_ALIGN: WindowAlign = 'center';
     public static DEFAULT_HORIZONTAL_ALIGN: WindowAlign = 'center';
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public factory: WindowFactory<IWindow>;
     public questionWindow: ComponentType<IWindowContent>;
@@ -54,11 +54,11 @@ export class WindowService {
     private properties: PropertiesManager;
     private observer: Subject<ObservableData<WindowServiceEvent, IWindow>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private dialog: MatDialog, private language: LanguageService, private cookies: CookieService) {
         this._windows = new Map();
@@ -76,11 +76,11 @@ export class WindowService {
         };
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private sortFunction(first: IWindow, second: IWindow): number {
         let firstIndex: number = first.container ? parseInt(ViewUtil.getStyle(first.container.parentElement, 'zIndex'), 10) : -1;
@@ -145,11 +145,11 @@ export class WindowService {
         return result;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Setters Methods
+    // 	Setters Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private add(config: WindowConfig, content: IWindowContent): void {
         this._windows.set(config, content);
@@ -174,11 +174,11 @@ export class WindowService {
         return result;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public openWindow(component: ComponentType<IWindowContent>, config: WindowConfig): IWindowContent {
         let window: IWindow = null;
@@ -251,11 +251,11 @@ export class WindowService {
         this._windowsArray.forEach(window => window.close());
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Additional Methods
+    // 	Additional Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public setWindowOnTopIfExist(value: WindowConfig | string): boolean {
         let content = this.getWindow(value);
@@ -287,11 +287,11 @@ export class WindowService {
         return question;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<ObservableData<WindowServiceEvent, IWindow>> {
         return this.observer.asObservable();
@@ -303,19 +303,19 @@ export class WindowService {
 }
 
 export class PropertiesManager {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private cookies: CookieService) {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public load(name: string, config: WindowConfig): void {
         let properties = this.cookies.getObject(name + 'Window') as any;

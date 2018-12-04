@@ -7,21 +7,21 @@ import { ThemeAssetDirective } from './ThemeAssetDirective';
     selector: '[theme-background]'
 })
 export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(element: ElementRef, theme: ThemeService) {
         super(element, theme);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected commitSourceProperties(): void {
         let value = 'url(' + this.source + ')';

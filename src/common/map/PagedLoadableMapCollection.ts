@@ -3,11 +3,11 @@ import { IDestroyable } from '../IDestroyable';
 import { ApiBaseLoadableMapCollection } from './ApiBaseLoadableMapCollection';
 
 export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends ApiBaseLoadableMapCollection<U> {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _page: number = 0;
     protected _total: number = 0;
@@ -15,11 +15,11 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends
 
     public itemsOnPage: number = 10;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public reload(): void {
         this._page = 0;
@@ -35,11 +35,11 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends
         this._currentPageItems = null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected createParamsForRequest(): any {
         let param = super.createParamsForRequest();
@@ -50,7 +50,7 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends
 
     protected parseResponse(response: ApiResponse): void {
         let items: Array<any> = this.parseResponseItems(response);
-        this._isAllLoaded = items.length == 0;
+        this._isAllLoaded = items.length === 0;
 
         if (this._isAllLoaded) return;
 
@@ -79,11 +79,11 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends
         this._isAllLoaded = this._total <= this.length;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get currentPage(): number {
         return Math.max(0, this._page - 1);

@@ -3,29 +3,29 @@ import { Loadable, LoadableStatus } from '../lib/Loadable';
 
 @Injectable()
 export class SocketBaseService<U, V> extends Loadable<U, V> {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _socket: WebSocket;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         super();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public connect(url: string): void {
         this.status = LoadableStatus.NOT_LOADED;
@@ -44,22 +44,22 @@ export class SocketBaseService<U, V> extends Loadable<U, V> {
         this.status = LoadableStatus.NOT_LOADED;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Event Handlers
+    // 	Protected Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected errorHandler(event: Event): void {}
     protected openedHandler(event: Event): void {}
     protected closedHandler(event: CloseEvent): void {}
     protected messageHandler(event: MessageEvent): void {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private socketOpenedHandler = (event: Event): void => {
         this.status = LoadableStatus.LOADED;
@@ -80,17 +80,17 @@ export class SocketBaseService<U, V> extends Loadable<U, V> {
         this.messageHandler(event);
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Properties
+    // 	Protected Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get socket(): WebSocket {
         return this._socket;
     }
     protected set socket(value: WebSocket) {
-        if (value == this._socket) return;
+        if (value === this._socket) return;
 
         if (this._socket) {
             this._socket.removeEventListener('open', this.socketOpenedHandler);
@@ -98,7 +98,7 @@ export class SocketBaseService<U, V> extends Loadable<U, V> {
             this._socket.removeEventListener('close', this.socketClosedHandler);
             this._socket.removeEventListener('message', this.socketMessageHandler);
 
-            if (this._socket.readyState == WebSocket.OPEN || this._socket.readyState == WebSocket.CONNECTING) this._socket.close();
+            if (this._socket.readyState === WebSocket.OPEN || this._socket.readyState === WebSocket.CONNECTING) this._socket.close();
         }
 
         this._socket = value;
@@ -111,11 +111,11 @@ export class SocketBaseService<U, V> extends Loadable<U, V> {
         }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         super.destroy();

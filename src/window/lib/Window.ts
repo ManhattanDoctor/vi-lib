@@ -1,4 +1,4 @@
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/internal/operators';
 import { ViewUtil } from '../../common/util/ViewUtil';
@@ -9,21 +9,21 @@ import { WindowConfig } from './WindowConfig';
 import { WindowProperties } from './WindowProperties';
 
 export class Window extends WindowBase implements IWindow {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static BLINK_DELAY = 500;
     public static SHAKE_DELAY = 500;
     public static RESIZE_DELAY = 200;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _isBlink: boolean = false;
     private blinkTimer: any;
@@ -48,11 +48,11 @@ export class Window extends WindowBase implements IWindow {
     protected subscription: Subscription;
     protected observer: Subject<string>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(properties: WindowProperties) {
         super();
@@ -80,14 +80,14 @@ export class Window extends WindowBase implements IWindow {
                 .subscribe(this.setClosed)
         );
 
-        this.addSubscription(this.events.pipe(filter(event => event == IWindow.EVENT_CONTENT_READY)).subscribe(this.checkSizeAndUpdatePositionIfNeed));
+        this.addSubscription(this.events.pipe(filter(event => event === IWindow.EVENT_CONTENT_READY)).subscribe(this.checkSizeAndUpdatePositionIfNeed));
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected setClosed = () => {
         this.isOpened = false;
@@ -173,11 +173,11 @@ export class Window extends WindowBase implements IWindow {
         this.mouseClickHandler(event);
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public emit(event: string): void {
         this.observer.next(event);
@@ -228,11 +228,11 @@ export class Window extends WindowBase implements IWindow {
         this.emit(IWindow.EVENT_SET_ON_TOP);
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Size Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public getWidth(): number {
         return this.width;
@@ -258,11 +258,11 @@ export class Window extends WindowBase implements IWindow {
         this.resizeHandler();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Move Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public getX(): number {
         return this.x;
@@ -287,11 +287,11 @@ export class Window extends WindowBase implements IWindow {
         this.emit(IWindow.EVENT_MOVED);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get isBlink(): boolean {
         return this._isBlink;
@@ -313,21 +313,21 @@ export class Window extends WindowBase implements IWindow {
         this.commitIsShakingProperties();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Protected Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get shakeClassName(): string {
         return null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<string> {
         return this.observer.asObservable();

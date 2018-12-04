@@ -4,31 +4,31 @@ import { message, ValidationResult } from './validate';
 import { ValueAccessor } from './ValueAccessor';
 
 export abstract class FormElementSync<T> extends ValueAccessor<T> implements AfterContentInit, OnDestroy {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected abstract model: NgModel;
     protected _validationError: string;
     protected timer: any;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private validators: Array<Validator | ValidatorFn>) {
         super();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected valueChanged(): void {
         super.valueChanged();
@@ -36,7 +36,7 @@ export abstract class FormElementSync<T> extends ValueAccessor<T> implements Aft
     }
 
     protected validate = (): ValidationResult => {
-        if (!this.validators || this.validators.length == 0) {
+        if (!this.validators || this.validators.length === 0) {
             this._validationError = null;
             return null;
         }
@@ -66,11 +66,11 @@ export abstract class FormElementSync<T> extends ValueAccessor<T> implements Aft
         return this.invalid;
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngAfterContentInit(): void {
         this.validate();

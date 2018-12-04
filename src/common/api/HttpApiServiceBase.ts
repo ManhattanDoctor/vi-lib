@@ -9,29 +9,29 @@ import { ApiResponse } from './ApiResponse';
 import { ApiServiceBase } from './ApiServiceBase';
 
 export abstract class HttpApiServiceBase extends ApiServiceBase {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(protected http: HttpClient) {
         super();
         this.idleTimeout = 2 * ApiServiceBase.IDLE_TIMEOUT;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected makeRequest(url: string, method: ApiMethod, params: HttpParams, headers: HttpHeaders, idleTimeout: number, responseType: any): Observable<any> {
         let observable: Observable<any> = null;
-        if (method == 'get') observable = this.http.get(url, { headers: headers, params: params, responseType: responseType });
-        else if (method == 'post') observable = this.http.post(url, params, { headers: headers, responseType: responseType });
-        else if (method == 'put') observable = this.http.put(url, params, { headers: headers, responseType: responseType });
-        else if (method == 'delete') observable = this.http.delete(url, { headers: headers, responseType: responseType });
+        if (method === 'get') observable = this.http.get(url, { headers, params, responseType });
+        else if (method === 'post') observable = this.http.post(url, params, { headers, responseType });
+        else if (method === 'put') observable = this.http.put(url, params, { headers, responseType });
+        else if (method === 'delete') observable = this.http.delete(url, { headers, responseType });
 
         if (!observable) throw new Error('Unable to make request: method is undefined');
         return observable.pipe(timeout(idleTimeout));
@@ -41,11 +41,11 @@ export abstract class HttpApiServiceBase extends ApiServiceBase {
         return new HttpHeaders();
     }
 
-    protected parseResponse(data: any, request: ApiRequest): ApiResponse {
+    protected parseResponse<T>(data: any, request: ApiRequest): ApiResponse<T> {
         return new ApiResponse(data, request);
     }
 
-    protected parseErrorResponse(error: HttpErrorResponse, request: ApiRequest): ApiResponse {
+    protected parseErrorResponse<T>(error: HttpErrorResponse, request: ApiRequest): ApiResponse<T> {
         return this.parseResponse(ApiError.createSystemError(error), request);
     }
 }

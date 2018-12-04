@@ -6,21 +6,21 @@ import { ThemeAssetDirective } from './ThemeAssetDirective';
     selector: '[theme-image]'
 })
 export class ThemeImageDirective extends ThemeAssetDirective {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(element: ElementRef, theme: ThemeService) {
         super(element, theme);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected commitSourceProperties(): void {
         (this.element as HTMLImageElement).src = this.source;

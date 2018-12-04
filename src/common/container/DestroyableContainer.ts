@@ -3,30 +3,30 @@ import { IDestroyable } from '../IDestroyable';
 import { ArrayUtil } from '../util/ArrayUtil';
 
 export class DestroyableContainer implements IDestroyable {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _destroyables: IDestroyable[];
     private _subscriptions: Subscription[];
 
     protected isDestroyed: boolean = false;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public addSubscription(value: Subscription): Subscription {
         this.subscriptions.push(value);
@@ -52,11 +52,11 @@ export class DestroyableContainer implements IDestroyable {
         if (this._subscriptions) this._subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private get subscriptions(): Subscription[] {
         if (!this._subscriptions) this._subscriptions = [];
@@ -67,11 +67,11 @@ export class DestroyableContainer implements IDestroyable {
         return this._destroyables;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Interface Methods
+    // 	Interface Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         if (this.isDestroyed) return;

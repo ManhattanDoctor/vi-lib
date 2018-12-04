@@ -4,25 +4,25 @@ import { INotificationContent } from '../../../notification/lib/INotificationCon
 import { IQuestion } from '../../IQuestion';
 
 export class NotificationBaseComponent extends INotificationContent {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(container: ViewContainerRef, language: LanguageService) {
         super(container, language);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @HostListener('click')
     private clickHandler(): void {
-        if (this.mode == 'info') this.remove();
+        if (this.mode === 'info') this.remove();
     }
 
     public yesClickHandler(): void {

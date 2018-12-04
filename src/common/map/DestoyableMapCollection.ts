@@ -2,11 +2,11 @@ import { IDestroyable } from '../IDestroyable';
 import { MapCollection } from './MapCollection';
 
 export class DestroyableMapCollection<U extends IDestroyable> extends MapCollection<U> implements IDestroyable {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public clear(): void {
         if (this.length > 0)

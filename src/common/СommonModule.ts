@@ -60,4 +60,4 @@ import { MinValidator } from './validator/MinValidator';
         InfiniteScrollDirective
     ]
 })
-export class VichatterSDKModule {}
+export class ViCommonModule {}

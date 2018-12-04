@@ -1,13 +1,13 @@
-import { MatDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material/dialog';
 import { IDestroyable } from '../../common/IDestroyable';
 import { ViewUtil } from '../../common/util/ViewUtil';
 
 export class WindowConfig extends MatDialogConfig implements IDestroyable {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public id: string;
     public isResizeable: boolean = false;
@@ -51,11 +51,11 @@ export class WindowConfig extends MatDialogConfig implements IDestroyable {
     protected _elementMinHeight: number = NaN;
     protected _elementMaxHeight: number = NaN;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(isModal: boolean = false, isResizeable: boolean = false, width: number = NaN, height: number = NaN) {
         super();
@@ -68,11 +68,11 @@ export class WindowConfig extends MatDialogConfig implements IDestroyable {
         if (!isNaN(height)) this.defaultHeight = height;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public setDefaultProperties(): void {
         this.width = this.elementWidth;
@@ -110,11 +110,11 @@ export class WindowConfig extends MatDialogConfig implements IDestroyable {
 
     public destroy(): void {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get isModal(): boolean {
         return this._isModal;

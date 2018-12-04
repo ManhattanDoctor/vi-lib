@@ -3,11 +3,11 @@ import { ViewUtil } from '../../util/ViewUtil';
 import { DestroyableComponent } from '../DestroyableComponent';
 
 export class LoaderBaseComponent extends DestroyableComponent {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input()
     public emptyText: string;
@@ -18,28 +18,28 @@ export class LoaderBaseComponent extends DestroyableComponent {
     private _isEmpty: boolean = false;
     private _isLoading: boolean = false;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(protected element: ElementRef) {
         super();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get isLoading(): boolean {
         return this._isLoading;
     }
     @Input()
     public set isLoading(value: boolean) {
-        if (value == this._isLoading) return;
+        if (value === this._isLoading) return;
 
         this._isLoading = value;
         ViewUtil.toggleClass(this.element, 'loading', this.isLoading);
@@ -50,7 +50,7 @@ export class LoaderBaseComponent extends DestroyableComponent {
     }
     @Input()
     public set isEmpty(value: boolean) {
-        if (value == this._isEmpty) return;
+        if (value === this._isEmpty) return;
 
         this._isEmpty = value;
         ViewUtil.toggleClass(this.element, 'empty', this.isEmpty);
@@ -61,7 +61,7 @@ export class LoaderBaseComponent extends DestroyableComponent {
     }
     @Input()
     public set isBlock(value: boolean) {
-        if (value == this._isBlock) return;
+        if (value === this._isBlock) return;
 
         this._isBlock = value;
         ViewUtil.toggleClass(this.element, 'block', this.isBlock);

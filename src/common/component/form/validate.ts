@@ -2,24 +2,26 @@ import { AbstractControl, AsyncValidatorFn, Validator, Validators, ValidatorFn }
 
 import { Observable, of } from 'rxjs';
 
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 //
 //  Export Properties
 //
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
-export type ValidationResult = { [validator: string]: string | boolean };
+export interface ValidationResult {
+    [validator: string]: string | boolean;
+}
 export type ValidatorArray = Array<Validator | ValidatorFn>;
 export type AsyncValidatorArray = Array<Validator | AsyncValidatorFn>;
 
 const normalizeValidator = (validator: Validator | ValidatorFn): ValidatorFn | AsyncValidatorFn => {
     const func = (validator as Validator).validate.bind(validator);
     if (typeof func === 'function') return (control: AbstractControl) => func(control);
-    else return <ValidatorFn | AsyncValidatorFn>validator;
+    else return validator as ValidatorFn | AsyncValidatorFn;
 };
 
 export const composeValidators = (validators: ValidatorArray): AsyncValidatorFn | ValidatorFn => {
-    if (validators == null || validators.length === 0) return null;
+    if (validators === null || validators.length === 0) return null;
 
     return Validators.compose(validators.map(normalizeValidator));
 };

@@ -6,30 +6,30 @@ import { LoginBaseService, LoginBaseServiceEvent } from './LoginBaseService';
 
 @Injectable()
 export abstract class UserBaseService<U, V extends IUser> {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _user: V;
     protected observer: Subject<ObservableData<U | UserBaseServiceEvent, V>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(protected login: LoginBaseService<any>) {
         this.observer = new Subject();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected initialize(): void {
         if (this.login.isLoggedIn) {
@@ -38,10 +38,10 @@ export abstract class UserBaseService<U, V extends IUser> {
         }
 
         this.login.events.subscribe(data => {
-            if (data.type == LoginBaseServiceEvent.LOGIN_COMPLETE) {
+            if (data.type === LoginBaseServiceEvent.LOGIN_COMPLETE) {
                 this._user = this.createUser(this.login.loginData);
                 this.observer.next(new ObservableData(UserBaseServiceEvent.LOGINED, this.user));
-            } else if (data.type == LoginBaseServiceEvent.LOGOUT_FINISHED) {
+            } else if (data.type === LoginBaseServiceEvent.LOGOUT_FINISHED) {
                 this._user = null;
                 this.observer.next(new ObservableData(UserBaseServiceEvent.LOGOUTED));
             }
@@ -50,18 +50,18 @@ export abstract class UserBaseService<U, V extends IUser> {
 
     protected abstract createUser(data: any): V;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public isUser(value: any): boolean {
         if (!value || !this.user) return false;
 
-        if (value.hasOwnProperty('id')) return this.user.id == value.id;
+        if (value.hasOwnProperty('id')) return this.user.id === value.id;
 
-        return this.user.id == value;
+        return this.user.id === value;
     }
 
     public updateUser(data: any): void {
@@ -69,11 +69,11 @@ export abstract class UserBaseService<U, V extends IUser> {
         this.observer.next(new ObservableData(UserBaseServiceEvent.CHANGED));
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<ObservableData<U | UserBaseServiceEvent, V>> {
         return this.observer.asObservable();

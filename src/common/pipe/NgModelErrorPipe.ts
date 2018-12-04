@@ -6,17 +6,17 @@ import { LanguageService } from '../../language/service/LanguageService';
     name: 'formatNgModelError'
 })
 export class NgModelErrorPipe implements PipeTransform {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public transform(value: ValidationErrors): string {
         if (!value) return null;
 
         let keys = Object.keys(value);
-        if (keys.length == 0) return null;
+        if (keys.length === 0) return null;
 
         let key = keys[0];
         return this.translateError(key, value[key]);
@@ -26,11 +26,11 @@ export class NgModelErrorPipe implements PipeTransform {
         return this.language.translate('error.form.' + key, value);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private language: LanguageService) {}
 }

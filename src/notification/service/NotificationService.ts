@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { ComponentType } from '@angular/cdk/portal';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ApiError } from '../../common/api/ApiError';
 import { Assets } from '../../common/asset/Assets';
 import { ObservableData } from '../../common/observer/ObservableData';
@@ -16,11 +16,11 @@ import { NotificationConfig } from '../lib/NotificationConfig';
 import { NotificationFactory } from '../lib/NotificationFactory';
 @Injectable()
 export class NotificationService {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constants
+    // 	Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static GAP = 25;
 
@@ -41,11 +41,11 @@ export class NotificationService {
     public static DEFAULT_VERTICAL_ALIGN: WindowAlign = 'start';
     public static DEFAULT_HORIZONTAL_ALIGN: WindowAlign = 'end';
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public factory: NotificationFactory<INotification>;
     public defaultNotification: ComponentType<INotificationContent>;
@@ -55,11 +55,11 @@ export class NotificationService {
 
     private observer: Subject<ObservableData<NotificationServiceEvent, NotificationConfig | INotification>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private dialog: MatDialog, private language: LanguageService) {
         this._configs = [];
@@ -68,11 +68,11 @@ export class NotificationService {
         this.observer = new Subject();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private get(id: string): NotificationConfig {
         let result: NotificationConfig = null;
@@ -95,11 +95,11 @@ export class NotificationService {
         return result;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public openNotification(component: ComponentType<INotificationContent>, config: NotificationConfig): INotificationContent {
         let notification: INotification = null;
@@ -122,16 +122,16 @@ export class NotificationService {
         config.setDefaultProperties();
 
         let reference: MatDialogRef<INotificationContent> = this.dialog.open(component, config);
-        notification = this.factory.create(reference, config, reference['_overlayRef']) as INotification;
+        notification = this.factory.create(reference, config, (reference as any)._overlayRef) as INotification;
 
         let content: INotificationContent = notification.content;
         let subscription: Subscription = notification.events.subscribe(data => {
-            if (data == INotification.EVENT_REMOVED) {
+            if (data === INotification.EVENT_REMOVED) {
                 subscription.unsubscribe();
                 this.remove(config);
-            } else if (data == INotification.EVENT_CLOSED) {
+            } else if (data === INotification.EVENT_CLOSED) {
                 this.close(config);
-            } else if (data == INotification.EVENT_OPENED) {
+            } else if (data === INotification.EVENT_OPENED) {
                 this.add(config, reference.componentInstance);
                 this.checkNotificationPosition(notification);
 
@@ -167,11 +167,11 @@ export class NotificationService {
         });
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private close(config: NotificationConfig): INotification {
         let item = this._notifications.get(config);
@@ -192,20 +192,20 @@ export class NotificationService {
         let result = false;
         this._notifications.forEach((content, config) => {
             let notification = content.notification;
-            if (notification != itemNotification && y == notification.getY()) result = true;
+            if (notification !== itemNotification && y === notification.getY()) result = true;
         });
         return result;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Help Methods
+    // 	Help Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public open(config: NotificationConfig): INotificationContent {
-        //if(isNaN(config.defaultWidth))
-        //	config.defaultWidth = 400;
+        // if(isNaN(config.defaultWidth))
+        // 	config.defaultWidth = 400;
 
         config.isModal = false;
         return this.openNotification(this.defaultNotification, config);
@@ -249,11 +249,11 @@ export class NotificationService {
         this.open(config);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<ObservableData<NotificationServiceEvent, NotificationConfig | INotification>> {
         return this.observer.asObservable();

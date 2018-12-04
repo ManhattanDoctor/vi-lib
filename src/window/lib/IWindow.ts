@@ -4,11 +4,11 @@ import { IWindowContent } from './IWindowContent';
 import { WindowConfig } from './WindowConfig';
 
 export abstract class IWindow implements IDestroyable {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static EVENT_OPENED = 'OPENED';
     public static EVENT_CLOSED = 'CLOSED';
@@ -20,11 +20,11 @@ export abstract class IWindow implements IDestroyable {
 
     public static EVENT_SET_ON_TOP = 'EVENT_SET_ON_TOP';
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     abstract close(): void;
     abstract destroy(): void;
@@ -47,11 +47,11 @@ export abstract class IWindow implements IDestroyable {
 
     abstract emit(event: string): void;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public isOnTop: boolean = false;
     public isMinimized: boolean = false;

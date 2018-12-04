@@ -5,30 +5,30 @@ import { INotification } from './INotification';
 import { NotificationConfig } from './NotificationConfig';
 
 export abstract class INotificationContent extends QuestionBaseComponent implements AfterViewInit {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected timer: any;
     protected _notification: INotification;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(container: ViewContainerRef, protected language: LanguageService) {
         super(container, language);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected commitNotificationProperties(): void {
         if (!this.config) return;
@@ -46,11 +46,11 @@ export abstract class INotificationContent extends QuestionBaseComponent impleme
         this.handleCloseClick();
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public close(): void {
         if (this.notification) this.notification.close();
@@ -74,11 +74,11 @@ export abstract class INotificationContent extends QuestionBaseComponent impleme
         }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngAfterViewInit(): void {
         this.emit(INotification.EVENT_CONTENT_READY);
@@ -91,11 +91,11 @@ export abstract class INotificationContent extends QuestionBaseComponent impleme
         else this.close();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get data(): any {
         return this.config ? this.config.data : null;
@@ -110,7 +110,7 @@ export abstract class INotificationContent extends QuestionBaseComponent impleme
     }
 
     public set notification(value: INotification) {
-        if (value == this._notification) return;
+        if (value === this._notification) return;
 
         this._notification = value;
         if (this._notification) this.commitNotificationProperties();

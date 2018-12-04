@@ -3,11 +3,11 @@ import { ApiResponse } from '../api/ApiResponse';
 import { ObservableData } from '../observer/ObservableData';
 
 export abstract class LoginBaseService<U> {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _sid: string;
 
@@ -16,23 +16,23 @@ export abstract class LoginBaseService<U> {
     protected _isLoading: boolean = false;
     protected _isLoggedIn: boolean = false;
 
-    protected observer: Subject<ObservableData<U | LoginBaseServiceEvent, ApiResponse>>;
+    protected observer: Subject<ObservableData<U | LoginBaseServiceEvent, ApiResponse<any>>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         this.observer = new Subject();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected loginByParam(param?: any): void {
         if (this.isLoggedIn || this.isLoading) return;
@@ -80,31 +80,33 @@ export abstract class LoginBaseService<U> {
         this._resource = null;
     }
 
-    protected abstract makeLoginSidRequest(isNeedHandleError: boolean, isHandleLoading: boolean): Observable<ApiResponse>;
+    protected abstract makeLoginSidRequest<T>(isNeedHandleError: boolean, isHandleLoading: boolean): Observable<ApiResponse<T>>;
 
-    protected abstract makeLoginParamRequest(param: any): Observable<ApiResponse>;
+    protected abstract makeLoginParamRequest<T>(param: any): Observable<ApiResponse<T>>;
 
-    protected abstract makeLogoutRequest(): Observable<ApiResponse>;
+    protected abstract makeLogoutRequest<T>(): Observable<ApiResponse<T>>;
 
     protected abstract getSavedSid(): string;
 
-    protected abstract parseLoginParamResponse(response: ApiResponse): void;
+    protected abstract parseLoginParamResponse<T>(response: ApiResponse<T>): void;
 
-    protected parseLoginParamErrorResponse(response: ApiResponse): void {}
+    protected parseLoginParamErrorResponse<T>(response: ApiResponse<T>): void {}
 
-    protected parseLoginSidResponse(response: ApiResponse): void {
+    protected parseLoginSidResponse<T>(response: ApiResponse<T>): void {
         this._loginData = response.data;
     }
 
-    protected parseLoginSidErrorResponse(response: ApiResponse): void {
-        if (!response.error.isSystem) this.reset();
+    protected parseLoginSidErrorResponse<T>(response: ApiResponse<T>): void {
+        if (!response.error.isSystem) {
+            this.reset();
+        }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public tryLoginBySid(isNeedHandleError: boolean = true, isHandleLoading: boolean = false): boolean {
         if (!this.isCanLoginWithSid()) return false;
@@ -129,13 +131,13 @@ export abstract class LoginBaseService<U> {
         return this.sid != null || this.getSavedSid() != null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    public get events(): Observable<ObservableData<U | LoginBaseServiceEvent, ApiResponse>> {
+    public get events(): Observable<ObservableData<U | LoginBaseServiceEvent, ApiResponse<any>>> {
         return this.observer.asObservable();
     }
 

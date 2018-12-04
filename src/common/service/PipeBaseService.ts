@@ -10,11 +10,11 @@ import { MomentTimePipe } from '../pipe/MomentTimePipe';
 import { SanitizePipe } from '../pipe/SanitizePipe';
 
 export class PipeBaseService extends DestroyableContainer {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constants
+    // 	Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private static DATE: DatePipe;
     private static FINANCE: FinancePipe;
@@ -24,19 +24,19 @@ export class PipeBaseService extends DestroyableContainer {
     private static MOMENT_DATE: MomentDatePipe;
     private static MOMENT_ADAPTIVE_DATE: MomentDateAdaptivePipe;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _locale: string;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(public language: LanguageService, public sanitizer: DomSanitizer) {
         super();
@@ -45,29 +45,29 @@ export class PipeBaseService extends DestroyableContainer {
 
         this.addSubscription(
             this.language.events.subscribe(data => {
-                if (data.type == LoadableEvent.COMPLETE) this.commitLanguageProperties();
+                if (data.type === LoadableEvent.COMPLETE) this.commitLanguageProperties();
             })
         );
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected commitLanguageProperties(): void {
         let locale = this.language.locale ? this.language.language.locale : 'en';
-        this._locale = locale == 'en' ? 'en-US' : locale;
+        this._locale = locale === 'en' ? 'en-US' : locale;
 
         if (PipeBaseService.DATE) PipeBaseService.DATE = new DatePipe(this.locale);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get date(): DatePipe {
         if (!PipeBaseService.DATE) PipeBaseService.DATE = new DatePipe(this.locale);

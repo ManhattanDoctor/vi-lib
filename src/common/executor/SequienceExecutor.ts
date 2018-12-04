@@ -3,11 +3,11 @@ import { ObservableData } from '../observer/ObservableData';
 import { ArrayUtil } from '../util/ArrayUtil';
 
 export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, SequienceExecutorData<U, V>> {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected inputs: Array<U>;
     protected isDestroyed: boolean;
@@ -17,22 +17,22 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
     private _totalLength: number = NaN;
     private _currentIndex: number = NaN;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         super();
         this.inputs = [];
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected finishedInput(input: U): void {
         if (this.isDestroyed) return;
@@ -40,7 +40,7 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
         let index = this.inputs.indexOf(input);
         this.inputs.splice(index, 1);
 
-        if (this.inputs.length == 0) {
+        if (this.inputs.length === 0) {
             this.makeFinished();
             return;
         }
@@ -58,7 +58,7 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
 
     protected checkProgress(): void {
         let value = (100 * this.currentIndex) / this.totalLength;
-        if (value == this._progress || isNaN(value) || !isFinite(value)) return;
+        if (value === this._progress || isNaN(value) || !isFinite(value)) return;
 
         this._progress = value;
     }
@@ -85,11 +85,11 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
         return new Promise(resolve => setTimeout(resolve, delay));
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected nextIndex(): void {
         let index = this.currentIndex + 1;
@@ -101,14 +101,14 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
         let input = this.inputs[this.currentIndex];
         this.executeInput(input).then(
             data => {
-                this.observer.next(new ObservableData(LoadableEvent.COMPLETE, { input: input, output: data }));
+                this.observer.next(new ObservableData(LoadableEvent.COMPLETE, { input, output: data }));
                 this.finishedInput(input);
             },
             error => {
                 if (error === SequienceExecutorError.SKIP) {
                     this.skipInput(input);
                 } else {
-                    this.observer.next(new ObservableData(LoadableEvent.ERROR, { input: input, error: error }));
+                    this.observer.next(new ObservableData(LoadableEvent.ERROR, { input, error }));
                     this.finishedInput(input);
                 }
             }
@@ -124,17 +124,17 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
 
     protected abstract async executeInput(value: U): Promise<V>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private get currentIndex(): number {
         return this._currentIndex;
     }
     private set currentIndex(value: number) {
-        if (value == this._currentIndex) return;
+        if (value === this._currentIndex) return;
 
         this._currentIndex = value;
         this.checkProgress();
@@ -144,17 +144,17 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
         return this._totalLength;
     }
     private set totalLength(value: number) {
-        if (value == this._totalLength) return;
+        if (value === this._totalLength) return;
 
         this._totalLength = value;
         this.checkProgress();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public start(inputs: Array<U>): void {
         if (this.isLoading) return;
@@ -177,11 +177,11 @@ export abstract class SequienceExecutor<U, V> extends Loadable<LoadableEvent, Se
         this._currentIndex = NaN;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get progress(): number {
         return this._progress;

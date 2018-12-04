@@ -9,11 +9,11 @@ import { ThemeService, ThemeServiceEvent } from '../service/ThemeService';
     selector: '[theme-asset]'
 })
 export class ThemeAssetDirective implements OnDestroy, OnInit {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input()
     public isImage: boolean = false;
@@ -31,21 +31,21 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
     private isTriedThemeDefault: boolean;
     private subscription: Subscription;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(element: ElementRef, protected theme: ThemeService) {
         this.element = element.nativeElement;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected getSource(id: string): string {
         if (!id) return null;
@@ -57,11 +57,11 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
         return Assets.getIcon(id, this.extension);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @HostListener('error', ['$event'])
     private errorLoadingHandler(event: any): void {
@@ -76,11 +76,11 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
         this.commitSourceProperties();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected updateSourceProperties(): void {
         this.source = this.getSource(this.getSourceId(this.theme.theme));
@@ -99,11 +99,11 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
 
     protected commitSourceProperties(): void {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngOnInit(): void {
         this.updateSourceProperties();

@@ -1,11 +1,11 @@
 import { TimeoutError } from 'rxjs';
 
 export class ApiError implements Error {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Methods
+    // 	Static Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static createSystemError(error: any): ApiError {
         let data = {} as any;
@@ -19,11 +19,11 @@ export class ApiError implements Error {
         return new ApiError(data);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Properties
+    // 	Static Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static ERROR_CODE_IDLE_TIMEOUT: number = -2;
     public static ERROR_CODE_NO_CONNECTION: number = -1;
@@ -31,21 +31,21 @@ export class ApiError implements Error {
 
     public static DEFAULT_LANGUAGE = 'en';
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    private _code: number = NaN;
-    private _name: string;
-    private _message: string;
+    protected _code: number = NaN;
+    protected _name: string;
+    protected _message: string;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(data: any, language?: string) {
         if (data.hasOwnProperty('code')) this._code = data.code;
@@ -58,11 +58,11 @@ export class ApiError implements Error {
         this.parseMessage(message, language);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected parseMessage(data: any, language: string): void {
         this._message = data;
@@ -73,11 +73,11 @@ export class ApiError implements Error {
         if (data.hasOwnProperty(language)) this._message = data[language];
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get code(): number {
         return this._code;
@@ -92,12 +92,12 @@ export class ApiError implements Error {
     }
 
     public get isSystem(): boolean {
-        return this.code == ApiError.ERROR_CODE_NO_CONNECTION || this.code == ApiError.ERROR_CODE_IDLE_TIMEOUT;
+        return this.code === ApiError.ERROR_CODE_NO_CONNECTION || this.code === ApiError.ERROR_CODE_IDLE_TIMEOUT;
     }
 
     public get isSpecial(): boolean {
-        if (isNaN(this._code) || ApiError.ERROR_SPECIAL_CODES.length == 0) return false;
+        if (isNaN(this._code) || ApiError.ERROR_SPECIAL_CODES.length === 0) return false;
 
-        return ApiError.ERROR_SPECIAL_CODES.indexOf(this._code) != -1;
+        return ApiError.ERROR_SPECIAL_CODES.indexOf(this._code) !== -1;
     }
 }

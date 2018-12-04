@@ -7,22 +7,22 @@ import { NativeWindowService } from './NativeWindowService';
 
 @Injectable()
 export class RouterBaseService {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Methods
+    // 	Static Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static ERROR_URL = 'error';
     public static MESSAGE_URL = 'message';
 
     public static INSTANCE: RouterBaseService;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected map: Map<string, string>;
     protected observer: Subject<ObservableData<RouterBaseServiceEvent, void>>;
@@ -32,11 +32,11 @@ export class RouterBaseService {
 
     protected _isLoading: boolean = false;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(protected router: Router, protected nativeWindow: NativeWindowService) {
         this.map = new Map();
@@ -48,11 +48,11 @@ export class RouterBaseService {
         this.initializeObservers();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected initializeObservers(): void {
         this.router.events.subscribe(event => {
@@ -83,7 +83,7 @@ export class RouterBaseService {
     }
 
     private setLoading(value: boolean) {
-        if (value == this._isLoading) return;
+        if (value === this._isLoading) return;
 
         this._isLoading = value;
         this.observer.next(new ObservableData(RouterBaseServiceEvent.LOADING_CHANGED));
@@ -94,11 +94,11 @@ export class RouterBaseService {
         }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public navigate(url: string, extras?: NavigationExtras): void {
         let params = {} as NavigationExtras;
@@ -124,17 +124,17 @@ export class RouterBaseService {
         location.reload();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Param Methods
+    // 	Public Param Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public hasParam(name: string): boolean {
         return this.map.has(name);
     }
 
-    public getParams(): Object {
+    public getParams(): any {
         let params = {} as any;
         this.map.forEach((value, key) => {
             params[key] = value;
@@ -149,7 +149,7 @@ export class RouterBaseService {
     public setParam(name: string, value: any, extras?: NavigationExtras): void {
         if (value) {
             value = value.toString().trim();
-            if (value.length == 0) value = null;
+            if (value.length === 0) value = null;
         }
 
         if (value) this.map.set(name, value);
@@ -168,11 +168,11 @@ export class RouterBaseService {
         return this.map.size > 0;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Url Methods
+    // 	Public Url Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<ObservableData<RouterBaseServiceEvent, void>> {
         return this.observer.asObservable();

@@ -1,22 +1,22 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 
 export class ViewUtil {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constants
+    // 	Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static RENDEDER: Renderer2;
 
     public static FOCUS_DELAY: number = 100;
     public static VIDEO_RATIO = 3 / 4;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private static copyToClipboard(): void {
         try {
@@ -24,11 +24,11 @@ export class ViewUtil {
         } catch (error) {}
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Common Properties
+    // 	Common Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static parseElement(element: any): HTMLElement {
         if (element instanceof HTMLElement) return element;
@@ -85,17 +85,17 @@ export class ViewUtil {
             return;
         }
 
-        if (value.indexOf('url(') == -1) value = 'url(' + value + ')';
+        if (value.indexOf('url(') === -1) value = 'url(' + value + ')';
 
         ViewUtil.setStyle(container, 'backgroundImage', value);
         ViewUtil.setStyle(container, 'backgroundRepeat', repeat);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Child Methods
+    // 	Child Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static createElement(name: string, className?: string, innerHTML?: string): any {
         let element = ViewUtil.RENDEDER.createElement(name);
@@ -118,11 +118,11 @@ export class ViewUtil {
         if (!value && contains) ViewUtil.removeChild(container, child);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Size Methods
+    // 	Size Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static get stageWidth(): number {
         return window.innerWidth || document.body.clientWidth;
@@ -143,7 +143,7 @@ export class ViewUtil {
     public static setWidth(container: HTMLElement, value: number, isNeedCheckLimits: boolean): boolean {
         if (!container || isNaN(value)) return false;
 
-        if (isNeedCheckLimits && (value < ViewUtil.getMinWidth(container) || value > ViewUtil.getMaxWidth(container) || value == ViewUtil.getWidth(container)))
+        if (isNeedCheckLimits && (value < ViewUtil.getMinWidth(container) || value > ViewUtil.getMaxWidth(container) || value === ViewUtil.getWidth(container)))
             return false;
 
         container.style.width = '540px';
@@ -179,7 +179,7 @@ export class ViewUtil {
 
         if (
             isNeedCheckLimits &&
-            (value < ViewUtil.getMinHeight(container) || value > ViewUtil.getMaxHeight(container) || value == ViewUtil.getHeight(container))
+            (value < ViewUtil.getMinHeight(container) || value > ViewUtil.getMaxHeight(container) || value === ViewUtil.getHeight(container))
         )
             return false;
 
@@ -230,11 +230,11 @@ export class ViewUtil {
         ViewUtil.setY(container, y);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Focus Methods
+    // 	Focus Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static focusInput(input: HTMLInputElement | HTMLTextAreaElement): void {
         let caretIndex = 0;
@@ -244,11 +244,11 @@ export class ViewUtil {
         input.setSelectionRange(caretIndex, caretIndex);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Classes Methods
+    // 	Classes Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static addClass(container: any, name: string): void {
         if (!name) return;
@@ -343,11 +343,11 @@ export class ViewUtil {
         if (container) ViewUtil.RENDEDER.removeStyle(container, name);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Video Methods
+    // 	Video Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static createVideo(isMute: boolean = true, isInline: boolean = false): HTMLVideoElement {
         let video = ViewUtil.createElement('video');
@@ -455,11 +455,11 @@ export class ViewUtil {
         }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Object Methods
+    // 	Object Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static disposeObjects(container: HTMLElement, isIEBrowser?: boolean): void {
         for (let i = container.children.length - 1; i >= 0; i--) {
@@ -469,8 +469,8 @@ export class ViewUtil {
     }
 
     public static disposeObject(object: HTMLObjectElement, isIEBrowser?: boolean): void {
-        if (isIEBrowser && object.readyState == 4) {
-            for (let i in object) if (typeof object[i] == 'function') object[i] = null;
+        if (isIEBrowser && object.readyState === 4) {
+            for (let i in object) if (typeof object[i] === 'function') object[i] = null;
         }
 
         ViewUtil.removeChild(object.parentNode, object);

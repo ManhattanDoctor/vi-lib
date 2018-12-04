@@ -3,54 +3,54 @@ import { IDestroyable } from '../IDestroyable';
 import { ObservableData } from '../observer/ObservableData';
 
 export abstract class Loadable<U, V> implements IDestroyable {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected status: LoadableStatus;
     protected observer: Subject<ObservableData<U | LoadableEvent, V>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected constructor() {
         this.observer = new Subject();
         this.status = LoadableStatus.NOT_LOADED;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         this.observer = null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<ObservableData<U | LoadableEvent, V>> {
         return this.observer.asObservable();
     }
 
     public get isLoaded(): boolean {
-        return this.status == LoadableStatus.LOADED;
+        return this.status === LoadableStatus.LOADED;
     }
     public get isError(): boolean {
-        return this.status == LoadableStatus.ERROR;
+        return this.status === LoadableStatus.ERROR;
     }
     public get isLoading(): boolean {
-        return this.status == LoadableStatus.LOADING;
+        return this.status === LoadableStatus.LOADING;
     }
 }
 

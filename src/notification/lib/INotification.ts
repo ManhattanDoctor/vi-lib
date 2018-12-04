@@ -3,11 +3,11 @@ import { INotificationContent } from './INotificationContent';
 import { NotificationConfig } from './NotificationConfig';
 
 export abstract class INotification {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constants
+    // 	Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static EVENT_OPENED = 'EVENT_OPENED';
     public static EVENT_CLOSED = 'EVENT_CLOSED';
@@ -15,11 +15,11 @@ export abstract class INotification {
 
     public static EVENT_CONTENT_READY = 'EVENT_CONTENT_READY';
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     abstract getX(): number;
     abstract getY(): number;
@@ -39,11 +39,11 @@ export abstract class INotification {
 
     abstract emit(event: string): void;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Interface Methods
+    // 	Interface Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     readonly events: Observable<string>;
     readonly container: HTMLElement;

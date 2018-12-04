@@ -1,6 +1,6 @@
+import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { MatDialogRef } from '@angular/material';
 import { filter } from 'rxjs/internal/operators';
 import { ViewUtil } from '../../common/util/ViewUtil';
 import { WindowBase } from '../../window/lib/WindowBase';
@@ -9,19 +9,19 @@ import { INotificationContent } from './INotificationContent';
 import { NotificationConfig } from './NotificationConfig';
 
 export class Notification extends WindowBase implements INotification {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constants
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private static OPEN_DELAY = 1;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _config: NotificationConfig;
     protected _overlay: OverlayRef;
@@ -30,11 +30,11 @@ export class Notification extends WindowBase implements INotification {
     protected timer: any;
     protected observer: Subject<string>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(reference: MatDialogRef<INotificationContent>, config?: NotificationConfig, overlay?: OverlayRef) {
         super();
@@ -52,14 +52,14 @@ export class Notification extends WindowBase implements INotification {
         this.addSubscription(reference.afterOpen().subscribe(this.setOpened));
         this.addSubscription(reference.afterClosed().subscribe(this.setClosed));
 
-        this.addSubscription(this.observer.pipe(filter(event => event == INotification.EVENT_CONTENT_READY)).subscribe(this.checkSizeAndUpdatePositionIfNeed));
+        this.addSubscription(this.observer.pipe(filter(event => event === INotification.EVENT_CONTENT_READY)).subscribe(this.checkSizeAndUpdatePositionIfNeed));
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected setProperties(): void {
         super.setProperties();
@@ -85,11 +85,11 @@ export class Notification extends WindowBase implements INotification {
         return this._reference;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public emit(event: string): void {
         this.observer.next(event);
@@ -114,11 +114,11 @@ export class Notification extends WindowBase implements INotification {
         this._config = null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Size Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public getWidth(): number {
         return this.width;
@@ -141,11 +141,11 @@ export class Notification extends WindowBase implements INotification {
         this.setHeight(height);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Move Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public getX(): number {
         return this.x;
@@ -167,11 +167,11 @@ export class Notification extends WindowBase implements INotification {
         this.setY(y);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<string> {
         return this.observer.asObservable();

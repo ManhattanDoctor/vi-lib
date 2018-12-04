@@ -7,19 +7,19 @@ import { ResizeController } from './ResizeController';
     selector: '[vi-aspect-ratio]'
 })
 export class AspectRatioResizeDirective implements IDestroyable, AfterViewInit {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Properties
+    // 	Static Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected static UPDATE_DELAY: number = 100;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _ratio: number = NaN;
     private _direction: Direction;
@@ -27,32 +27,32 @@ export class AspectRatioResizeDirective implements IDestroyable, AfterViewInit {
     private sensor: ResizeController;
     private element: HTMLElement;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(element: ElementRef) {
         this.element = element.nativeElement;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private commitResizeProperties = () => {
-        if (this._direction == 'horizontal') this.width = this.height / this.ratio;
-        else if (this._direction == 'vertical') this.height = this.width * this.ratio;
+        if (this._direction === 'horizontal') this.width = this.height / this.ratio;
+        else if (this._direction === 'vertical') this.height = this.width * this.ratio;
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngAfterViewInit(): void {
         this.sensor = new ResizeController(this.element, this.commitResizeProperties, AspectRatioResizeDirective.UPDATE_DELAY);
@@ -73,11 +73,11 @@ export class AspectRatioResizeDirective implements IDestroyable, AfterViewInit {
         }
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private get width(): number {
         return ViewUtil.getWidth(this.element);
@@ -95,15 +95,15 @@ export class AspectRatioResizeDirective implements IDestroyable, AfterViewInit {
         ViewUtil.setHeight(this.element, value, true);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input('vi-aspect-ratio')
     public set direction(value: Direction) {
-        if (value == this._direction || !value) return;
+        if (value === this._direction || !value) return;
 
         this._direction = value;
         this.commitResizeProperties();
@@ -114,7 +114,7 @@ export class AspectRatioResizeDirective implements IDestroyable, AfterViewInit {
 
     @Input()
     public set ratio(value: number) {
-        if (value == this._ratio) return;
+        if (value === this._ratio) return;
 
         this._ratio = value;
         this.commitResizeProperties();

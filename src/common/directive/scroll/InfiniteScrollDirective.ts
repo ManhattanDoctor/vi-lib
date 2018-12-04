@@ -5,11 +5,11 @@ import { ScrollDirective } from './ScrollDirective';
     selector: '[vi-infinite-scroll]'
 })
 export class InfiniteScrollDirective extends ScrollDirective {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Output()
     public top: EventEmitter<number> = new EventEmitter();
@@ -19,11 +19,11 @@ export class InfiniteScrollDirective extends ScrollDirective {
     @Input()
     public elementHeight: number = 50;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected scrollChangedHandler(): void {
         super.scrollChangedHandler();
@@ -36,11 +36,11 @@ export class InfiniteScrollDirective extends ScrollDirective {
         else if (value <= this.elementHeight) this.top.next(value);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get clientHeight(): number {
         return this.element.clientHeight;

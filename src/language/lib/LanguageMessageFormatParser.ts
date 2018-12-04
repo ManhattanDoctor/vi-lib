@@ -5,11 +5,11 @@ import { ObservableData } from '../../common/observer/ObservableData';
 import { LanguageServiceEvent } from '../service/LanguageService';
 
 export class LanguageMessageFormatParser extends TranslateParser {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _locale: string;
     private formatter: any;
@@ -20,11 +20,11 @@ export class LanguageMessageFormatParser extends TranslateParser {
 
     private observer: Subject<ObservableData<LanguageServiceEvent, Error>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         super();
@@ -34,11 +34,11 @@ export class LanguageMessageFormatParser extends TranslateParser {
         this.translations = new Map();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private getKey(expression: string, params?: any): string {
         let value = expression;
@@ -68,11 +68,11 @@ export class LanguageMessageFormatParser extends TranslateParser {
         return value;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public interpolate(expression: string, params?: any): string {
         let key = this.getKey(expression, params);
@@ -84,7 +84,7 @@ export class LanguageMessageFormatParser extends TranslateParser {
                 text = this.compile(expression, params);
             } catch (error) {
                 text = name;
-                let message = "Error parsing '" + name + "':\n\n" + error.message;
+                let message = `Error parsing ${name} :\n\n ${error.message}`;
                 this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR, new Error(message)));
             }
         }
@@ -111,11 +111,11 @@ export class LanguageMessageFormatParser extends TranslateParser {
         return target;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<ObservableData<LanguageServiceEvent, Error>> {
         return this.observer.asObservable();
@@ -126,7 +126,7 @@ export class LanguageMessageFormatParser extends TranslateParser {
     }
 
     public set locale(value: string) {
-        if (value == this._locale) return;
+        if (value === this._locale) return;
 
         this._locale = value;
         this.translations.clear();

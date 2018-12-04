@@ -2,11 +2,11 @@ import { IMenuItemCheckEnabledFunction } from './IMenuItemCheckEnabledFunction';
 import { IMenuItemSelectFunction } from './IMenuItemSelectFunction';
 
 export class MenuItem {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public iconId: string;
     public flag: MenuItemFlag;
@@ -20,11 +20,11 @@ export class MenuItem {
     public select: IMenuItemSelectFunction;
     public checkEnabled: IMenuItemCheckEnabledFunction;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(nameId?: string, sortIndex?: number, flag?: MenuItemFlag, iconId?: string) {
         this.nameId = nameId;

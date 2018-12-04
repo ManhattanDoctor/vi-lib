@@ -8,33 +8,33 @@ import { Theme } from '../lib/Theme';
 
 @Injectable()
 export class ThemeService {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _theme: Theme;
     private _themes: MapCollection<Theme>;
 
     private observer: Subject<string>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(protected cookies: CookieService) {
         this.observer = new Subject();
         this._themes = new MapCollection<Theme>();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public initialize(themes: Array<any>, defaultTheme: string): void {
         this.themes.clear();
@@ -56,11 +56,11 @@ export class ThemeService {
         return this.theme ? this.theme.getStyle(name) : null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<string> {
         return this.observer.asObservable();
@@ -74,7 +74,7 @@ export class ThemeService {
         return this._theme;
     }
     public set theme(value: Theme) {
-        if (value == this._theme) return;
+        if (value === this._theme) return;
 
         if (this._theme && document) ViewUtil.removeClass(document.body, this._theme.styleName);
 

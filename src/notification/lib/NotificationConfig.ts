@@ -2,11 +2,11 @@ import { QuestionMode } from '../../common/IQuestion';
 import { WindowConfig } from '../../window/lib/WindowConfig';
 
 export class NotificationConfig extends WindowConfig {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public data: any;
     public icon: string;
@@ -15,17 +15,17 @@ export class NotificationConfig extends WindowConfig {
     public picture: string;
     public mode: QuestionMode = 'info';
 
-    public noCallback: Function;
-    public yesCallback: Function;
+    public noCallback: (...args) => any;
+    public yesCallback: (...args) => any;
 
     public closeDuration: number;
     public isRemoveAfterClose: boolean = false;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(data?: any, picture?: string) {
         super();
@@ -33,11 +33,11 @@ export class NotificationConfig extends WindowConfig {
         this.picture = picture;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         super.destroy();

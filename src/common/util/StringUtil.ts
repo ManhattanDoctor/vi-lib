@@ -1,9 +1,9 @@
 export class StringUtil {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Methods
+    // 	Static Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static truncate(text: string, maxLength: number = 12): string {
         if (!text || isNaN(maxLength) || text.length < maxLength) return text;
@@ -15,7 +15,7 @@ export class StringUtil {
     public static isEmpty(value: any): boolean {
         if (!value) return true;
 
-        return value.toString().trim().length == 0;
+        return value.toString().trim().length === 0;
     }
 
     public static isContains(text: string, value: string, isCaseSensitive: boolean = true): boolean {
@@ -37,7 +37,7 @@ export class StringUtil {
             text = text ? text.toLowerCase() : null;
         }
 
-        return text == value;
+        return text === value;
     }
 
     public static capitalizeFirstLetter(text: string): string {
@@ -52,6 +52,7 @@ export class StringUtil {
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
 
+    /*
     public static toHexColor(value: string): string {
         let hash = 0;
         for (let i = 0; i < value.length; i++) hash = value.charCodeAt(i) + ((hash << 5) - hash);
@@ -61,4 +62,5 @@ export class StringUtil {
         hex = hex.substring(0, 6);
         return hex;
     }
+    */
 }

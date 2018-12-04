@@ -1,5 +1,5 @@
-import { Observable, Subject } from 'rxjs';
 import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 import { ObservableData } from '../observer/ObservableData';
 import { ApiMethod } from './ApiMethod';
 import { ApiRequest } from './ApiRequest';
@@ -7,19 +7,19 @@ import { ApiResponse } from './ApiResponse';
 import { IApiRequestConfig } from './IApiRequestConfig';
 
 export abstract class ApiServiceBase {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Properties
+    // 	Static Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static IDLE_TIMEOUT = 30000;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public sid: string;
 
@@ -28,23 +28,23 @@ export abstract class ApiServiceBase {
     protected idleTimeout: number = ApiServiceBase.IDLE_TIMEOUT;
     protected responseType: string = 'json';
     protected defaultMethod: ApiMethod = 'post';
-    protected observer: Subject<ObservableData<ApiServiceBaseEvent, ApiRequest | ApiResponse>>;
+    protected observer: Subject<ObservableData<ApiServiceBaseEvent, ApiRequest | ApiResponse<any>>>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         this.observer = new Subject();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected sendRequest(request: ApiRequest, resolve?: any, reject?: any, observer?: any): void {
         this._isLoading = true;
@@ -58,6 +58,7 @@ export abstract class ApiServiceBase {
                 this._isLoading = false;
                 this.observer.next(new ObservableData(ApiServiceBaseEvent.FINISHED, apiResponse));
 
+                console.log(apiResponse);
                 if (observer) {
                     observer.next(apiResponse);
                     observer.complete();
@@ -75,7 +76,9 @@ export abstract class ApiServiceBase {
                 subscription.unsubscribe();
 
                 let apiResponse = this.parseErrorResponse(error, request);
-                if (reject) reject(apiResponse);
+                if (reject) {
+                    reject(apiResponse);
+                }
 
                 this._isLoading = false;
                 this.observer.next(new ObservableData(ApiServiceBaseEvent.FINISHED, apiResponse));
@@ -85,6 +88,7 @@ export abstract class ApiServiceBase {
                     observer.complete();
                 }
 
+                console.log(apiResponse);
                 this.observer.next(new ObservableData(ApiServiceBaseEvent.ERROR, apiResponse, apiResponse.error));
             }
         );
@@ -118,11 +122,11 @@ export abstract class ApiServiceBase {
         return value;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Create Methods
+    // 	Create Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected abstract createUrlForRequest(request: ApiRequest, method: ApiMethod): string;
 
@@ -130,35 +134,35 @@ export abstract class ApiServiceBase {
 
     protected abstract createHeadersForRequest(request: ApiRequest, method: ApiMethod, body: HttpParams): HttpHeaders;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Parse Methods
+    // 	Parse Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    protected abstract parseResponse(data: any, request: ApiRequest): ApiResponse;
+    protected abstract parseResponse<T>(data: any, request: ApiRequest): ApiResponse<T>;
 
-    protected abstract parseErrorResponse(error: HttpErrorResponse, request: ApiRequest): ApiResponse;
+    protected abstract parseErrorResponse<T>(error: HttpErrorResponse, request: ApiRequest): ApiResponse<T>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    public async send(param: IApiRequestConfig): Promise<ApiResponse> {
-        if (param.isHandleLoading == null || param.isHandleLoading == undefined) param.isHandleLoading = false;
-        if (param.isHandleError == null || param.isHandleError == undefined) param.isHandleError = true;
+    public async send<T>(param: IApiRequestConfig): Promise<ApiResponse<T>> {
+        if (param.isHandleLoading === null || param.isHandleLoading === undefined) param.isHandleLoading = false;
+        if (param.isHandleError === null || param.isHandleError === undefined) param.isHandleError = true;
 
         let request = new ApiRequest(param);
-        return new Promise<ApiResponse>((resolve, reject) => {
+        return new Promise<ApiResponse<T>>((resolve, reject) => {
             this.sendRequest(request, resolve, reject);
         });
     }
 
-    public call(param: IApiRequestConfig): Observable<ApiResponse> {
-        if (param.isHandleLoading == null || param.isHandleLoading == undefined) param.isHandleLoading = false;
-        if (param.isHandleError == null || param.isHandleError == undefined) param.isHandleError = true;
+    public call<T>(param: IApiRequestConfig): Observable<ApiResponse<T>> {
+        if (param.isHandleLoading === null || param.isHandleLoading === undefined) param.isHandleLoading = false;
+        if (param.isHandleError === null || param.isHandleError === undefined) param.isHandleError = true;
 
         let request = new ApiRequest(param);
         return new Observable(observer => {
@@ -166,17 +170,17 @@ export abstract class ApiServiceBase {
         });
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get isLoading(): boolean {
         return this._isLoading;
     }
 
-    public get events(): Observable<ObservableData<ApiServiceBaseEvent, ApiRequest | ApiResponse>> {
+    public get events(): Observable<ObservableData<ApiServiceBaseEvent, ApiRequest | ApiResponse<any>>> {
         return this.observer.asObservable();
     }
 }

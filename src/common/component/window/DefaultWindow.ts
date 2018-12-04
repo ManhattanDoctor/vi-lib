@@ -2,43 +2,50 @@ import { ComponentFactoryResolver, ComponentRef } from '@angular/core';
 import { DragableWindow } from '../../../window/lib/window/DragableWindow';
 import { APPLICATION_INJECTOR } from '../../ApplicationInjector';
 import { ViewUtil } from '../../util/ViewUtil';
-import { CloseWindowElementComponent } from './element/close-window-element.component';
-import { MinimizeWindowElementComponent } from './element/minimize-window-element.component';
-import { ResizeWindowElementComponent } from './element/resize-window-element.component';
 
 export class DefaultWindow extends DragableWindow {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
+    //
+    //  Static Properties
+    //
+    // --------------------------------------------------------------------------
+
+    public static CLOSE_WINDOW_COMPONENT = null;
+    public static RESIZE_WINDOW_COMPONENT = null;
+    public static MINIMIZE_WINDOW_COMPONENT = null;
+
+    // --------------------------------------------------------------------------
     //
     //  Properties Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    protected closeWindow: ComponentRef<CloseWindowElementComponent>;
-    protected resizedWindow: ComponentRef<ResizeWindowElementComponent>;
-    protected minimizeWindow: ComponentRef<MinimizeWindowElementComponent>;
+    protected closeWindow: ComponentRef<any>;
+    protected resizedWindow: ComponentRef<any>;
+    protected minimizeWindow: ComponentRef<any>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected setProperties(): void {
         super.setProperties();
 
         if (!this.config.disableClose && !this.closeWindow) {
-            let factory = this.resolver.resolveComponentFactory(CloseWindowElementComponent);
+            let factory = this.resolver.resolveComponentFactory(DefaultWindow.CLOSE_WINDOW_COMPONENT);
             this.closeWindow = this.content.container.createComponent(factory);
             this.closeWindow.instance.window = this;
         }
 
         if (this.config.isResizeable && !this.resizedWindow) {
-            let factory = this.resolver.resolveComponentFactory(ResizeWindowElementComponent);
+            let factory = this.resolver.resolveComponentFactory(DefaultWindow.RESIZE_WINDOW_COMPONENT);
             this.resizedWindow = this.content.container.createComponent(factory);
         }
 
         if (this.config.isMinimizable && !this.minimizeWindow) {
-            let factory = this.resolver.resolveComponentFactory(MinimizeWindowElementComponent);
+            let factory = this.resolver.resolveComponentFactory(DefaultWindow.MINIMIZE_WINDOW_COMPONENT);
             this.minimizeWindow = this.content.container.createComponent(factory);
             this.minimizeWindow.instance.window = this;
         }
@@ -62,26 +69,26 @@ export class DefaultWindow extends DragableWindow {
     protected isNeedClickStopPropagation(event: MouseEvent): boolean {
         if (!super.isNeedClickStopPropagation(event)) return false;
 
-        if (this.closeWindow && this.closeWindow.location.nativeElement == event.target) return false;
+        if (this.closeWindow && this.closeWindow.location.nativeElement === event.target) return false;
 
         return true;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Protected Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get resolver(): ComponentFactoryResolver {
         return APPLICATION_INJECTOR().get(ComponentFactoryResolver);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         super.destroy();

@@ -3,27 +3,27 @@ import { HttpParams } from '@angular/common/http';
 declare let linkifyStr: any;
 
 export class UrlUtil {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Properties
+    // 	Static Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private static ABSOLUTE_URL_EXP = /^https?:\/\//i;
     private static TAG_REG_EXP = /<[^>]*>/gi;
     private static IMAGE_REG_EXP = /(http[s]?:\/\/.*\.(?:png|jpg|jpeg))/i;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Methods
+    // 	Static Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static parseUrl(value: any): string {
         if (!value) return value;
 
         value = value.toString();
-        if (value.substr(-1) != '/') value += '/';
+        if (value.substr(-1) !== '/') value += '/';
         return value;
     }
 
@@ -31,7 +31,7 @@ export class UrlUtil {
         if (!param) return null;
 
         let entries = Object.entries(param);
-        if (entries.length == 0) return;
+        if (entries.length === 0) return;
 
         let value = new HttpParams();
         for (let item of entries) value = value.append(item[0], item[1].toString());

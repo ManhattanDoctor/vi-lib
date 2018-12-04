@@ -5,19 +5,19 @@ import { IDestroyable } from '../../IDestroyable';
     selector: '[vi-scroll]'
 })
 export class ScrollDirective implements IDestroyable, OnDestroy {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Properties
+    // 	Static Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected static INITIALIZATION_DELAY: number = 1;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Output()
     public scrolled: EventEmitter<number> = new EventEmitter();
@@ -30,22 +30,22 @@ export class ScrollDirective implements IDestroyable, OnDestroy {
     protected isInitialized: boolean = false;
     protected _scrollValue: number = 0;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(element: ElementRef) {
         this.element = element.nativeElement;
         this.timer = setTimeout(this.initializeHandler, ScrollDirective.INITIALIZATION_DELAY);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected initialize(): void {
         if (this.scrollValue) this.scrollTo(this.scrollValue);
@@ -57,11 +57,11 @@ export class ScrollDirective implements IDestroyable, OnDestroy {
         this.element.scrollTop = value;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @HostListener('scroll')
     private scrollHandler() {
@@ -84,21 +84,21 @@ export class ScrollDirective implements IDestroyable, OnDestroy {
         this.initialize();
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Properties
+    // 	Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get scrollTop(): number {
         return this.element.scrollTop;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngOnDestroy(): void {
         this.destroy();
@@ -114,15 +114,15 @@ export class ScrollDirective implements IDestroyable, OnDestroy {
         this.timer = null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input()
     public set scrollValue(value: number) {
-        if (value == this._scrollValue || isNaN(value)) return;
+        if (value === this._scrollValue || isNaN(value)) return;
 
         this._scrollValue = value;
         if (this.isInitialized) this.scrollTo(value);

@@ -6,22 +6,22 @@ import { IDestroyable } from '../IDestroyable';
 import { LoadableMapCollection } from './LoadableMapCollection';
 
 export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> extends LoadableMapCollection<U> {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected api: ApiServiceBase;
 
     protected requestName: string;
     protected requestMethod: ApiMethod;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(api: ApiServiceBase, requestName?: string, requestMethod?: ApiMethod, uid: string = 'id') {
         super(uid);
@@ -31,11 +31,11 @@ export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> exten
         this.requestMethod = requestMethod;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected sort(): void {}
 
@@ -46,7 +46,11 @@ export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> exten
     protected parseErrorResponse(response: ApiResponse): void {}
 
     protected makeRequest(): Observable<ApiResponse> {
-        return this.api.call({ name: this.requestName, method: this.requestMethod, data: this.createParamsForRequest() });
+        return this.api.call({
+            name: this.requestName,
+            method: this.requestMethod,
+            data: this.createParamsForRequest()
+        });
     }
 
     protected parseResponse(response: ApiResponse): void {
@@ -58,11 +62,11 @@ export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> exten
         this.sort();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         super.destroy();

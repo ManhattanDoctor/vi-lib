@@ -5,11 +5,11 @@ import { Assets } from '../Assets';
     name: 'assetBackground'
 })
 export class AssetBackgroundPipe implements PipeTransform {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public transform(name: string, extension: string = 'png'): string {
         return Assets.getBackground(name, extension);

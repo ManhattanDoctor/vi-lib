@@ -3,11 +3,11 @@ import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class NativeWindowService {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _isInFocus: boolean = true;
     private _isLoaded: boolean = false;
@@ -15,11 +15,11 @@ export class NativeWindowService {
     private loadedTimer: any;
     private observer: Subject<NativeWindowServiceEvent>;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         this.observer = new Subject();
@@ -31,27 +31,27 @@ export class NativeWindowService {
         window.addEventListener('focus', this.focusHandler);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private setIsInFocus(value: boolean) {
-        if (value == this._isInFocus) return;
+        if (value === this._isInFocus) return;
 
         this._isInFocus = value;
         this.observer.next(NativeWindowServiceEvent.FOCUS_CHANGED);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private checkLoadState = (): void => {
-        this._isLoaded = document.readyState == 'complete';
+        this._isLoaded = document.readyState === 'complete';
         if (this.isLoaded) {
             clearInterval(this.loadedTimer);
             this.observer.next(NativeWindowServiceEvent.LOADED);
@@ -66,11 +66,11 @@ export class NativeWindowService {
         this.setIsInFocus(true);
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public getParam(name: string): string {
         name = name.replace(/[\[\]]/g, '\\$&');
@@ -84,15 +84,14 @@ export class NativeWindowService {
     }
 
     public getParams(): any {
-        let params = [],
-            hash;
+        let params = [];
         let hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        for (let i = 0; i < hashes.length; i++) {
-            hash = hashes[i].split('=');
+        for (let hash of hashes) {
+            let array = hash.split('=');
 
-            let key = decodeURIComponent(hash[0]);
-            let value = decodeURIComponent(hash[1]);
-            if (value && value != 'null' && value != 'undefined') params[key] = value;
+            let key = decodeURIComponent(array[0]);
+            let value = decodeURIComponent(array[1]);
+            if (value && value !== 'null' && value !== 'undefined') params[key] = value;
         }
         return params;
     }
@@ -109,11 +108,11 @@ export class NativeWindowService {
         window.blur();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<string> {
         return this.observer.asObservable();

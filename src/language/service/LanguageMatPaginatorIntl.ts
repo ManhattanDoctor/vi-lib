@@ -1,15 +1,15 @@
-import { MatPaginatorIntl } from '@angular/material';
 import { Injectable } from '@angular/core';
+import { MatPaginatorIntl } from '@angular/material';
 import { LoadableEvent } from '../../common/lib/Loadable';
 import { LanguageService } from './LanguageService';
 
 @Injectable()
 export class LanguageMatPaginatorIntl extends MatPaginatorIntl {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public lastPageLabel: string;
     public nextPageLabel: string;
@@ -17,11 +17,11 @@ export class LanguageMatPaginatorIntl extends MatPaginatorIntl {
     public previousPageLabel: string;
     public itemsPerPageLabel: string;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private language: LanguageService) {
         super();
@@ -32,11 +32,11 @@ export class LanguageMatPaginatorIntl extends MatPaginatorIntl {
         });
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected commitLanguageProperties(): void {
         this.lastPageLabel = this.language.translate('paginator.lastPage');

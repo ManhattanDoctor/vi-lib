@@ -7,11 +7,11 @@ import { Assets } from '../Assets';
     selector: '[vi-asset-background]'
 })
 export class AssetBackgroundDirective implements IDestroyable, OnDestroy {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input()
     public isUrl: boolean = false;
@@ -28,19 +28,19 @@ export class AssetBackgroundDirective implements IDestroyable, OnDestroy {
 
     private _background: string;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private element: ElementRef) {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private getUrl(id: string, isImage?: boolean, isIcon?: boolean, isUrl?: boolean): string {
         if (!id) return null;
@@ -52,11 +52,11 @@ export class AssetBackgroundDirective implements IDestroyable, OnDestroy {
         return Assets.getBackground(id, this.extension);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         this.element = null;
@@ -66,15 +66,15 @@ export class AssetBackgroundDirective implements IDestroyable, OnDestroy {
         this.destroy();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input('vi-asset-background')
     public set background(value: string) {
-        if (value == this._background) return;
+        if (value === this._background) return;
 
         this._background = value;
         let url = this.getUrl(value, this.isImage, this.isIcon, this.isUrl);

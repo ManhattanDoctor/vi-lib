@@ -5,11 +5,11 @@ import { Assets } from '../Assets';
     name: 'assetIcon'
 })
 export class AssetIconPipe implements PipeTransform {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public transform(name: string, extension: string = 'png'): string {
         return Assets.getIcon(name, extension);

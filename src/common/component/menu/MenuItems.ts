@@ -6,20 +6,20 @@ import { IMenuItemCheckEnabledFunction } from './IMenuItemCheckEnabledFunction';
 import { MenuItem } from './MenuItem';
 
 export class MenuItems extends DestroyableContainer {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _items: Array<MenuItem>;
     protected filterFunction: IMenuItemCheckEnabledFunction;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private language: LanguageService, filterFunction?: IMenuItemCheckEnabledFunction, isAutoTranslate: boolean = false) {
         super();
@@ -29,7 +29,7 @@ export class MenuItems extends DestroyableContainer {
 
         this.addSubscription(
             language.events.subscribe(data => {
-                if (data.type == LoadableEvent.COMPLETE) {
+                if (data.type === LoadableEvent.COMPLETE) {
                     this.items.forEach(item => {
                         if (isAutoTranslate) this.translate(item);
                         else item.name = null;
@@ -39,21 +39,21 @@ export class MenuItems extends DestroyableContainer {
         );
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private translate(item: MenuItem): void {
         item.name = this.language.translate(item.nameId);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public add(item: MenuItem): MenuItem {
         this._items.push(item);
@@ -82,22 +82,22 @@ export class MenuItems extends DestroyableContainer {
         return isAllEnabled;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Interface Methods
+    // 	Interface Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         super.destroy();
         this._items = null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get items(): MenuItem[] {
         return this._items;

@@ -1,9 +1,9 @@
 export class ObjectUtil {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private static isSpecificValue(val): boolean {
         return val instanceof Buffer || val instanceof Date || val instanceof RegExp;
@@ -26,16 +26,16 @@ export class ObjectUtil {
         return property === '__proto__' ? undefined : object[property];
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Methods
+    // 	Static Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private static deepCloneArray(arr: any): any {
         let clone = [];
-        arr.forEach(function(item, index) {
-            if (typeof item === 'object' && item !== null) {
+        arr.forEach((item, index) => {
+            if (typeof item === 'object' && item != null) {
                 if (Array.isArray(item)) {
                     clone[index] = ObjectUtil.deepCloneArray(item);
                 } else if (ObjectUtil.isSpecificValue(item)) {
@@ -59,10 +59,10 @@ export class ObjectUtil {
         let args = Array.prototype.slice.call(arguments, 1);
         let val, src, clone;
 
-        args.forEach(function(obj) {
+        args.forEach(obj => {
             if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return;
 
-            Object.keys(obj).forEach(function(key) {
+            Object.keys(obj).forEach(key => {
                 src = ObjectUtil.safeGetProperty(target, key); // source value
                 val = ObjectUtil.safeGetProperty(obj, key); // new value
 

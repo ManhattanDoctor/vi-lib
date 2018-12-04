@@ -12,26 +12,12 @@ import { LanguageMessageFormatParser } from '../lib/LanguageMessageFormatParser'
 
 @Injectable()
 export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
-    //--------------------------------------------------------------------------
-    //
-    //	Static Methods
-    //
-    //--------------------------------------------------------------------------
 
-    public static forRoot(): ModuleWithProviders {
-        return TranslateModule.forRoot({
-            parser: {
-                provide: TranslateParser,
-                useClass: LanguageMessageFormatParser
-            }
-        });
-    }
-
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private url: string;
     private isInitialized: boolean;
@@ -45,11 +31,11 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
 
     private subscription: Subscription;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private http: HttpClient, private cookies: CookieService, private translation: TranslateService) {
         super();
@@ -57,16 +43,16 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
 
         this.parser = translation.parser as LanguageMessageFormatParser;
         this.parser.events.subscribe(data => {
-            if (data.type == LanguageServiceEvent.PARSE_ERROR) console.log('Language parse error: ' + data.data);
-            //this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR,data.data));
+            if (data.type === LanguageServiceEvent.PARSE_ERROR) console.log('Language parse error: ' + data.data);
+            // this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR,data.data));
         });
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Static Methods
+    // 	Static Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public static createTranslateAuthorProperties(user: any, properties: any = null): any {
         if (!properties) properties = {};
@@ -96,11 +82,11 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
         return properties;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private loadLanguage(language: Language): void {
         this.status = LoadableStatus.LOADING;
@@ -129,7 +115,7 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
         );
     }
 
-    private setLanguage(language: Language, translation: Object): void {
+    private setLanguage(language: Language, translation: any): void {
         this._language = language;
         this._rawTranslationData = translation;
 
@@ -144,11 +130,11 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
         this.observer.next(new ObservableData(LoadableEvent.FINISHED, language));
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public load(value?: string | Language): void {
         let locale = value instanceof Language ? value.locale : value;
@@ -161,7 +147,7 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
         else this.observer.next(new ObservableData(LoadableEvent.COMPLETE, language));
     }
 
-    public translate(key: string, params?: Object): string {
+    public translate(key: string, params?: any): string {
         return this.translation.instant(key, params);
         /*
 		try
@@ -176,12 +162,12 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
 		*/
     }
 
-    public compile(text: string, params: Object): string {
+    public compile(text: string, params: any): string {
         return this.parser.compile(text, params);
     }
 
-    public hasTranslation(key: string, params?: Object): boolean {
-        return this.translation.instant(key, params) != key;
+    public hasTranslation(key: string, params?: any): boolean {
+        return this.translation.instant(key, params) !== key;
     }
 
     public initialize(url: string, availableLanguages: Map<string, string>, defaultLanguage: string): void {
@@ -189,10 +175,10 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
 
         if (!url) throw new Error('Unable to initialize: url is undefined or empty');
 
-        if (!availableLanguages || availableLanguages.size == 0) throw new Error('Unable to initialize: available languages is undefined or empty');
+        if (!availableLanguages || availableLanguages.size === 0) throw new Error('Unable to initialize: available languages is undefined or empty');
 
         if (!availableLanguages.has(defaultLanguage))
-            throw new Error("Unable to initialize: default language is undefined or doesn't contain in available languages");
+            throw new Error(`Unable to initialize: default language is undefined or doesn't contain in available languages`);
 
         this.isInitialized = true;
 
@@ -213,11 +199,11 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
         return this._rawTranslationData;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get locale(): string {
         return this.language ? this.language.locale : this.defaultLocale;

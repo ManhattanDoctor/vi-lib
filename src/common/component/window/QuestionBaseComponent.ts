@@ -5,11 +5,11 @@ import { IWindowContent } from '../../../window/lib/IWindowContent';
 import { IQuestion, QuestionMode } from '../../IQuestion';
 
 export class QuestionBaseComponent extends IWindowContent implements IQuestion, OnInit {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public text: string;
     public notText: string;
@@ -23,14 +23,14 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
     protected _isChecked: boolean = false;
 
     protected promise: Promise<void>;
-    protected promiseResolve: Function;
-    protected promiseReject: Function;
+    protected promiseResolve: (...args) => any;
+    protected promiseReject: (...args) => any;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(container: ViewContainerRef, protected language: LanguageService) {
         super(container);
@@ -42,19 +42,19 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         });
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected commitModeProperties(): void {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public yesClickHandler(): void {
         this.promiseResolve();
@@ -68,17 +68,17 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         this.close();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public ngOnInit(): void {
-        if (this.mode == 'question') {
+        if (this.mode === 'question') {
             if (!this.yesText) this.yesTextId = this.defaultYesId;
             if (!this.notText) this.notTextId = this.defaultNoId;
-        } else if (this.mode == 'info') {
+        } else if (this.mode === 'info') {
             if (!this.closeText) this.closeTextId = this.defaultCloseId;
         }
     }
@@ -88,11 +88,11 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         this.observer = null;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Interface Properties
+    // 	Interface Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get events(): Observable<string> {
         return this.observer.asObservable();
@@ -102,11 +102,11 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         return this.promise;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Properties
+    // 	Protected Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get defaultYesId(): string {
         return 'general.yes';
@@ -120,17 +120,17 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         return 'general.close';
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get isChecked(): boolean {
         return this._isChecked;
     }
     public set isChecked(value: boolean) {
-        if (value == this._isChecked) return;
+        if (value === this._isChecked) return;
 
         this._isChecked = value;
         this.emit(value ? IQuestion.EVENT_CHECK : IQuestion.EVENT_UNCHECK);
@@ -140,7 +140,7 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         return this._mode;
     }
     public set mode(value: QuestionMode) {
-        if (value == this._mode) return;
+        if (value === this._mode) return;
 
         this._mode = value;
         this.commitModeProperties();

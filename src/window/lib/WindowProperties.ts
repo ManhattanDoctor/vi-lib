@@ -1,4 +1,4 @@
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { IWindowContent } from './IWindowContent';
 import { WindowConfig } from './WindowConfig';

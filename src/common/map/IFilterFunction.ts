@@ -1,3 +1,1 @@
-export interface IFilterFunction<U> {
-    (item: U): boolean;
-}
+export type IFilterFunction<U> = (item: U) => boolean;

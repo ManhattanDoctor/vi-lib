@@ -7,28 +7,28 @@ import { DragableWindow } from '../lib/window/DragableWindow';
     selector: '[vi-window-drag-area]'
 })
 export class WindowDragAreaDirective implements IDestroyable, OnDestroy {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private _window: DragableWindow;
     private _interactable: any;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor(private element: ElementRef) {}
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    // 	Public Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         if (this._interactable) {
@@ -42,11 +42,11 @@ export class WindowDragAreaDirective implements IDestroyable, OnDestroy {
         this.destroy();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    // 	Private Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private commitWindowProperties(): void {
         if (!this.window.config || this.window.config.isModal) return;
@@ -56,11 +56,11 @@ export class WindowDragAreaDirective implements IDestroyable, OnDestroy {
         this.interactable.on('dragstart', this.dragStartHandler);
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Event Handlers
+    // 	Event Handlers
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     private dragStartHandler = (event: any): void => {
         this._window.dragStartHandler(event);
@@ -70,11 +70,11 @@ export class WindowDragAreaDirective implements IDestroyable, OnDestroy {
         this._window.dragMoveHandler(event);
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     //  Private Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected get interactable(): any {
         if (!this._interactable) {
@@ -84,15 +84,15 @@ export class WindowDragAreaDirective implements IDestroyable, OnDestroy {
         return this._interactable;
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Public Properties
+    // 	Public Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     @Input('vi-window-drag-area')
     public set window(value: IWindow) {
-        if (value == this._window) return;
+        if (value === this._window) return;
 
         this._window = value as DragableWindow;
         if (this._window) this.commitWindowProperties();

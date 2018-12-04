@@ -1,14 +1,14 @@
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { DestroyableComponent } from '../../common/component/DestroyableComponent';
 import { ViewUtil } from '../../common/util/ViewUtil';
 import { WindowConfig } from './WindowConfig';
 
 export abstract class WindowBase extends DestroyableComponent {
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Properties
+    // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected _x: number = NaN;
     protected _width: number = NaN;
@@ -16,21 +16,21 @@ export abstract class WindowBase extends DestroyableComponent {
     protected _y: number = NaN;
     protected _height: number = NaN;
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     constructor() {
         super();
     }
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Protected Methods
+    // 	Protected Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     protected abstract getConfig(): WindowConfig;
     protected abstract getReference(): MatDialogRef<any>;
@@ -107,11 +107,11 @@ export abstract class WindowBase extends DestroyableComponent {
         if (isNaN(this.height) || isNaN(this.width)) this.setPosition();
     };
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
-    //	Position Methods
+    // 	Position Methods
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     public get x(): number {
         return this._x;
