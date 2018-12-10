@@ -1,8 +1,9 @@
+import { MenuItemBase } from '@vi-lib/common/component/menu/MenuItemBase';
+import { filter } from 'rxjs/operators';
 import { LanguageService } from '../../../language/service/LanguageService';
 import { DestroyableContainer } from '../../container/DestroyableContainer';
 import { LoadableEvent } from '../../lib/Loadable';
 import { ArrayUtil } from '../../util/ArrayUtil';
-import { IMenuItemCheckEnabledFunction } from './IMenuItemCheckEnabledFunction';
 import { MenuItem } from './MenuItem';
 
 export class MenuItems extends DestroyableContainer {
@@ -12,8 +13,8 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    protected _items: Array<MenuItem>;
-    protected filterFunction: IMenuItemCheckEnabledFunction;
+    protected _items: Array<MenuItemBase>;
+    protected filterFunction: (item: MenuItemBase) => boolean;
 
     // --------------------------------------------------------------------------
     //
@@ -21,19 +22,16 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private language: LanguageService, filterFunction?: IMenuItemCheckEnabledFunction, isAutoTranslate: boolean = false) {
+    constructor(private language: LanguageService, filterFunction?: (item: MenuItem) => boolean, isAutoTranslate: boolean = false) {
         super();
 
         this._items = [];
         this.filterFunction = filterFunction;
 
         this.addSubscription(
-            language.events.subscribe(data => {
-                if (data.type === LoadableEvent.COMPLETE) {
-                    this.items.forEach(item => {
-                        if (isAutoTranslate) this.translate(item);
-                        else item.name = null;
-                    });
+            language.events.pipe(filter(data => data.type === LoadableEvent.COMPLETE)).subscribe(() => {
+                if (isAutoTranslate) {
+                    this.translateItems(this._items);
                 }
             })
         );
@@ -45,8 +43,43 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    private translate(item: MenuItem): void {
+    private translateItems(items: Array<MenuItemBase>): void {
+        for (let item of items) {
+            this.translateItem(item);
+            if (item.items && item.items.length > 0) {
+                this.translateItems(item.items);
+            }
+        }
+    }
+
+    private translateItem(item: MenuItemBase): void {
         item.name = this.language.translate(item.nameId);
+    }
+
+    private checkEnabledItems(items: Array<MenuItemBase>): boolean {
+        ArrayUtil.sort(items);
+
+        let isAllEnabled = true;
+        for (let item of items) {
+            if (!item.name && item.nameId) {
+                this.translateItem(item);
+            }
+
+            if (item.items && item.items.length > 0) {
+                isAllEnabled = this.checkEnabledItems(item.items);
+            }
+
+            let isEnabled = item.checkEnabled ? item.checkEnabled(item) : true;
+            if (isEnabled && this.filterFunction) {
+                isEnabled = this.filterFunction(item);
+            }
+
+            item.isEnabled = isEnabled;
+            if (isAllEnabled && !isEnabled) {
+                isAllEnabled = false;
+            }
+        }
+        return isAllEnabled;
     }
 
     // --------------------------------------------------------------------------
@@ -55,31 +88,19 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public add(item: MenuItem): MenuItem {
+    public add(item: MenuItemBase): MenuItemBase {
         this._items.push(item);
         return item;
     }
 
-    public remove(item: MenuItem): MenuItem {
+    public remove(item: MenuItemBase): MenuItemBase {
         let index = this._items.indexOf(item);
         if (index > -1) this._items.slice(index, 1);
         return item;
     }
 
     public checkEnabled(...args): boolean {
-        ArrayUtil.sort(this._items);
-
-        let isAllEnabled = false;
-        this.items.forEach(item => {
-            if (!item.name && item.nameId) this.translate(item);
-
-            let isEnabled = item.checkEnabled ? item.checkEnabled(item) : true;
-            if (isEnabled && this.filterFunction) isEnabled = this.filterFunction(item);
-
-            item.enabled = isEnabled;
-            if (isEnabled) isAllEnabled = true;
-        });
-        return isAllEnabled;
+        return this.checkEnabledItems(this._items);
     }
 
     // --------------------------------------------------------------------------
@@ -99,7 +120,7 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public get items(): MenuItem[] {
+    public get items(): MenuItemBase[] {
         return this._items;
     }
 }

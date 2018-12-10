@@ -1,24 +1,14 @@
-import { IMenuItemCheckEnabledFunction } from './IMenuItemCheckEnabledFunction';
-import { IMenuItemSelectFunction } from './IMenuItemSelectFunction';
+import { MenuItemBase } from '@vi-lib/common/component/menu/MenuItemBase';
 
-export class MenuItem {
+export class MenuItem extends MenuItemBase {
     // --------------------------------------------------------------------------
     //
     // 	Properties
     //
     // --------------------------------------------------------------------------
 
-    public iconId: string;
     public flag: MenuItemFlag;
-
-    public name: string;
-    public nameId: string;
-
-    public sortIndex: number;
-    public enabled: boolean = true;
-
-    public select: IMenuItemSelectFunction;
-    public checkEnabled: IMenuItemCheckEnabledFunction;
+    public select: (item: MenuItem) => void;
 
     // --------------------------------------------------------------------------
     //
@@ -27,11 +17,8 @@ export class MenuItem {
     // --------------------------------------------------------------------------
 
     constructor(nameId?: string, sortIndex?: number, flag?: MenuItemFlag, iconId?: string) {
-        this.nameId = nameId;
-        this.sortIndex = sortIndex;
-
+        super(nameId, sortIndex, iconId);
         this.flag = flag || 'none';
-        this.iconId = iconId;
     }
 }
 

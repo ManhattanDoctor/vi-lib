@@ -51,9 +51,13 @@ export class ObjectUtil {
     }
 
     public static deepExtend(...params): any {
-        if (arguments.length < 1 || typeof arguments[0] !== 'object') return false;
+        if (arguments.length < 1 || typeof arguments[0] !== 'object') {
+            return false;
+        }
 
-        if (arguments.length < 2) return arguments[0];
+        if (arguments.length < 2) {
+            return arguments[0];
+        }
 
         let target = arguments[0];
         let args = Array.prototype.slice.call(arguments, 1);
@@ -87,6 +91,29 @@ export class ObjectUtil {
             });
         });
         return target;
+    }
+
+    public static keys<U, V extends keyof U>(from: U): Array<V> {
+        return Object.getOwnPropertyNames(from) as any;
+    }
+
+    public static copyProperties<U, V extends keyof U>(from: U, to: any, includeKeys?: Array<V>, excludeKeys?: Array<V>): any {
+        if (!from || !to) {
+            return null;
+        }
+
+        if (!includeKeys || includeKeys.length === 0) {
+            includeKeys = ObjectUtil.keys(from);
+        }
+
+        for (let key of includeKeys) {
+            if (excludeKeys && excludeKeys.length > 0 && excludeKeys.includes(key)) continue;
+
+            try {
+                to[key] = from[key];
+            } catch (error) {}
+        }
+        return to;
     }
 }
 

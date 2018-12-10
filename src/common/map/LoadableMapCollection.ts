@@ -1,10 +1,9 @@
 import { Observable, Subject } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { IDestroyable } from '../IDestroyable';
 import { ObservableData } from '../observer/ObservableData';
 import { DestroyableMapCollection } from './DestoyableMapCollection';
 
-export abstract class LoadableMapCollection<U extends IDestroyable> extends DestroyableMapCollection<U> {
+export abstract class LoadableMapCollection<U> extends DestroyableMapCollection<U> {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -28,7 +27,7 @@ export abstract class LoadableMapCollection<U extends IDestroyable> extends Dest
     //
     // --------------------------------------------------------------------------
 
-    constructor(uid: string = 'id') {
+    protected constructor(uid: string = 'id') {
         super(uid);
         this.observer = new Subject();
         this.reloadHandler = this.reload.bind(this);
@@ -78,7 +77,9 @@ export abstract class LoadableMapCollection<U extends IDestroyable> extends Dest
     }
 
     public load(): void {
-        if (this.isLoading || this.isAllLoaded || !this.isAbleToLoad()) return;
+        if (this.isLoading || this.isAllLoaded || !this.isAbleToLoad()) {
+            return;
+        }
 
         this._isDirty = true;
         this._isLoading = true;

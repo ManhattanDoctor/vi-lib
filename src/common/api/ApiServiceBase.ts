@@ -58,7 +58,6 @@ export abstract class ApiServiceBase {
                 this._isLoading = false;
                 this.observer.next(new ObservableData(ApiServiceBaseEvent.FINISHED, apiResponse));
 
-                console.log(apiResponse);
                 if (observer) {
                     observer.next(apiResponse);
                     observer.complete();
@@ -151,8 +150,12 @@ export abstract class ApiServiceBase {
     // --------------------------------------------------------------------------
 
     public async send<T>(param: IApiRequestConfig): Promise<ApiResponse<T>> {
-        if (param.isHandleLoading === null || param.isHandleLoading === undefined) param.isHandleLoading = false;
-        if (param.isHandleError === null || param.isHandleError === undefined) param.isHandleError = true;
+        if (param.isHandleLoading === null || param.isHandleLoading === undefined) {
+            param.isHandleLoading = false;
+        }
+        if (param.isHandleError === null || param.isHandleError === undefined) {
+            param.isHandleError = true;
+        }
 
         let request = new ApiRequest(param);
         return new Promise<ApiResponse<T>>((resolve, reject) => {
@@ -161,8 +164,12 @@ export abstract class ApiServiceBase {
     }
 
     public call<T>(param: IApiRequestConfig): Observable<ApiResponse<T>> {
-        if (param.isHandleLoading === null || param.isHandleLoading === undefined) param.isHandleLoading = false;
-        if (param.isHandleError === null || param.isHandleError === undefined) param.isHandleError = true;
+        if (param.isHandleLoading === null || param.isHandleLoading === undefined) {
+            param.isHandleLoading = false;
+        }
+        if (param.isHandleError === null || param.isHandleError === undefined) {
+            param.isHandleError = true;
+        }
 
         let request = new ApiRequest(param);
         return new Observable(observer => {

@@ -11,11 +11,17 @@ export class FinancePipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public transform(value: number, format?: string, isNeedPlus: boolean = false): string {
-        if (isNaN(value)) return '---';
+        if (isNaN(value)) {
+            return '---';
+        }
 
-        if (!format) format = '0,0';
+        if (!format) {
+            format = '0,0';
+        }
 
-        if (isNeedPlus) format = '+' + format;
+        if (isNeedPlus) {
+            format = '+' + format;
+        }
 
         return this.format(value, format);
     }

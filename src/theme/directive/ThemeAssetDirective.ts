@@ -48,11 +48,17 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
     // --------------------------------------------------------------------------
 
     protected getSource(id: string): string {
-        if (!id) return null;
+        if (!id) {
+            return null;
+        }
 
-        if (this.isImage) return Assets.getImage(id, this.extension);
+        if (this.isImage) {
+            return Assets.getImage(id, this.extension);
+        }
 
-        if (this.isBackground) return Assets.getBackground(id, this.extension);
+        if (this.isBackground) {
+            return Assets.getBackground(id, this.extension);
+        }
 
         return Assets.getIcon(id, this.extension);
     }
@@ -88,7 +94,7 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
     }
 
     protected getSourceId(theme: Theme): string {
-        return this.name + StringUtil.capitalizeFirstLetter(theme.name);
+        return theme ? this.name + StringUtil.capitalizeFirstLetter(theme.name) : this.name;
     }
 
     protected getDefaultSourceId(theme: Theme): string {

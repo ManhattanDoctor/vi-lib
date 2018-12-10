@@ -1,4 +1,6 @@
 @import '~@angular/material/theming';
+@import 'part/mixin';
+@import 'part/mouse';
 
 /*--------------------------------------------------------------------------
 //
@@ -6,7 +8,7 @@
 //
 //-------------------------------------------------------------------------*/
 
-@mixin custom-vichatter($typography) {
+@mixin custom-material($typography) {
     p {
         padding: 0;
         margin: 0;
@@ -36,65 +38,6 @@
     textarea {
         &.cdk-textarea-autosize {
             overflow-y: hidden !important;
-        }
-    }
-
-    mat-dialog-container {
-        padding: 0 !important;
-        display: block !important;
-        max-width: none !important;
-        overflow: visible !important;
-        min-height: inherit !important;
-        max-height: inherit;
-
-        &:hover:not(.minimized) {
-            resize-window-element {
-                display: block !important;
-            }
-        }
-
-        & > :first-child {
-            height: 100%;
-            border-radius: 4px;
-            box-sizing: border-box;
-            max-height: inherit;
-            @include vertical-scroll-only();
-        }
-
-        close-window-element {
-            top: -20px;
-            right: -20px;
-        }
-
-        minimize-window-element {
-            top: -20px;
-            right: 10px;
-        }
-
-        resize-window-element {
-            right: -16px;
-            bottom: -16px;
-            display: none !important;
-        }
-    }
-
-    mat-progress-bar {
-        &.border {
-            height: 1px;
-            border: none !important;
-
-            svg {
-                display: none;
-            }
-        }
-
-        &.transparent {
-            .mat-progress-bar-buffer {
-                background-color: transparent;
-            }
-            svg {
-                display: none;
-            }
         }
     }
 
@@ -170,36 +113,6 @@
         font-weight: inherit;
     }
 
-    .cdk-overlay-pane {
-        &.window,
-        &.notification {
-            position: absolute !important;
-        }
-        &.draggable,
-        &.resizeable {
-            border-radius: 4px;
-        }
-        &.window {
-            border: 2px solid transparent;
-        }
-        &.minimized {
-            height: auto !important;
-            min-height: 40px !important;
-        }
-
-        .mat-menu-content {
-            padding: 0 !important;
-        }
-        .mat-menu-panel {
-            max-width: none !important;
-            max-height: none !important;
-        }
-    }
-
-    .cdk-overlay-backdrop {
-        background-color: rgba(black, 0.5);
-    }
-
     .mat-form-field-suffix {
         button {
             .fa {
@@ -267,6 +180,106 @@
         @include mouse-disabled();
     }
 
+    .IIV::-webkit-media-controls-play-button,
+    video::-webkit-media-controls-start-playback-button {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    @include custom-material-dialog();
+    @include custom-material-scrollbar();
+}
+
+@mixin custom-material-dialog() {
+    .cdk-overlay-pane {
+        &.window,
+        &.notification {
+            position: absolute !important;
+        }
+        &.draggable,
+        &.resizeable {
+            border-radius: 4px;
+        }
+        &.window {
+            border: 2px solid transparent;
+        }
+        &.minimized {
+            height: auto !important;
+            min-height: 40px !important;
+        }
+
+        .mat-menu-content {
+            padding: 0 !important;
+        }
+        .mat-menu-panel {
+            max-width: none !important;
+            max-height: none !important;
+        }
+    }
+
+    .cdk-overlay-backdrop {
+        background-color: rgba(black, 0.5);
+    }
+    mat-dialog-container {
+        padding: 0 !important;
+        display: block !important;
+        max-width: none !important;
+        overflow: visible !important;
+        min-height: inherit !important;
+        max-height: inherit;
+
+        &:hover:not(.minimized) {
+            resize-window-element {
+                display: block !important;
+            }
+        }
+
+        & > :first-child {
+            height: 100%;
+            border-radius: 4px;
+            box-sizing: border-box;
+            max-height: inherit;
+            @include vertical-scroll-only();
+        }
+
+        close-window-element {
+            top: -20px;
+            right: -20px;
+        }
+
+        minimize-window-element {
+            top: -20px;
+            right: 10px;
+        }
+
+        resize-window-element {
+            right: -16px;
+            bottom: -16px;
+            display: none !important;
+        }
+    }
+
+    mat-progress-bar {
+        &.border {
+            height: 1px;
+            border: none !important;
+
+            svg {
+                display: none;
+            }
+        }
+
+        &.transparent {
+            .mat-progress-bar-buffer {
+                background-color: transparent;
+            }
+            svg {
+                display: none;
+            }
+        }
+    }
+}
+@mixin custom-material-scrollbar() {
     ::-webkit-scrollbar {
         width: 14px;
         height: 14px;
@@ -290,14 +303,9 @@
         height: 0;
         display: none;
     }
-    .IIV::-webkit-media-controls-play-button,
-    video::-webkit-media-controls-start-playback-button {
-        opacity: 0;
-        pointer-events: none;
-    }
 }
 
-@mixin custom-vichatter-theme($theme) {
+@mixin custom-material-theme($theme) {
     $foreground: map-get($theme, foreground);
     $background: map-get($theme, background);
     $primary: map-get($theme, primary);

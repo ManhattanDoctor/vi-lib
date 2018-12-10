@@ -1,7 +1,19 @@
 import { IDestroyable } from '../IDestroyable';
 import { MapCollection } from './MapCollection';
 
-export class DestroyableMapCollection<U extends IDestroyable> extends MapCollection<U> implements IDestroyable {
+export class DestroyableMapCollection<U> extends MapCollection<U> implements IDestroyable {
+    // --------------------------------------------------------------------------
+    //
+    // 	Protected Methods
+    //
+    // --------------------------------------------------------------------------
+
+    private destroyItem = (item: any): void => {
+        if (item && 'destroy' in item) {
+            item.destroy();
+        }
+    };
+
     // --------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -9,17 +21,15 @@ export class DestroyableMapCollection<U extends IDestroyable> extends MapCollect
     // --------------------------------------------------------------------------
 
     public clear(): void {
-        if (this.length > 0)
-            this.map.forEach(item => {
-                item.destroy();
-            });
-
+        this.map.forEach(this.destroyItem);
         super.clear();
     }
 
     public remove(key: string): U {
         let item = super.remove(key);
-        if (item) item.destroy();
+        if (item) {
+            this.destroyItem(item);
+        }
         return item;
     }
 

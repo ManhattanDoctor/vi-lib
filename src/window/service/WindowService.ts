@@ -187,23 +187,41 @@ export class WindowService {
             if (window) return window.content;
         }
 
-        if (!config.defaultMinWidth) config.defaultMinWidth = WindowService.DEFAULT_MIN_WIDTH;
-        if (!config.defaultMinHeight) config.defaultMinHeight = WindowService.DEFAULT_MIN_HEIGHT;
+        if (!config.defaultMinWidth) {
+            config.defaultMinWidth = WindowService.DEFAULT_MIN_WIDTH;
+        }
+        if (!config.defaultMinHeight) {
+            config.defaultMinHeight = WindowService.DEFAULT_MIN_HEIGHT;
+        }
 
-        if (!config.verticalAlign) config.verticalAlign = WindowService.DEFAULT_VERTICAL_ALIGN;
-        if (!config.horizontalAlign) config.horizontalAlign = WindowService.DEFAULT_HORIZONTAL_ALIGN;
+        if (!config.verticalAlign) {
+            config.verticalAlign = WindowService.DEFAULT_VERTICAL_ALIGN;
+        }
+        if (!config.horizontalAlign) {
+            config.horizontalAlign = WindowService.DEFAULT_HORIZONTAL_ALIGN;
+        }
 
-        if (isNaN(config.paddingTop)) config.paddingTop = WindowService.DEFAULT_PADDING_TOP;
-        if (isNaN(config.paddingLeft)) config.paddingLeft = WindowService.DEFAULT_PADDING_LEFT;
-        if (isNaN(config.paddingRight)) config.paddingRight = WindowService.DEFAULT_PADDING_RIGHT;
-        if (isNaN(config.paddingBottom)) config.paddingBottom = WindowService.DEFAULT_PADDING_BOTTOM;
+        if (isNaN(config.paddingTop)) {
+            config.paddingTop = WindowService.DEFAULT_PADDING_TOP;
+        }
+        if (isNaN(config.paddingLeft)) {
+            config.paddingLeft = WindowService.DEFAULT_PADDING_LEFT;
+        }
+        if (isNaN(config.paddingRight)) {
+            config.paddingRight = WindowService.DEFAULT_PADDING_RIGHT;
+        }
+        if (isNaN(config.paddingBottom)) {
+            config.paddingBottom = WindowService.DEFAULT_PADDING_BOTTOM;
+        }
 
-        if (config.propertiesId) this.properties.load(config.propertiesId, config);
+        if (config.propertiesId) {
+            this.properties.load(config.propertiesId, config);
+        }
 
         config.setDefaultProperties();
 
         let dialog = this.dialog as any;
-        dialog._getOverlayState = config.isModal ? dialog.getOverlayStateModal : dialog.getOverlayStateNonModal;
+        //dialog._getOverlayState = config.isModal ? dialog.getOverlayStateModal : dialog.getOverlayStateNonModal;
 
         let reference: MatDialogRef<IWindowContent> = this.dialog.open(component, config);
         let properties: WindowProperties = {} as WindowProperties;
@@ -213,20 +231,34 @@ export class WindowService {
 
         window = this.factory.create(properties);
         let subscription: Subscription = window.events.subscribe(event => {
-            if (event === IWindow.EVENT_OPENED) {
-                this.add(config, reference.componentInstance);
+            switch (event) {
+                case IWindow.EVENT_OPENED:
+                    this.add(config, reference.componentInstance);
 
-                this.setWindowOnTop(window);
-                if (this.isNeedCheckWindowPositionAfterOpen) this.checkWindowPosition(window);
-            } else if (event === IWindow.EVENT_CLOSED) {
-                subscription.unsubscribe();
-                this.remove(config, window);
+                    this.setWindowOnTop(window);
+                    if (this.isNeedCheckWindowPositionAfterOpen) {
+                        this.checkWindowPosition(window);
+                    }
+                    break;
 
-                if (window.isOnTop && this.windows.size > 0) this.updateTopWindow();
-            } else if (event === IWindow.EVENT_RESIZED) {
-                if (config.propertiesId) this.properties.save(config.propertiesId, window);
-            } else if (event === IWindow.EVENT_SET_ON_TOP) {
-                this.setWindowOnTop(window);
+                case IWindow.EVENT_CLOSED:
+                    subscription.unsubscribe();
+                    this.remove(config, window);
+
+                    if (window.isOnTop && this.windows.size > 0) {
+                        this.updateTopWindow();
+                    }
+                    break;
+
+                case IWindow.EVENT_RESIZED:
+                    if (config.propertiesId) {
+                        this.properties.save(config.propertiesId, window);
+                    }
+                    break;
+
+                case IWindow.EVENT_SET_ON_TOP:
+                    this.setWindowOnTop(window);
+                    break;
             }
         });
 

@@ -11,7 +11,7 @@ export class ApiResponse<T> {
     protected _data: T;
     protected _name: string;
 
-    protected _error: ApiError;
+    protected _error: ApiError | null;
     protected _request: ApiRequest;
 
     // --------------------------------------------------------------------------
@@ -21,7 +21,6 @@ export class ApiResponse<T> {
     // --------------------------------------------------------------------------
 
     constructor(data: any, request?: ApiRequest, language?: string) {
-        this._data = data;
         this._request = request;
 
         if (request) {
@@ -50,11 +49,11 @@ export class ApiResponse<T> {
     //
     // --------------------------------------------------------------------------
 
-    protected parseData(data: any, language: string): T {
+    protected parseData(data: any, language: string): T | null {
         return data;
     }
 
-    protected parseError(data: any, language: string): ApiError {
+    protected parseError(data: any, language: string): ApiError | null {
         return data instanceof ApiError ? data : this.createError(data, language);
     }
 

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Loadable, LoadableStatus } from '@vi-lib/common/lib/Loadable';
+import { ObservableData } from '@vi-lib/common/observer/ObservableData';
 
 @Injectable()
-export class LoadingService {
+export class LoadingService extends Loadable<LoadingServiceEvent, number> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -9,7 +11,6 @@ export class LoadingService {
     // --------------------------------------------------------------------------
 
     private _counter: number = 0;
-    private _isLoading: boolean = false;
 
     // --------------------------------------------------------------------------
     //
@@ -17,7 +18,9 @@ export class LoadingService {
     //
     // --------------------------------------------------------------------------
 
-    constructor() {}
+    constructor() {
+        super();
+    }
 
     // --------------------------------------------------------------------------
     //
@@ -44,19 +47,16 @@ export class LoadingService {
     }
 
     private set counter(value: number) {
-        if (value === this._counter) return;
+        if (value === this._counter) {
+            return;
+        }
 
         this._counter = value;
-        this._isLoading = this._counter !== 0;
+        this.observer.next(new ObservableData(LoadingServiceEvent.COUNTER_CHANGED, value));
+        this.setStatus(value === 0 ? LoadableStatus.LOADING : LoadableStatus.LOADED);
     }
+}
 
-    // --------------------------------------------------------------------------
-    //
-    // 	Public Properties
-    //
-    // --------------------------------------------------------------------------
-
-    public get isLoading(): boolean {
-        return this._isLoading;
-    }
+export enum LoadingServiceEvent {
+    COUNTER_CHANGED = 'COUNTER_CHANGED'
 }

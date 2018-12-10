@@ -35,20 +35,22 @@ export abstract class LoginBaseService<U> {
     // --------------------------------------------------------------------------
 
     protected loginByParam(param?: any): void {
-        if (this.isLoggedIn || this.isLoading) return;
+        if (this.isLoggedIn || this.isLoading) {
+            return;
+        }
 
         this._isLoading = true;
         this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
 
-        let subscription = this.makeLoginParamRequest(param).subscribe(response => {
+        let subscription = this.makeLoginRequest(param).subscribe(response => {
             subscription.unsubscribe();
             this._isLoading = false;
 
             if (!response.isHasError) {
-                this.parseLoginParamResponse(response);
+                this.parseLoginResponse(response);
                 if (this.isCanLoginWithSid()) this.loginBySid();
             } else {
-                this.parseLoginParamErrorResponse(response);
+                this.parseLoginErrorResponse(response);
                 this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, response));
                 this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_FINISHED, response));
             }
@@ -56,7 +58,9 @@ export abstract class LoginBaseService<U> {
     }
 
     protected loginBySid(isNeedHandleError: boolean = true, isHandleLoading: boolean = false): void {
-        if (!this.sid) this._sid = this.getSavedSid();
+        if (!this.sid) {
+            this._sid = this.getSavedSid();
+        }
 
         this._isLoading = true;
         let subscription = this.makeLoginSidRequest(isNeedHandleError, isHandleLoading).subscribe(response => {
@@ -82,15 +86,15 @@ export abstract class LoginBaseService<U> {
 
     protected abstract makeLoginSidRequest<T>(isNeedHandleError: boolean, isHandleLoading: boolean): Observable<ApiResponse<T>>;
 
-    protected abstract makeLoginParamRequest<T>(param: any): Observable<ApiResponse<T>>;
+    protected abstract makeLoginRequest<T>(param: any): Observable<ApiResponse<T>>;
 
     protected abstract makeLogoutRequest<T>(): Observable<ApiResponse<T>>;
 
     protected abstract getSavedSid(): string;
 
-    protected abstract parseLoginParamResponse<T>(response: ApiResponse<T>): void;
+    protected abstract parseLoginResponse<T>(response: ApiResponse<T>): void;
 
-    protected parseLoginParamErrorResponse<T>(response: ApiResponse<T>): void {}
+    protected parseLoginErrorResponse<T>(response: ApiResponse<T>): void {}
 
     protected parseLoginSidResponse<T>(response: ApiResponse<T>): void {
         this._loginData = response.data;
@@ -109,7 +113,9 @@ export abstract class LoginBaseService<U> {
     // --------------------------------------------------------------------------
 
     public tryLoginBySid(isNeedHandleError: boolean = true, isHandleLoading: boolean = false): boolean {
-        if (!this.isCanLoginWithSid()) return false;
+        if (!this.isCanLoginWithSid()) {
+            return false;
+        }
 
         if (!this.isLoggedIn && !this.isLoading) {
             this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
@@ -120,7 +126,9 @@ export abstract class LoginBaseService<U> {
 
     public logout(): void {
         this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGOUT_STARTED));
-        if (this.isLoggedIn) this.makeLogoutRequest();
+        if (this.isLoggedIn) {
+            this.makeLogoutRequest();
+        }
 
         this.reset();
         this._isLoggedIn = false;

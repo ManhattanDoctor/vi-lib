@@ -6,7 +6,9 @@ export class ArrayUtil {
     // --------------------------------------------------------------------------
 
     public static sort(array: Array<{ sortIndex: number }>): void {
-        if (array) array.sort(ArrayUtil.sortFunction);
+        if (array && array.length > 0) {
+            array.sort(ArrayUtil.sortFunction);
+        }
     }
 
     private static sortFunction(first: { sortIndex: number }, second: { sortIndex: number }): number {

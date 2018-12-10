@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, ModuleWithProviders } from '@angular/core';
-import { TranslateModule, TranslateParser, TranslateService } from '@ngx-translate/core';
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
 import { Loadable, LoadableEvent, LoadableStatus } from '../../common/lib/Loadable';
@@ -12,7 +12,6 @@ import { LanguageMessageFormatParser } from '../lib/LanguageMessageFormatParser'
 
 @Injectable()
 export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
-
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -136,15 +135,22 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
     //
     // --------------------------------------------------------------------------
 
-    public load(value?: string | Language): void {
+    public reload(value?: string | Language): void {
         let locale = value instanceof Language ? value.locale : value;
-        if (!locale) locale = this.cookies.get('language');
+        if (!locale) {
+            locale = this.cookies.get('language');
+        }
 
-        if (!locale || !this._availableLanguages.has(locale)) locale = this.defaultLanguage.locale;
+        if (!locale || !this._availableLanguages.has(locale)) {
+            locale = this.defaultLanguage.locale;
+        }
 
         let language = this._availableLanguages.get(locale);
-        if (!this.language || !this.language.toEqual(language)) this.loadLanguage(language);
-        else this.observer.next(new ObservableData(LoadableEvent.COMPLETE, language));
+        if (!this.language || !this.language.toEqual(language)) {
+            this.loadLanguage(language);
+        } else {
+            this.observer.next(new ObservableData(LoadableEvent.COMPLETE, language));
+        }
     }
 
     public translate(key: string, params?: any): string {

@@ -2,10 +2,9 @@ import { Observable } from 'rxjs';
 import { ApiMethod } from '../api/ApiMethod';
 import { ApiResponse } from '../api/ApiResponse';
 import { ApiServiceBase } from '../api/ApiServiceBase';
-import { IDestroyable } from '../IDestroyable';
 import { LoadableMapCollection } from './LoadableMapCollection';
 
-export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> extends LoadableMapCollection<U> {
+export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapCollection<U> {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -23,8 +22,8 @@ export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> exten
     //
     // --------------------------------------------------------------------------
 
-    constructor(api: ApiServiceBase, requestName?: string, requestMethod?: ApiMethod, uid: string = 'id') {
-        super(uid);
+    constructor(api: ApiServiceBase, requestName?: string, requestMethod?: ApiMethod) {
+        super('coinId');
 
         this.api = api;
         this.requestName = requestName;
@@ -43,9 +42,9 @@ export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> exten
         return {};
     }
 
-    protected parseErrorResponse(response: ApiResponse): void {}
+    protected parseErrorResponse(response: ApiResponse<Array<V>>): void {}
 
-    protected makeRequest(): Observable<ApiResponse> {
+    protected makeRequest(): Observable<ApiResponse<Array<V>>> {
         return this.api.call({
             name: this.requestName,
             method: this.requestMethod,
@@ -53,11 +52,12 @@ export abstract class ApiBaseLoadableMapCollection<U extends IDestroyable> exten
         });
     }
 
-    protected parseResponse(response: ApiResponse): void {
-        let array = response.data;
+    protected parseResponse(response: ApiResponse<Array<V>>): void {
         for (let item of response.data) {
             let value: U = this.parseItem(item);
-            if (value) this.add(value);
+            if (value) {
+                this.add(value);
+            }
         }
         this.sort();
     }

@@ -25,6 +25,25 @@ export abstract class Loadable<U, V> implements IDestroyable {
 
     // --------------------------------------------------------------------------
     //
+    // 	Protected Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected setStatus(value: LoadableStatus): void {
+        if (value === this.status) {
+            return;
+        }
+        this.status = value;
+        this.statusChanged();
+    }
+
+    protected statusChanged(): void
+    {
+
+    }
+
+    // --------------------------------------------------------------------------
+    //
     // 	Public Methods
     //
     // --------------------------------------------------------------------------

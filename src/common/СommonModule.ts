@@ -11,6 +11,7 @@ import { MomentDatePipe } from './pipe/MomentDatePipe';
 import { MomentTimePipe } from './pipe/MomentTimePipe';
 import { NgModelErrorPipe } from './pipe/NgModelErrorPipe';
 import { SanitizePipe } from './pipe/SanitizePipe';
+import { LoginResolver } from './resolver/LoginResolver';
 import { LoadingService } from './service/LoadingService';
 import { NativeWindowService } from './service/NativeWindowService';
 import { MaxValidator } from './validator/MaxValidator';
@@ -38,7 +39,7 @@ import { MinValidator } from './validator/MinValidator';
         ScrollDirective,
         InfiniteScrollDirective
     ],
-    providers: [NativeWindowService, LoadingService],
+    providers: [NativeWindowService, LoadingService, LoginResolver],
     exports: [
         AssetIconPipe,
         AssetImagePipe,

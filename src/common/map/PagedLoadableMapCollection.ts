@@ -2,7 +2,7 @@ import { ApiResponse } from '../api/ApiResponse';
 import { IDestroyable } from '../IDestroyable';
 import { ApiBaseLoadableMapCollection } from './ApiBaseLoadableMapCollection';
 
-export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends ApiBaseLoadableMapCollection<U> {
+export abstract class PagedLoadableMapCollection<U extends IDestroyable, V> extends ApiBaseLoadableMapCollection<U, V> {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -48,7 +48,7 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends
         return param;
     }
 
-    protected parseResponse(response: ApiResponse): void {
+    protected parseResponse(response: ApiResponse<V>): void {
         let items: Array<any> = this.parseResponseItems(response);
         this._isAllLoaded = items.length === 0;
 
@@ -68,12 +68,12 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable> extends
         this.sort();
     }
 
-    protected parseResponseItems(response: ApiResponse): Array<any> {
+    protected parseResponseItems(response: ApiResponse<V>): Array<any> {
         let data = response.data;
         return data && data.hasOwnProperty('items') ? data.items : [];
     }
 
-    protected checkIsAllLoaded(response: ApiResponse): void {
+    protected checkIsAllLoaded(response: ApiResponse<V>): void {
         let data = response.data;
         if (data.hasOwnProperty('total')) this._total = data.total;
         this._isAllLoaded = this._total <= this.length;

@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { TranslateModule, TranslateParser } from '@ngx-translate/core';
-import { LanguageResolver } from '@vichatter-sdk/common/resolver/LanguageResolver';
+import { LanguageResolver } from '@vi-lib/common/resolver/LanguageResolver';
 import { CookieModule } from 'ngx-cookie';
 import { LanguageMessageFormatParser } from './lib/LanguageMessageFormatParser';
 import { LanguageMatPaginatorIntl } from './service/LanguageMatPaginatorIntl';

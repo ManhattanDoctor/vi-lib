@@ -63,9 +63,13 @@ export class WindowConfig extends MatDialogConfig implements IDestroyable {
         this.isModal = this.hasBackdrop = isModal;
         this.isResizeable = isResizeable;
 
-        if (!isNaN(width)) this.defaultWidth = width;
+        if (!isNaN(width)) {
+            this.defaultWidth = width;
+        }
 
-        if (!isNaN(height)) this.defaultHeight = height;
+        if (!isNaN(height)) {
+            this.defaultHeight = height;
+        }
     }
 
     // --------------------------------------------------------------------------
