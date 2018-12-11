@@ -137,13 +137,6 @@
     .text-center {
         text-align: center;
     }
-    .text-one-line {
-        @include text-one-line();
-    }
-
-    .vertical-scroll-only {
-        @include vertical-scroll-only();
-    }
 
     .flex-grow {
         @include flex-grow();
@@ -156,6 +149,22 @@
     }
     .flex-horizontal {
         @include flex-horizontal();
+    }
+
+    .IIV::-webkit-media-controls-play-button,
+    video::-webkit-media-controls-start-playback-button {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    @include custom-core();
+    @include custom-material-dialog();
+    @include custom-material-scrollbar();
+}
+
+@mixin custom-core() {
+    .text-one-line {
+        @include text-one-line();
     }
 
     .mouse-help {
@@ -180,16 +189,10 @@
         @include mouse-disabled();
     }
 
-    .IIV::-webkit-media-controls-play-button,
-    video::-webkit-media-controls-start-playback-button {
-        opacity: 0;
-        pointer-events: none;
+    .vertical-scroll-only {
+        @include vertical-scroll-only();
     }
-
-    @include custom-material-dialog();
-    @include custom-material-scrollbar();
 }
-
 @mixin custom-material-dialog() {
     .cdk-overlay-pane {
         &.window,

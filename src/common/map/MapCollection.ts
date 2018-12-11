@@ -34,20 +34,29 @@ export class MapCollection<U> {
     // --------------------------------------------------------------------------
 
     public add(item: U, isFirst: boolean = false): U {
-        if (!item) return null;
+        if (!item) {
+            return null;
+        }
 
         let key = null;
         try {
             key = item[this.uid];
         } catch (error) {}
 
-        if (!key) return null;
+        if (!key) {
+            return null;
+        }
 
         key = key.toString();
-        if (this.has(key)) return null;
+        if (this.has(key)) {
+            return null;
+        }
 
-        if (isFirst) this._collection.unshift(item);
-        else this._collection.push(item);
+        if (isFirst) {
+            this._collection.unshift(item);
+        } else {
+            this._collection.push(item);
+        }
 
         this.map.set(key, item);
         this.setLength(this._collection.length);
@@ -70,10 +79,14 @@ export class MapCollection<U> {
     }
 
     public remove(key: string): U {
-        if (!this.has(key)) return null;
+        if (!this.has(key)) {
+            return null;
+        }
 
         let item = this.get(key);
-        if (ArrayUtil.remove(this._collection, item)) this.setLength(this._collection.length);
+        if (ArrayUtil.remove(this._collection, item)) {
+            this.setLength(this._collection.length);
+        }
 
         this.map.delete(key.toString());
 

@@ -13,10 +13,14 @@ export class NgModelErrorPipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public transform(value: ValidationErrors): string {
-        if (!value) return null;
+        if (!value) {
+            return null;
+        }
 
         let keys = Object.keys(value);
-        if (keys.length === 0) return null;
+        if (keys.length === 0) {
+            return null;
+        }
 
         let key = keys[0];
         return this.translateError(key, value[key]);

@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TruncatePipe } from '@vi-lib/common/pipe/TruncatePipe';
 import { LanguageService } from '../../language/service/LanguageService';
 import { DestroyableContainer } from '../container/DestroyableContainer';
 import { LoadableEvent } from '../lib/Loadable';
@@ -18,6 +19,7 @@ export class PipeBaseService extends DestroyableContainer {
 
     private static DATE: DatePipe;
     private static FINANCE: FinancePipe;
+    private static TRUNCATE: TruncatePipe;
     private static SANITIZE: SanitizePipe;
 
     private static MOMENT_TIME: MomentTimePipe;
@@ -77,6 +79,13 @@ export class PipeBaseService extends DestroyableContainer {
     public get finance(): FinancePipe {
         if (!PipeBaseService.FINANCE) PipeBaseService.FINANCE = new FinancePipe();
         return PipeBaseService.FINANCE;
+    }
+
+    public get truncate(): TruncatePipe {
+        if (!PipeBaseService.TRUNCATE) {
+            PipeBaseService.TRUNCATE = new TruncatePipe();
+        }
+        return PipeBaseService.TRUNCATE;
     }
 
     public get momentDate(): MomentDatePipe {

@@ -40,7 +40,7 @@ export abstract class LoadableMapCollection<U> extends DestroyableMapCollection<
     // --------------------------------------------------------------------------
 
     protected parseItem(item: any): U {
-        return null;
+        return item;
     }
 
     protected parseResponse(response: any): void {}

@@ -22,8 +22,8 @@ export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapColl
     //
     // --------------------------------------------------------------------------
 
-    constructor(api: ApiServiceBase, requestName?: string, requestMethod?: ApiMethod) {
-        super('coinId');
+    protected constructor(api: ApiServiceBase, requestName?: string, requestMethod?: ApiMethod, uid?: string) {
+        super(uid);
 
         this.api = api;
         this.requestName = requestName;
@@ -53,13 +53,18 @@ export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapColl
     }
 
     protected parseResponse(response: ApiResponse<Array<V>>): void {
-        for (let item of response.data) {
+        this.parseItems(response.data);
+        this._isAllLoaded = true;
+        this.sort();
+    }
+
+    protected parseItems(items: Array<V>): void {
+        for (let item of items) {
             let value: U = this.parseItem(item);
             if (value) {
                 this.add(value);
             }
         }
-        this.sort();
     }
 
     // --------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { TruncatePipe } from '@vi-lib/common/pipe/TruncatePipe';
 import { AssetBackgroundDirective } from './asset/directive/AssetBackgroundDirective';
 import { AssetBackgroundPipe } from './asset/pipe/AssetBackgroundPipe';
 import { AssetIconPipe } from './asset/pipe/AssetIconPipe';
@@ -27,6 +28,7 @@ import { MinValidator } from './validator/MinValidator';
 
         FinancePipe,
         SanitizePipe,
+        TruncatePipe,
         NgModelErrorPipe,
 
         MinValidator,
@@ -48,6 +50,7 @@ import { MinValidator } from './validator/MinValidator';
 
         FinancePipe,
         SanitizePipe,
+        TruncatePipe,
         NgModelErrorPipe,
 
         MinValidator,

@@ -6,20 +6,26 @@ export class StringUtil {
     // --------------------------------------------------------------------------
 
     public static truncate(text: string, maxLength: number = 12): string {
-        if (!text || isNaN(maxLength) || text.length < maxLength) return text;
+        if (!text || isNaN(maxLength) || text.length < maxLength) {
+            return text;
+        }
 
         let value = text.substr(0, maxLength - 3);
         return value + '...';
     }
 
     public static isEmpty(value: any): boolean {
-        if (!value) return true;
+        if (!value) {
+            return true;
+        }
 
         return value.toString().trim().length === 0;
     }
 
     public static isContains(text: string, value: string, isCaseSensitive: boolean = true): boolean {
-        if (!value || !text) return false;
+        if (!value || !text) {
+            return false;
+        }
 
         if (!isCaseSensitive) {
             value = value.toLowerCase();
@@ -41,13 +47,17 @@ export class StringUtil {
     }
 
     public static capitalizeFirstLetter(text: string): string {
-        if (!text) return null;
+        if (!text) {
+            return null;
+        }
 
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
     public static lowerizeFirstLetter(text: string): string {
-        if (!text) return null;
+        if (!text) {
+            return null;
+        }
 
         return text.charAt(0).toLowerCase() + text.slice(1);
     }

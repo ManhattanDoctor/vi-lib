@@ -28,10 +28,15 @@ export abstract class HttpApiServiceBase extends ApiServiceBase {
 
     protected makeRequest(url: string, method: ApiMethod, params: HttpParams, headers: HttpHeaders, idleTimeout: number, responseType: any): Observable<any> {
         let observable: Observable<any> = null;
-        if (method === 'get') observable = this.http.get(url, { headers, params, responseType });
-        else if (method === 'post') observable = this.http.post(url, params, { headers, responseType });
-        else if (method === 'put') observable = this.http.put(url, params, { headers, responseType });
-        else if (method === 'delete') observable = this.http.delete(url, { headers, responseType });
+        if (method === 'get') {
+            observable = this.http.get(url, { headers, params, responseType });
+        } else if (method === 'post') {
+            observable = this.http.post(url, params, { headers, responseType });
+        } else if (method === 'put') {
+            observable = this.http.put(url, params, { headers, responseType });
+        } else if (method === 'delete') {
+            observable = this.http.delete(url, { headers, responseType });
+        }
 
         if (!observable) throw new Error('Unable to make request: method is undefined');
         return observable.pipe(timeout(idleTimeout));

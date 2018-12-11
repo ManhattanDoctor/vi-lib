@@ -83,6 +83,8 @@ export class WindowElement extends DestroyableComponent implements AfterViewInit
         if (value === this._window) return;
 
         this._window = value;
-        if (this.window) this.commitWindowProperties();
+        if (this.window) {
+            this.commitWindowProperties();
+        }
     }
 }
