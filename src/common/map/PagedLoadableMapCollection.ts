@@ -1,19 +1,18 @@
+import { IPage } from '../../../../gate-common/pagination/IPage';
 import { ApiResponse } from '../api/ApiResponse';
 import { IDestroyable } from '../IDestroyable';
 import { ApiBaseLoadableMapCollection } from './ApiBaseLoadableMapCollection';
 
-export abstract class PagedLoadableMapCollection<U extends IDestroyable, V> extends ApiBaseLoadableMapCollection<U, V> {
+export abstract class PagedLoadableMapCollection<U extends IDestroyable, V> extends ApiBaseLoadableMapCollection<U, V> implements IPage{
     // --------------------------------------------------------------------------
     //
     //  Properties
     //
     // --------------------------------------------------------------------------
 
-    protected _page: number = 0;
-    protected _total: number = 0;
+    protected _pageSize: number = 0;
+    protected _pageIndex: number = 0;
     protected _currentPageItems: Array<U>;
-
-    public itemsOnPage: number = 10;
 
     // --------------------------------------------------------------------------
     //
@@ -22,8 +21,8 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable, V> exte
     // --------------------------------------------------------------------------
 
     public reload(): void {
-        this._page = 0;
-        this._total = 0;
+        this._length = 0;
+        this._pageIndex = 0;
         this._currentPageItems = null;
         super.reload();
     }
@@ -78,6 +77,8 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable, V> exte
         if (data.hasOwnProperty('total')) this._total = data.total;
         this._isAllLoaded = this._total <= this.length;
     }
+
+    protected updateCollectionLength(): void {}
 
     // --------------------------------------------------------------------------
     //

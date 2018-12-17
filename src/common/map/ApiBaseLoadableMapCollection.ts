@@ -36,29 +36,22 @@ export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapColl
     //
     // --------------------------------------------------------------------------
 
-    protected sort(): void {}
-
-    protected createParamsForRequest(): any {
-        return {};
+    protected makeRequest(): Observable<ApiResponse<V>> {
+        return this.api.call({ name: this.requestName, method: this.requestMethod, data: this.getParamsForRequest() });
     }
 
-    protected parseErrorResponse(response: ApiResponse<Array<V>>): void {}
-
-    protected makeRequest(): Observable<ApiResponse<Array<V>>> {
-        return this.api.call({
-            name: this.requestName,
-            method: this.requestMethod,
-            data: this.createParamsForRequest()
-        });
-    }
-
-    protected parseResponse(response: ApiResponse<Array<V>>): void {
-        this.parseItems(response.data);
+    protected parseResponse(response: ApiResponse<V>): void {
+        let items = this.getResponseItems(response);
+        this.parseItems(items);
         this._isAllLoaded = true;
         this.sort();
     }
 
-    protected parseItems(items: Array<V>): void {
+    protected parseItems(items: Array<any>): void {
+        if (!items || items.length === 0) {
+            return;
+        }
+
         for (let item of items) {
             let value: U = this.parseItem(item);
             if (value) {
@@ -66,6 +59,17 @@ export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapColl
             }
         }
     }
+
+    protected sort(): void {}
+
+    protected getParamsForRequest(): any {
+        return {};
+    }
+
+    protected getResponseItems(response: ApiResponse<V>): Array<any> {
+        return response.data as any;
+    }
+    protected parseErrorResponse(response: ApiResponse<V>): void {}
 
     // --------------------------------------------------------------------------
     //

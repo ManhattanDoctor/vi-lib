@@ -51,9 +51,13 @@ export class ApiError implements Error {
         if (data.hasOwnProperty('code')) this._code = data.code;
 
         let message = data;
-        if (data.hasOwnProperty('text')) message = data.text;
-        else if (data.hasOwnProperty('message')) message = data.message;
-        else if (data.hasOwnProperty('description')) message = data.description;
+        if (data.hasOwnProperty('text')) {
+            message = data.text;
+        } else if (data.hasOwnProperty('message')) {
+            message = data.message;
+        } else if (data.hasOwnProperty('description')) {
+            message = data.description;
+        }
 
         this.parseMessage(message, language);
     }

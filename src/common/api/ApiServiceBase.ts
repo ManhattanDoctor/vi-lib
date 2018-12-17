@@ -36,7 +36,7 @@ export abstract class ApiServiceBase {
     //
     // --------------------------------------------------------------------------
 
-    constructor() {
+    protected constructor() {
         this.observer = new Subject();
     }
 
@@ -87,7 +87,6 @@ export abstract class ApiServiceBase {
                     observer.complete();
                 }
 
-                console.log(apiResponse);
                 this.observer.next(new ObservableData(ApiServiceBaseEvent.ERROR, apiResponse, apiResponse.error));
             }
         );

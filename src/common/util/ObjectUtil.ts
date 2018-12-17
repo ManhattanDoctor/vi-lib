@@ -97,6 +97,18 @@ export class ObjectUtil {
         return Object.getOwnPropertyNames(from) as any;
     }
 
+    public static instanceOf(data: any, properties: Array<string>): boolean {
+        if (!data || !(data instanceof Object)) {
+            return false;
+        }
+        for (let name of properties) {
+            if (!(name in data)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static copyProperties<U, V extends keyof U>(from: U, to: any, includeKeys?: Array<V>, excludeKeys?: Array<V>): any {
         if (!from || !to) {
             return null;

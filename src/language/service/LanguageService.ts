@@ -11,7 +11,7 @@ import { Language } from '../lib/Language';
 import { LanguageMessageFormatParser } from '../lib/LanguageMessageFormatParser';
 
 @Injectable()
-export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
+export class LanguageService extends Loadable<LanguageServiceEvent, Language|Error> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -42,8 +42,9 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language> {
 
         this.parser = translation.parser as LanguageMessageFormatParser;
         this.parser.events.subscribe(data => {
-            if (data.type === LanguageServiceEvent.PARSE_ERROR) console.log('Language parse error: ' + data.data);
-            // this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR,data.data));
+            if (data.type === LanguageServiceEvent.PARSE_ERROR) {
+                this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR, data.data));
+            }
         });
     }
 

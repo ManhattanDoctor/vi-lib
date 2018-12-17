@@ -46,13 +46,17 @@ export abstract class LoginBaseService<U> {
             subscription.unsubscribe();
             this._isLoading = false;
 
-            if (!response.isHasError) {
-                this.parseLoginResponse(response);
-                if (this.isCanLoginWithSid()) this.loginBySid();
-            } else {
+            console.log(response);
+            if (response.isHasError) {
                 this.parseLoginErrorResponse(response);
                 this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, response));
                 this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_FINISHED, response));
+                return;
+            }
+
+            this.parseLoginResponse(response);
+            if (this.isCanLoginWithSid()) {
+                this.loginBySid();
             }
         });
     }

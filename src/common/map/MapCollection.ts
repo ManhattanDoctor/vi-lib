@@ -59,7 +59,7 @@ export class MapCollection<U> {
         }
 
         this.map.set(key, item);
-        this.setLength(this._collection.length);
+        this.updateCollectionLength();
 
         return item;
     }
@@ -75,7 +75,7 @@ export class MapCollection<U> {
     public clear() {
         this.map.clear();
         this._collection.splice(0, this.length);
-        this.setLength(this._collection.length);
+        this.updateCollectionLength();
     }
 
     public remove(key: string): U {
@@ -85,7 +85,7 @@ export class MapCollection<U> {
 
         let item = this.get(key);
         if (ArrayUtil.remove(this._collection, item)) {
-            this.setLength(this._collection.length);
+            this.updateCollectionLength();
         }
 
         this.map.delete(key.toString());
@@ -130,8 +130,8 @@ export class MapCollection<U> {
     //
     // --------------------------------------------------------------------------
 
-    protected setLength(value: number): void {
-        this._length = value;
+    protected updateCollectionLength(): void {
+        this._length = this._collection.length;
     }
 
     // --------------------------------------------------------------------------
