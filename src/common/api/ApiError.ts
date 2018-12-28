@@ -48,7 +48,9 @@ export class ApiError implements Error {
     // --------------------------------------------------------------------------
 
     constructor(data: any, language?: string) {
-        if (data.hasOwnProperty('code')) this._code = data.code;
+        if (data.hasOwnProperty('code')) {
+            this._code = data.code;
+        }
 
         let message = data;
         if (data.hasOwnProperty('text')) {
@@ -70,11 +72,17 @@ export class ApiError implements Error {
 
     protected parseMessage(data: any, language: string): void {
         this._message = data;
-        if (!(typeof data !== 'object' && typeof data !== 'function')) return;
+        if (!(typeof data !== 'object' && typeof data !== 'function')) {
+            return;
+        }
 
-        if (!language) language = ApiError.DEFAULT_LANGUAGE;
+        if (!language) {
+            language = ApiError.DEFAULT_LANGUAGE;
+        }
 
-        if (data.hasOwnProperty(language)) this._message = data[language];
+        if (data.hasOwnProperty(language)) {
+            this._message = data[language];
+        }
     }
 
     // --------------------------------------------------------------------------
@@ -100,7 +108,9 @@ export class ApiError implements Error {
     }
 
     public get isSpecial(): boolean {
-        if (isNaN(this._code) || ApiError.ERROR_SPECIAL_CODES.length === 0) return false;
+        if (isNaN(this._code) || ApiError.ERROR_SPECIAL_CODES.length === 0) {
+            return false;
+        }
 
         return ApiError.ERROR_SPECIAL_CODES.indexOf(this._code) !== -1;
     }

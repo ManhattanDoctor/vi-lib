@@ -4,7 +4,7 @@ import { ApiResponse } from '../api/ApiResponse';
 import { ApiServiceBase } from '../api/ApiServiceBase';
 import { LoadableMapCollection } from './LoadableMapCollection';
 
-export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapCollection<U> {
+export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapCollection<U, ApiResponse<V>> {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -44,7 +44,6 @@ export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapColl
         let items = this.getResponseItems(response);
         this.parseItems(items);
         this._isAllLoaded = true;
-        this.sort();
     }
 
     protected parseItems(items: Array<any>): void {
@@ -59,8 +58,6 @@ export abstract class ApiBaseLoadableMapCollection<U, V> extends LoadableMapColl
             }
         }
     }
-
-    protected sort(): void {}
 
     protected getParamsForRequest(): any {
         return {};

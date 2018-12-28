@@ -46,7 +46,6 @@ export abstract class LoginBaseService<U> {
             subscription.unsubscribe();
             this._isLoading = false;
 
-            console.log(response);
             if (response.isHasError) {
                 this.parseLoginErrorResponse(response);
                 this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, response));

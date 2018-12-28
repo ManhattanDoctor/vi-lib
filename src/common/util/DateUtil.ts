@@ -33,16 +33,26 @@ export class DateUtil {
     }
 
     public static parseDate(value: any): Date {
-        if (!value) return null;
+        if (!value) {
+            return null;
+        }
 
-        if (value instanceof Date) return value;
+        if (value instanceof Date) {
+            return value;
+        }
 
         let dateNumber = Number(value);
-        if (!isNaN(value) && dateNumber) return dateNumber > 0 ? DateUtil.getDate(dateNumber) : null;
+        if (!isNaN(value) && dateNumber) {
+            return dateNumber > 0 ? DateUtil.getDate(dateNumber) : null;
+        }
 
-        if (value instanceof Array) return value.length === 3 ? new Date(value[2], value[1], value[0]) : null;
+        if (value instanceof Array) {
+            return value.length === 3 ? new Date(value[2], value[1], value[0]) : null;
+        }
 
-        if (typeof value === 'string') return DateUtil.parseDate(value.split('.'));
+        if (typeof value === 'string') {
+            return DateUtil.parseDate(value.split('.'));
+        }
 
         return null;
     }

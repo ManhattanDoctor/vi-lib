@@ -43,7 +43,7 @@ export class MapCollection<U> {
             key = item[this.uid];
         } catch (error) {}
 
-        if (!key) {
+        if (typeof key === 'undefined' || key === null) {
             return null;
         }
 

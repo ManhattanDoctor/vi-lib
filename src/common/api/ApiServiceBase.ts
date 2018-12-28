@@ -64,10 +64,14 @@ export abstract class ApiServiceBase {
                 }
 
                 if (apiResponse.isHasError) {
-                    if (reject) reject(apiResponse);
+                    if (reject) {
+                        reject(apiResponse);
+                    }
                     this.observer.next(new ObservableData(ApiServiceBaseEvent.ERROR, apiResponse, apiResponse.error));
                 } else {
-                    if (resolve) resolve(apiResponse);
+                    if (resolve) {
+                        resolve(apiResponse);
+                    }
                     this.observer.next(new ObservableData(ApiServiceBaseEvent.COMPLETE, apiResponse));
                 }
             },

@@ -1,54 +1,9 @@
 export class ObjectUtil {
     // --------------------------------------------------------------------------
     //
-    // 	Private Methods
+    // 	Clone Methods
     //
     // --------------------------------------------------------------------------
-
-    private static isSpecificValue(val): boolean {
-        return val instanceof Buffer || val instanceof Date || val instanceof RegExp;
-    }
-
-    private static cloneSpecificValue(val) {
-        if (val instanceof Buffer) {
-            let x = Buffer.alloc ? Buffer.alloc(val.length) : new Buffer(val.length);
-            val.copy(x);
-            return x;
-        } else if (val instanceof Date) {
-            return new Date(val.getTime());
-        } else if (val instanceof RegExp) {
-            return new RegExp(val);
-        } else {
-            throw new Error('Unexpected situation');
-        }
-    }
-    private static safeGetProperty(object, property): any {
-        return property === '__proto__' ? undefined : object[property];
-    }
-
-    // --------------------------------------------------------------------------
-    //
-    // 	Static Methods
-    //
-    // --------------------------------------------------------------------------
-
-    private static deepCloneArray(arr: any): any {
-        let clone = [];
-        arr.forEach((item, index) => {
-            if (typeof item === 'object' && item != null) {
-                if (Array.isArray(item)) {
-                    clone[index] = ObjectUtil.deepCloneArray(item);
-                } else if (ObjectUtil.isSpecificValue(item)) {
-                    clone[index] = ObjectUtil.cloneSpecificValue(item);
-                } else {
-                    clone[index] = ObjectUtil.deepExtend({}, item);
-                }
-            } else {
-                clone[index] = item;
-            }
-        });
-        return clone;
-    }
 
     public static deepExtend(...params): any {
         if (arguments.length < 1 || typeof arguments[0] !== 'object') {
@@ -93,12 +48,93 @@ export class ObjectUtil {
         return target;
     }
 
-    public static keys<U, V extends keyof U>(from: U): Array<V> {
-        return Object.getOwnPropertyNames(from) as any;
+    private static isSpecificValue(val): boolean {
+        return val instanceof Buffer || val instanceof Date || val instanceof RegExp;
     }
 
+    private static cloneSpecificValue(val) {
+        if (val instanceof Buffer) {
+            let x = Buffer.alloc ? Buffer.alloc(val.length) : new Buffer(val.length);
+            val.copy(x);
+            return x;
+        } else if (val instanceof Date) {
+            return new Date(val.getTime());
+        } else if (val instanceof RegExp) {
+            return new RegExp(val);
+        } else {
+            throw new Error('Unexpected situation');
+        }
+    }
+    private static safeGetProperty(object, property): any {
+        return property === '__proto__' ? undefined : object[property];
+    }
+
+    private static deepCloneArray(arr: any): any {
+        let clone = [];
+        arr.forEach((item, index) => {
+            if (typeof item === 'object' && item != null) {
+                if (Array.isArray(item)) {
+                    clone[index] = ObjectUtil.deepCloneArray(item);
+                } else if (ObjectUtil.isSpecificValue(item)) {
+                    clone[index] = ObjectUtil.cloneSpecificValue(item);
+                } else {
+                    clone[index] = ObjectUtil.deepExtend({}, item);
+                }
+            } else {
+                clone[index] = item;
+            }
+        });
+        return clone;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Check Methods
+    //
+    // --------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+    //
+    //  Check Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static isNumber(data: any): boolean {
+        return typeof data === 'number' && !isNaN(data);
+    }
+
+    public static isObject(data: any): boolean {
+        return typeof data === 'object';
+    }
+
+    public static isEmpty(data: any): boolean {
+        if (ObjectUtil.isNullOrUndefined(data)) {
+            return true;
+        }
+        if (Array.isArray(data)) {
+            return data.length === 0;
+        }
+
+        if (ObjectUtil.isObject(data)) {
+            return ObjectUtil.keys(data).length === 0;
+        }
+
+        data = data.toString();
+        return data === 'null' || data === 'undefined' || data.length === 0;
+    }
+
+    public static isNullOrUndefined(data: any): boolean {
+        return data === null || data === undefined;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Public Static Methods
+    //
+    // --------------------------------------------------------------------------
+
     public static instanceOf(data: any, properties: Array<string>): boolean {
-        if (!data || !(data instanceof Object)) {
+        if (ObjectUtil.isNullOrUndefined(data)) {
             return false;
         }
         for (let name of properties) {
@@ -109,8 +145,21 @@ export class ObjectUtil {
         return true;
     }
 
+    public static clear(data: any): void {
+        if (!ObjectUtil.isObject(data)) {
+            return;
+        }
+        for (let key of ObjectUtil.keys(data)) {
+            delete data[key];
+        }
+    }
+
+    public static keys<U, V extends keyof U>(from: U): Array<V> {
+        return Object.getOwnPropertyNames(from) as any;
+    }
+
     public static copyProperties<U, V extends keyof U>(from: U, to: any, includeKeys?: Array<V>, excludeKeys?: Array<V>): any {
-        if (!from || !to) {
+        if (ObjectUtil.isNullOrUndefined(from) || ObjectUtil.isNullOrUndefined(to)) {
             return null;
         }
 
@@ -119,8 +168,9 @@ export class ObjectUtil {
         }
 
         for (let key of includeKeys) {
-            if (excludeKeys && excludeKeys.length > 0 && excludeKeys.includes(key)) continue;
-
+            if (excludeKeys && excludeKeys.length > 0 && excludeKeys.includes(key)) {
+                continue;
+            }
             try {
                 to[key] = from[key];
             } catch (error) {}

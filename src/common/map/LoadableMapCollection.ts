@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { ObservableData } from '../observer/ObservableData';
 import { DestroyableMapCollection } from './DestoyableMapCollection';
 
-export abstract class LoadableMapCollection<U> extends DestroyableMapCollection<U> {
+export abstract class LoadableMapCollection<U, V> extends DestroyableMapCollection<U> {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -19,7 +19,7 @@ export abstract class LoadableMapCollection<U> extends DestroyableMapCollection<
     protected isNeedCleanAfterLoad: boolean = false;
 
     protected subscription: Subscription;
-    protected observer: Subject<ObservableData<LoadableMapCollectionEvent, void>>;
+    protected observer: Subject<ObservableData<LoadableMapCollectionEvent, V>>;
 
     // --------------------------------------------------------------------------
     //
@@ -128,7 +128,7 @@ export abstract class LoadableMapCollection<U> extends DestroyableMapCollection<
     //
     // --------------------------------------------------------------------------
 
-    public get events(): Observable<ObservableData<LoadableMapCollectionEvent, void>> {
+    public get events(): Observable<ObservableData<LoadableMapCollectionEvent, V>> {
         return this.observer.asObservable();
     }
 

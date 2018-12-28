@@ -48,7 +48,6 @@ export class MaxValidator implements Validator {
 
     constructor(@Attribute('max') max: number) {
         this._validator = Validators.max(max);
-        console.log(max);
     }
 
     // --------------------------------------------------------------------------

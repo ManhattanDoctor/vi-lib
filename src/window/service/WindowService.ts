@@ -267,9 +267,13 @@ export class WindowService {
 
     public getWindow(value: WindowConfig | string): IWindowContent {
         let id: string = value.toString();
-        if (value instanceof WindowConfig) id = value.id;
+        if (value instanceof WindowConfig) {
+            id = value.id;
+        }
 
-        if (!id) return null;
+        if (!id) {
+            return null;
+        }
 
         let window = this.get(id);
         return window ? window.content : null;
@@ -291,7 +295,9 @@ export class WindowService {
 
     public setWindowOnTopIfExist(value: WindowConfig | string): boolean {
         let content = this.getWindow(value);
-        if (!content) return false;
+        if (!content) {
+            return false;
+        }
 
         content.window.setOnTop();
         return true;

@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Subject } from 'rxjs';
-import { Observable } from 'rxjs';
 import { ComponentType } from '@angular/cdk/portal';
+import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { ApiError } from '../../common/api/ApiError';
 import { Assets } from '../../common/asset/Assets';
 import { ObservableData } from '../../common/observer/ObservableData';
@@ -14,6 +12,7 @@ import { INotification } from '../lib/INotification';
 import { INotificationContent } from '../lib/INotificationContent';
 import { NotificationConfig } from '../lib/NotificationConfig';
 import { NotificationFactory } from '../lib/NotificationFactory';
+
 @Injectable()
 export class NotificationService {
     // --------------------------------------------------------------------------
@@ -105,19 +104,37 @@ export class NotificationService {
         let notification: INotification = null;
         if (config.id) {
             notification = this.notifications[config.id];
-            if (notification) return notification.content;
+            if (notification) {
+                return notification.content;
+            }
         }
 
-        if (!config.defaultMinWidth) config.defaultMinWidth = NotificationService.DEFAULT_MIN_WIDTH;
-        if (!config.defaultMinHeight) config.defaultMinHeight = NotificationService.DEFAULT_MIN_HEIGHT;
+        if (!config.defaultMinWidth) {
+            config.defaultMinWidth = NotificationService.DEFAULT_MIN_WIDTH;
+        }
+        if (!config.defaultMinHeight) {
+            config.defaultMinHeight = NotificationService.DEFAULT_MIN_HEIGHT;
+        }
 
-        if (!config.verticalAlign) config.verticalAlign = NotificationService.DEFAULT_VERTICAL_ALIGN;
-        if (!config.horizontalAlign) config.horizontalAlign = NotificationService.DEFAULT_HORIZONTAL_ALIGN;
+        if (!config.verticalAlign) {
+            config.verticalAlign = NotificationService.DEFAULT_VERTICAL_ALIGN;
+        }
+        if (!config.horizontalAlign) {
+            config.horizontalAlign = NotificationService.DEFAULT_HORIZONTAL_ALIGN;
+        }
 
-        if (isNaN(config.paddingTop)) config.paddingTop = NotificationService.DEFAULT_PADDING_TOP;
-        if (isNaN(config.paddingLeft)) config.paddingLeft = NotificationService.DEFAULT_PADDING_LEFT;
-        if (isNaN(config.paddingRight)) config.paddingRight = NotificationService.DEFAULT_PADDING_RIGHT;
-        if (isNaN(config.paddingBottom)) config.paddingBottom = NotificationService.DEFAULT_PADDING_BOTTOM;
+        if (isNaN(config.paddingTop)) {
+            config.paddingTop = NotificationService.DEFAULT_PADDING_TOP;
+        }
+        if (isNaN(config.paddingLeft)) {
+            config.paddingLeft = NotificationService.DEFAULT_PADDING_LEFT;
+        }
+        if (isNaN(config.paddingRight)) {
+            config.paddingRight = NotificationService.DEFAULT_PADDING_RIGHT;
+        }
+        if (isNaN(config.paddingBottom)) {
+            config.paddingBottom = NotificationService.DEFAULT_PADDING_BOTTOM;
+        }
 
         config.setDefaultProperties();
 
@@ -160,7 +177,9 @@ export class NotificationService {
     }
 
     public removeById(id: string): void {
-        if (this._configs.length > 0) return;
+        if (this._configs.length > 0) {
+            return;
+        }
 
         this._configs.forEach(config => {
             if (config.id && config.id === id) this.remove(config);
@@ -175,7 +194,9 @@ export class NotificationService {
 
     private close(config: NotificationConfig): INotification {
         let item = this._notifications.get(config);
-        if (!item) return null;
+        if (!item) {
+            return null;
+        }
 
         item.close();
         this._notifications.delete(config);
@@ -220,8 +241,11 @@ export class NotificationService {
         let config = new NotificationConfig();
         config.closeDuration = NotificationService.DEFAULT_ERROR_DURATION;
         config.iconId = NotificationService.DEFAULT_ERROR_ICON_ID;
-        if (typeof error === 'string') config.data = error;
-        else if (error instanceof Error || error instanceof ApiError) config.data = (error as any).message;
+        if (typeof error === 'string') {
+            config.data = error;
+        } else if (error instanceof Error || error instanceof ApiError) {
+            config.data = (error as any).message;
+        }
         this.open(config);
     }
 
@@ -236,7 +260,9 @@ export class NotificationService {
         this.info(this.language.translate(translationId, translation), picture, closeDuration, removeAfterClose, iconId);
     }
     public info(text: string, picture?: string, closeDuration: number = NaN, removeAfterClose?: boolean, iconId?: string): void {
-        if (!text) return;
+        if (!text) {
+            return;
+        }
 
         let config = new NotificationConfig();
         config.data = text;
@@ -244,7 +270,9 @@ export class NotificationService {
         config.closeDuration = !isNaN(closeDuration) ? closeDuration : NotificationService.DEFAULT_INFO_DURATION;
         config.isRemoveAfterClose = removeAfterClose;
 
-        if (picture) config.picture = picture;
+        if (picture) {
+            config.picture = picture;
+        }
 
         this.open(config);
     }
