@@ -11,7 +11,7 @@ import { Language } from '../lib/Language';
 import { LanguageMessageFormatParser } from '../lib/LanguageMessageFormatParser';
 
 @Injectable()
-export class LanguageService extends Loadable<LanguageServiceEvent, Language|Error> {
+export class LanguageService extends Loadable<LanguageServiceEvent, Language | Error> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -92,15 +92,16 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language|Err
         this.status = LoadableStatus.LOADING;
         this.observer.next(new ObservableData(LoadableEvent.STARTED, language));
 
-        if (this.subscription) this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
 
         this.subscription = this.http.get(this.getLanguageUrl(language)).subscribe(
             json => {
                 this.subscription.unsubscribe();
                 this.subscription = this.http.get(this.getCustomLanguageUrl(language)).subscribe(
                     jsonCustom => {
-                        let translation = ObjectUtil.deepExtend(json, jsonCustom);
-                        this.setLanguage(language, translation);
+                        this.setLanguage(language, ObjectUtil.deepExtend(json, jsonCustom));
                     },
                     error => {
                         this.setLanguage(language, json);
@@ -147,7 +148,7 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language|Err
         }
 
         let language = this._availableLanguages.get(locale);
-        if (!this.language || !this.language.toEqual(language)) {
+        if (!this.language || !this.language.isEqual(language)) {
             this.loadLanguage(language);
         } else {
             this.observer.next(new ObservableData(LoadableEvent.COMPLETE, language));
@@ -156,17 +157,6 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language|Err
 
     public translate(key: string, params?: any): string {
         return this.translation.instant(key, params);
-        /*
-		try
-		{
-			return this.translation.instant(key,params);
-		}
-		catch(error)
-		{
-			console.log(key);
-			return key;
-		}
-		*/
     }
 
     public compile(text: string, params: any): string {
@@ -178,14 +168,21 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language|Err
     }
 
     public initialize(url: string, availableLanguages: Map<string, string>, defaultLanguage: string): void {
-        if (this.isInitialized) throw new Error('Service already initialized');
+        if (this.isInitialized) {
+            throw new Error('Service already initialized');
+        }
 
-        if (!url) throw new Error('Unable to initialize: url is undefined or empty');
+        if (!url) {
+            throw new Error('Unable to initialize: url is undefined or empty');
+        }
 
-        if (!availableLanguages || availableLanguages.size === 0) throw new Error('Unable to initialize: available languages is undefined or empty');
+        if (!availableLanguages || availableLanguages.size === 0) {
+            throw new Error('Unable to initialize: available languages is undefined or empty');
+        }
 
-        if (!availableLanguages.has(defaultLanguage))
+        if (!availableLanguages.has(defaultLanguage)) {
             throw new Error(`Unable to initialize: default language is undefined or doesn't contain in available languages`);
+        }
 
         this.isInitialized = true;
 
@@ -212,16 +209,27 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language|Err
     //
     // --------------------------------------------------------------------------
 
+    public get language(): Language {
+        return this._language;
+    }
+    public set language(value: Language) {
+        if (value === this._language || (this.language && this.language.isEqual(value))) {
+            return;
+        }
+
+        if (value) {
+            this.loadLanguage(value);
+        } else {
+            this._language = value;
+        }
+    }
+
     public get locale(): string {
         return this.language ? this.language.locale : this.defaultLocale;
     }
 
     public get defaultLocale(): string {
         return this.defaultLanguage ? this.defaultLanguage.locale : null;
-    }
-
-    public get language(): Language {
-        return this._language;
     }
 
     public get availableLanguages(): MapCollection<Language> {

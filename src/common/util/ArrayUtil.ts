@@ -12,12 +12,18 @@ export class ArrayUtil {
     }
 
     private static sortFunction(first: { sortIndex: number }, second: { sortIndex: number }): number {
-        if (!first && !second) return 0;
-        if (first && !second) return -1;
-        if (!first && second) return 1;
-
-        if (first.sortIndex === second.sortIndex) return 0;
-
+        if (!first && !second) {
+            return 0;
+        }
+        if (first && !second) {
+            return -1;
+        }
+        if (!first && second) {
+            return 1;
+        }
+        if (first.sortIndex === second.sortIndex) {
+            return 0;
+        }
         return first.sortIndex < second.sortIndex ? -1 : 1;
     }
 
@@ -27,27 +33,29 @@ export class ArrayUtil {
     //
     // --------------------------------------------------------------------------
 
-    public static move(array: Array<any>, oldIndex: number, newIndex: number): void {
-        if (oldIndex > -1 && newIndex < array.length && oldIndex !== newIndex) array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+    public static move<U>(array: Array<U>, oldIndex: number, newIndex: number): void {
+        if (oldIndex > -1 && newIndex < array.length && oldIndex !== newIndex) {
+            array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+        }
     }
 
-    public static isEmpty(array: Array<any>): boolean {
+    public static isEmpty<U>(array: Array<U>): boolean {
         return !array || array.length === 0;
     }
 
-    public static clear(array: Array<any>): void {
+    public static clear<U>(array: Array<U>): void {
         array.splice(0, array.length);
-        // /while(array.length > 0)
-        // 	array.pop();
     }
 
-    public static remove(array: Array<any>, item: any): boolean {
+    public static remove<U>(array: Array<U>, item: any): boolean {
         let index = array.indexOf(item);
-        if (index > -1) array.splice(index, 1);
+        if (index > -1) {
+            array.splice(index, 1);
+        }
         return index > -1;
     }
 
-    public static shuffle(array: Array<any>): void {
+    public static shuffle<U>(array: Array<U>): void {
         let currentIndex = array.length,
             temporaryValue,
             randomIndex;
@@ -61,14 +69,16 @@ export class ArrayUtil {
         }
     }
 
-    public static reverse(array: Array<any>): void {
+    public static reverse<U>(array: Array<U>): void {
         array.reverse();
     }
 
-    public static removeEmpty(array: Array<any>): void {
+    public static removeEmpty<U>(array: Array<U>): void {
         for (let i = array.length - 1; i > -1; i--) {
             let value = array[i];
-            if (!value || value.toString().trim().length === 0) array.splice(i, 1);
+            if (!value || value.toString().trim().length === 0) {
+                array.splice(i, 1);
+            }
         }
     }
 
@@ -81,10 +91,14 @@ export class ArrayUtil {
             return result;
         }
 
-        if (!decoded.length) return result;
+        if (!decoded.length) {
+            return result;
+        }
 
         let params: any = decoded.split('?');
-        if (params.length === 1) return result;
+        if (params.length === 1) {
+            return result;
+        }
 
         params = params[1];
         params = params.split('&');

@@ -62,15 +62,15 @@ export class StringUtil {
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
 
-    /*
     public static toHexColor(value: string): string {
         let hash = 0;
-        for (let i = 0; i < value.length; i++) hash = value.charCodeAt(i) + ((hash << 5) - hash);
+        for (let i = 0; i < value.length; i++) {
+            hash = value.charCodeAt(i) + ((hash << 5) - hash);
+        }
 
         let hex = ((hash >> 24) & 0xff).toString(16) + ((hash >> 16) & 0xff).toString(16) + ((hash >> 8) & 0xff).toString(16) + (hash & 0xff).toString(16);
         hex += '000000';
         hex = hex.substring(0, 6);
         return hex;
     }
-    */
 }

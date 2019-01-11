@@ -25,10 +25,14 @@ export class Language {
     //
     // --------------------------------------------------------------------------
 
-    public toEqual(value: Language | string): boolean {
-        if (!value) return false;
+    public isEqual(value: Language | string): boolean {
+        if (!value) {
+            return false;
+        }
 
-        if (value instanceof Language) return value.locale === this.locale;
+        if (value instanceof Language) {
+            return value.locale === this.locale;
+        }
 
         return value === this.locale;
     }
@@ -43,11 +47,11 @@ export class Language {
         return this._locale;
     }
 
-    public get locale(): string {
-        return this._locale;
-    }
-
     public get name(): string {
         return this._name;
+    }
+
+    public get locale(): string {
+        return this._locale;
     }
 }

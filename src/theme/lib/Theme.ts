@@ -40,14 +40,22 @@ export class Theme {
     public update(data: any): void {
         if (data.hasOwnProperty('name')) {
             this.name = data.name;
-            if (!this.styleName) this.styleName = this.name + '-theme';
+            if (!this.styleName) {
+                this.styleName = this.name + '-theme';
+            }
         }
 
-        if (data.hasOwnProperty('styles')) this.styles = data.styles;
+        if (data.hasOwnProperty('styles')) {
+            this.styles = data.styles;
+        }
 
-        if (data.hasOwnProperty('isDark')) this.isDark = data.isDark;
+        if (data.hasOwnProperty('isDark')) {
+            this.isDark = data.isDark;
+        }
 
-        if (data.hasOwnProperty('styleName')) this.styleName = data.name;
+        if (data.hasOwnProperty('styleName')) {
+            this.styleName = data.styleName;
+        }
     }
 
     // --------------------------------------------------------------------------

@@ -17,7 +17,7 @@ export class ThemeService {
     private _theme: Theme;
     private _themes: MapCollection<Theme>;
 
-    private observer: Subject<string>;
+    private observer: Subject<ThemeServiceEvent>;
 
     // --------------------------------------------------------------------------
     //
@@ -48,8 +48,11 @@ export class ThemeService {
         }
 
         let name = defaultTheme;
-        if (this.themes.has(name)) this.theme = this.themes.get(name);
-        else if (this.themes.length > 0) this.theme = this.themes.collection[0];
+        if (this.themes.has(name)) {
+            this.theme = this.themes.get(name);
+        } else if (this.themes.length > 0) {
+            this.theme = this.themes.collection[0];
+        }
     }
 
     public getStyle(name: string): any {

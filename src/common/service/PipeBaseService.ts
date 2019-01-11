@@ -62,7 +62,9 @@ export class PipeBaseService extends DestroyableContainer {
         let locale = this.language.locale ? this.language.language.locale : 'en';
         this._locale = locale === 'en' ? 'en-US' : locale;
 
-        if (PipeBaseService.DATE) PipeBaseService.DATE = new DatePipe(this.locale);
+        if (PipeBaseService.DATE) {
+            PipeBaseService.DATE = new DatePipe(this.locale);
+        }
     }
 
     // --------------------------------------------------------------------------
@@ -72,12 +74,16 @@ export class PipeBaseService extends DestroyableContainer {
     // --------------------------------------------------------------------------
 
     public get date(): DatePipe {
-        if (!PipeBaseService.DATE) PipeBaseService.DATE = new DatePipe(this.locale);
+        if (!PipeBaseService.DATE) {
+            PipeBaseService.DATE = new DatePipe(this.locale);
+        }
         return PipeBaseService.DATE;
     }
 
     public get finance(): FinancePipe {
-        if (!PipeBaseService.FINANCE) PipeBaseService.FINANCE = new FinancePipe();
+        if (!PipeBaseService.FINANCE) {
+            PipeBaseService.FINANCE = new FinancePipe();
+        }
         return PipeBaseService.FINANCE;
     }
 
