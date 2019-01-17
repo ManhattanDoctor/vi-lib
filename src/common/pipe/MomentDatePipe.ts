@@ -25,8 +25,9 @@ export class MomentDatePipe implements PipeTransform {
         if (!value) return null;
 
         let item: Moment = null;
-        if (value instanceof Date) item = moment(value);
-        else item = value as Moment;
+        if (value instanceof Date) {
+            item = moment(value);
+        } else item = value as Moment;
 
         return item.format(format || MomentDatePipe.DEFAULT_FORMAT);
     }
@@ -35,11 +36,16 @@ export class MomentDatePipe implements PipeTransform {
         if (!value) return null;
 
         let item: Moment = null;
-        if (value instanceof Date) item = moment(value);
-        else item = value as Moment;
+        if (value instanceof Date) {
+            item = moment(value);
+        } else {
+            item = value as Moment;
+        }
 
         let date = item.fromNow();
-        if (format) date += ' (' + item.format(format) + ')';
+        if (format) {
+            date += ' (' + item.format(format) + ')';
+        }
         return isNeedCapitalize ? StringUtil.capitalizeFirstLetter(date) : date;
     }
 
