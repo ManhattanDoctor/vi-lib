@@ -15,6 +15,7 @@ export class ArrayUtil {
         if (!first && !second) {
             return 0;
         }
+
         if (first && !second) {
             return -1;
         }

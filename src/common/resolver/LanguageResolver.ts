@@ -21,13 +21,19 @@ export class LanguageResolver implements Resolve<void> {
     // --------------------------------------------------------------------------
 
     public resolve(): Promise<void> {
-        if (this.language.language) return Promise.resolve();
+        if (this.language.language) {
+            return Promise.resolve();
+        }
 
         return new Promise<void>((resolve, reject) => {
             let subscription: Subscription = this.language.events.subscribe(data => {
-                if (data.type === LoadableEvent.COMPLETE) resolve();
-                else if (data.type === LoadableEvent.ERROR) reject();
-                else if (data.type === LoadableEvent.FINISHED) subscription.unsubscribe();
+                if (data.type === LoadableEvent.COMPLETE) {
+                    resolve();
+                } else if (data.type === LoadableEvent.ERROR) {
+                    reject();
+                } else if (data.type === LoadableEvent.FINISHED) {
+                    subscription.unsubscribe();
+                }
             });
         });
     }
