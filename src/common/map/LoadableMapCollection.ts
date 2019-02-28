@@ -80,7 +80,6 @@ export abstract class LoadableMapCollection<U, V> extends DestroyableMapCollecti
         if (this.isLoading || this.isAllLoaded || !this.isAbleToLoad()) {
             return;
         }
-
         this._isDirty = true;
         this._isLoading = true;
         this.observer.next(new ObservableData(LoadableMapCollectionEvent.LOADING_STARTED));
