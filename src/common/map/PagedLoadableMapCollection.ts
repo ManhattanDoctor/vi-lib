@@ -1,4 +1,3 @@
-import { IPage } from '../../../../gate-common/pagination/IPage';
 import { ApiResponse } from '../api/ApiResponse';
 import { IDestroyable } from '../IDestroyable';
 import { ApiBaseLoadableMapCollection } from './ApiBaseLoadableMapCollection';

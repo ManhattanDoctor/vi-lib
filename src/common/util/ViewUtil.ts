@@ -31,10 +31,12 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     public static parseElement(element: any): HTMLElement {
-        if (element instanceof HTMLElement) return element;
-
-        if (element instanceof ElementRef) return element.nativeElement;
-
+        if (element instanceof HTMLElement) {
+            return element;
+        }
+        if (element instanceof ElementRef) {
+            return element.nativeElement;
+        }
         return null;
     }
 
@@ -59,13 +61,17 @@ export class ViewUtil {
     public static selectContent(container: HTMLElement, isNeedCopyToClipboard: boolean = false): void {
         if (container instanceof HTMLInputElement || container instanceof HTMLTextAreaElement) {
             let isDisabled = container.disabled;
-            if (isDisabled) container.disabled = false;
-
+            if (isDisabled) {
+                container.disabled = false;
+            }
             container.select();
 
-            if (isNeedCopyToClipboard) ViewUtil.copyToClipboard();
-
-            if (isDisabled) container.disabled = true;
+            if (isNeedCopyToClipboard) {
+                ViewUtil.copyToClipboard();
+            }
+            if (isDisabled) {
+                container.disabled = true;
+            }
         } else {
             let selection = window.getSelection();
             selection.removeAllRanges();
@@ -74,7 +80,9 @@ export class ViewUtil {
             range.selectNodeContents(container);
             selection.addRange(range);
 
-            if (isNeedCopyToClipboard) ViewUtil.copyToClipboard();
+            if (isNeedCopyToClipboard) {
+                ViewUtil.copyToClipboard();
+            }
         }
     }
 
@@ -85,8 +93,9 @@ export class ViewUtil {
             return;
         }
 
-        if (value.indexOf('url(') === -1) value = 'url(' + value + ')';
-
+        if (value.indexOf('url(') === -1) {
+            value = 'url(' + value + ')';
+        }
         ViewUtil.setStyle(container, 'backgroundImage', value);
         ViewUtil.setStyle(container, 'backgroundRepeat', repeat);
     }
@@ -99,23 +108,35 @@ export class ViewUtil {
 
     public static createElement(name: string, className?: string, innerHTML?: string): any {
         let element = ViewUtil.RENDEDER.createElement(name);
-        if (className) ViewUtil.setProperty(element, 'className', className);
-        if (innerHTML) ViewUtil.setProperty(element, 'innerHTML', innerHTML);
+        if (className) {
+            ViewUtil.setProperty(element, 'className', className);
+        }
+        if (innerHTML) {
+            ViewUtil.setProperty(element, 'innerHTML', innerHTML);
+        }
         return element;
     }
 
     public static appendChild(parent: any, child: any): void {
-        if (parent && child) ViewUtil.RENDEDER.appendChild(parent, child);
+        if (parent && child) {
+            ViewUtil.RENDEDER.appendChild(parent, child);
+        }
     }
 
     public static removeChild(parent: any, child: any): void {
-        if (parent && child) ViewUtil.RENDEDER.removeChild(parent, child);
+        if (parent && child) {
+            ViewUtil.RENDEDER.removeChild(parent, child);
+        }
     }
 
     public static toggleChild(container: Node, child: Node, value: boolean): void {
         let contains = container.contains(child);
-        if (value && !contains) ViewUtil.appendChild(container, child);
-        if (!value && contains) ViewUtil.removeChild(container, child);
+        if (value && !contains) {
+            ViewUtil.appendChild(container, child);
+        }
+        if (!value && contains) {
+            ViewUtil.removeChild(container, child);
+        }
     }
 
     // --------------------------------------------------------------------------
