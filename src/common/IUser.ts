@@ -7,7 +7,7 @@ export abstract class IUser implements IDestroyable {
     //
     // --------------------------------------------------------------------------
 
-    public id: string;
+    public id: string | number;
 
     // --------------------------------------------------------------------------
     //

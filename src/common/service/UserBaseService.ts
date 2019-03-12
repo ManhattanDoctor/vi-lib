@@ -59,7 +59,9 @@ export abstract class UserBaseService<U, V extends IUser> {
     public isUser(value: any): boolean {
         if (!value || !this.user) return false;
 
-        if (value.hasOwnProperty('id')) return this.user.id === value.id;
+        if (value.hasOwnProperty('id')) {
+            return this.user.id === value.id;
+        }
 
         return this.user.id === value;
     }
@@ -91,7 +93,7 @@ export abstract class UserBaseService<U, V extends IUser> {
         return this._user;
     }
 
-    public get id(): string {
+    public get id(): string | number {
         return this.hasUser ? this.user.id : null;
     }
 }
