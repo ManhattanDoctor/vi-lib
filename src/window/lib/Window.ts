@@ -91,7 +91,6 @@ export class Window extends WindowBase implements IWindow {
 
     protected setClosed = () => {
         this.isOpened = false;
-
         this.emit(IWindow.EVENT_CLOSED);
         this.destroy();
     };

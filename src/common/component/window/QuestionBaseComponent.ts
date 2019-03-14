@@ -22,9 +22,12 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
     protected _mode: QuestionMode = 'question';
     protected _isChecked: boolean = false;
 
-    protected promise: Promise<void>;
-    protected promiseResolve: (...args) => any;
-    protected promiseReject: (...args) => any;
+    protected _closePromise: Promise<void>;
+    protected closePromiseResolve: (...args) => any;
+
+    protected _yesNotPromise: Promise<void>;
+    protected yesNotPromiseReject: (...args) => any;
+    protected yesNotPromiseResolve: (...args) => any;
 
     // --------------------------------------------------------------------------
     //
@@ -36,9 +39,14 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         super(container);
 
         this.observer = new Subject();
-        this.promise = new Promise<void>((resolve, reject) => {
-            this.promiseReject = reject;
-            this.promiseResolve = resolve;
+   
+        this._yesNotPromise = new Promise<void>((resolve, reject) => {
+            this.yesNotPromiseReject = reject;
+            this.yesNotPromiseResolve = resolve;
+        });
+
+        this._closePromise = new Promise<void>(resolve => {
+            this.closePromiseResolve = resolve;
         });
     }
 
@@ -56,14 +64,20 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
     //
     // --------------------------------------------------------------------------
 
+    public closeClickHandler(): void {
+        this.closePromiseResolve();
+        this.emit(IQuestion.EVENT_CLOSE);
+        this.close();
+    }
+
     public yesClickHandler(): void {
-        this.promiseResolve();
+        this.yesNotPromiseResolve();
         this.emit(IQuestion.EVENT_YES);
         this.close();
     }
 
     public notClickHandler(): void {
-        this.promiseReject();
+        this.yesNotPromiseReject();
         this.emit(IQuestion.EVENT_NOT);
         this.close();
     }
@@ -76,10 +90,16 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
 
     public ngOnInit(): void {
         if (this.mode === 'question') {
-            if (!this.yesText) this.yesTextId = this.defaultYesId;
-            if (!this.notText) this.notTextId = this.defaultNoId;
+            if (!this.yesText) {
+                this.yesTextId = this.defaultYesId;
+            }
+            if (!this.notText) {
+                this.notTextId = this.defaultNoId;
+            }
         } else if (this.mode === 'info') {
-            if (!this.closeText) this.closeTextId = this.defaultCloseId;
+            if (!this.closeText) {
+                this.closeTextId = this.defaultCloseId;
+            }
         }
     }
 
@@ -99,7 +119,11 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
     }
 
     public get yesNotPromise(): Promise<void> {
-        return this.promise;
+        return this._yesNotPromise;
+    }
+
+    public get closePromise(): Promise<void> {
+        return this._closePromise;
     }
 
     // --------------------------------------------------------------------------
@@ -130,8 +154,9 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
         return this._isChecked;
     }
     public set isChecked(value: boolean) {
-        if (value === this._isChecked) return;
-
+        if (value === this._isChecked) {
+            return;
+        }
         this._isChecked = value;
         this.emit(value ? IQuestion.EVENT_CHECK : IQuestion.EVENT_UNCHECK);
     }
@@ -147,18 +172,26 @@ export class QuestionBaseComponent extends IWindowContent implements IQuestion, 
     }
 
     public set closeTextId(value: string) {
-        if (value) this.closeText = this.language.translate(value);
+        if (value) {
+            this.closeText = this.language.translate(value);
+        }
     }
 
     public set yesTextId(value: string) {
-        if (value) this.yesText = this.language.translate(value);
+        if (value) {
+            this.yesText = this.language.translate(value);
+        }
     }
 
     public set notTextId(value: string) {
-        if (value) this.notText = this.language.translate(value);
+        if (value) {
+            this.notText = this.language.translate(value);
+        }
     }
 
     public set checkTextId(value: string) {
-        if (value) this.checkText = this.language.translate(value);
+        if (value) {
+            this.checkText = this.language.translate(value);
+        }
     }
 }

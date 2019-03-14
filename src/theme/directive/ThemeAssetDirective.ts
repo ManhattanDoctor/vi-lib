@@ -75,8 +75,9 @@ export class ThemeAssetDirective implements OnDestroy, OnInit {
     }
 
     protected errorHandler(event: any): void {
-        if (this.isTriedThemeDefault) return;
-
+        if (this.isTriedThemeDefault) {
+            return;
+        }
         this.isTriedThemeDefault = true;
         this.source = this.getSource(this.getDefaultSourceId(this.theme.theme));
         this.commitSourceProperties();

@@ -9,6 +9,7 @@ export abstract class IQuestion {
 
     public static EVENT_YES: string = 'EVENT_YES';
     public static EVENT_NOT: string = 'EVENT_NOT';
+    public static EVENT_CLOSE: string = 'EVENT_OK';
 
     public static EVENT_CHECK: string = 'EVENT_CHECK';
     public static EVENT_UNCHECK: string = 'EVENT_UNCHECK';
@@ -19,6 +20,7 @@ export abstract class IQuestion {
     public text: string;
     public notTextId: string;
     public yesTextId: string;
+    public closeTextId: string;
     public checkTextId: string;
 
     // --------------------------------------------------------------------------
@@ -36,6 +38,7 @@ export abstract class IQuestion {
     // --------------------------------------------------------------------------
 
     readonly events: Observable<string>;
+    readonly closePromise: Promise<void>;
     readonly yesNotPromise: Promise<void>;
 }
 

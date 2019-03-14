@@ -121,8 +121,9 @@ export class WindowService {
             }
         });
 
-        if (!topWindow || topWindow.isOnTop) return;
-
+        if (!topWindow || topWindow.isOnTop) {
+            return;
+        }
         topWindow.isOnTop = true;
         this.observer.next(new ObservableData(WindowServiceEvent.SETTED_ON_TOP, topWindow));
     }
@@ -230,6 +231,7 @@ export class WindowService {
         properties.overlay = (reference as any)._overlayRef;
 
         window = this.factory.create(properties);
+
         let subscription: Subscription = window.events.subscribe(event => {
             switch (event) {
                 case IWindow.EVENT_OPENED:
@@ -298,7 +300,6 @@ export class WindowService {
         if (!content) {
             return false;
         }
-
         content.window.setOnTop();
         return true;
     }
@@ -359,9 +360,12 @@ export class PropertiesManager {
         let properties = this.cookies.getObject(name + 'Window') as any;
         if (!properties) return;
 
-        if (properties.hasOwnProperty('width')) config.defaultWidth = properties.width;
-
-        if (properties.hasOwnProperty('height')) config.defaultHeight = properties.height;
+        if (properties.hasOwnProperty('width')) {
+            config.defaultWidth = properties.width;
+        }
+        if (properties.hasOwnProperty('height')) {
+            config.defaultHeight = properties.height;
+        }
     }
 
     public save(name: string, window: IWindow): void {

@@ -22,21 +22,29 @@ export class NotificationBaseComponent extends INotificationContent {
 
     @HostListener('click')
     private clickHandler(): void {
-        if (this.mode === 'info') this.remove();
+        if (this.mode !== 'info') {
+            return;
+        }
+
+        this.closePromiseResolve();
+        this.emit(IQuestion.EVENT_CLOSE);
+        this.remove();
     }
 
     public yesClickHandler(): void {
-        if (this.config && this.config.yesCallback) this.config.yesCallback();
-
-        this.promiseResolve();
+        if (this.config && this.config.yesCallback) {
+            this.config.yesCallback();
+        }
+        this.yesNotPromiseResolve();
         this.emit(IQuestion.EVENT_YES);
         this.remove();
     }
 
     public notClickHandler(): void {
-        if (this.config && this.config.noCallback) this.config.noCallback();
-
-        this.promiseReject('No clicked');
+        if (this.config && this.config.noCallback) {
+            this.config.noCallback();
+        }
+        this.yesNotPromiseReject();
         this.emit(IQuestion.EVENT_NOT);
         this.remove();
     }

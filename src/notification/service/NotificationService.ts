@@ -236,8 +236,9 @@ export class NotificationService {
         this.error(this.language.translate(translationId, translation));
     }
     public error(error: Error | ApiError | string): void {
-        if (!error) return;
-
+        if (!error) {
+            return;
+        }
         let config = new NotificationConfig();
         config.closeDuration = NotificationService.DEFAULT_ERROR_DURATION;
         config.iconId = NotificationService.DEFAULT_ERROR_ICON_ID;
