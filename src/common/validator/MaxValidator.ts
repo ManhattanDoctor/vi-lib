@@ -1,29 +1,3 @@
-/*
-import {Directive} from '@angular/core';
-import {AbstractControl, NG_VALIDATORS, Validator,} from '@angular/forms';
-import {ValidationErrors} from "@angular/forms/src/directives/validators";
-
-
-export class MinValidator implements Validator
-{
-	
-	public validate(control:AbstractControl):ValidationErrors
-	{
-		let value = control.value;
-		if(!value || value > )
-			return null;
-		
-		value = parseFloat(value);
-		console.log(value);
-		
-		if(isNaN(value))
-			return {minValue:"Value must be number"};
-		
-		return {minValue:"Value less than"};
-	}
-}
-*/
-
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { Attribute, Directive } from '@angular/core';
 

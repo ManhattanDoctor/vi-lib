@@ -7,7 +7,7 @@ export abstract class ApplicationComponent extends DestroyableComponent implemen
     // 	Properties
     //
     // --------------------------------------------------------------------------
-    
+
     private isViewReady: boolean;
     private viewTimeout: any;
     private viewReadyResolver: any;

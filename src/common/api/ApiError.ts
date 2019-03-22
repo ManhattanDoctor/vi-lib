@@ -9,13 +9,17 @@ export class ApiError implements Error {
 
     public static createSystemError(error: any): ApiError {
         let data = {} as any;
-        if (error.hasOwnProperty('code')) data.code = error.code;
-        else data.code = ApiError.ERROR_CODE_NO_CONNECTION;
-
-        if (error.hasOwnProperty('message') && error.message) data.message = error.message;
-
-        if (error instanceof TimeoutError) data.code = ApiError.ERROR_CODE_IDLE_TIMEOUT;
-
+        if (error.hasOwnProperty('code')) {
+            data.code = error.code;
+        } else {
+            data.code = ApiError.ERROR_CODE_NO_CONNECTION;
+        }
+        if (error.hasOwnProperty('message') && error.message) {
+            data.message = error.message;
+        }
+        if (error instanceof TimeoutError) {
+            data.code = ApiError.ERROR_CODE_IDLE_TIMEOUT;
+        }
         return new ApiError(data);
     }
 

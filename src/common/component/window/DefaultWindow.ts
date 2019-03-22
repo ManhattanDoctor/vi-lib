@@ -67,10 +67,12 @@ export class DefaultWindow extends DragableWindow {
     }
 
     protected isNeedClickStopPropagation(event: MouseEvent): boolean {
-        if (!super.isNeedClickStopPropagation(event)) return false;
-
-        if (this.closeWindow && this.closeWindow.location.nativeElement === event.target) return false;
-
+        if (!super.isNeedClickStopPropagation(event)) {
+            return false;
+        }
+        if (this.closeWindow && this.closeWindow.location.nativeElement === event.target) {
+            return false;
+        }
         return true;
     }
 

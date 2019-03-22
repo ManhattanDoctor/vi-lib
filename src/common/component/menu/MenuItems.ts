@@ -14,6 +14,7 @@ export class MenuItems extends DestroyableContainer {
     // --------------------------------------------------------------------------
 
     protected _items: Array<MenuItemBase>;
+    protected _enabledItems: Array<MenuItemBase>;
     protected filterFunction: (item: MenuItemBase) => boolean;
 
     // --------------------------------------------------------------------------
@@ -26,6 +27,7 @@ export class MenuItems extends DestroyableContainer {
         super();
 
         this._items = [];
+        this._enabledItems = [];
         this.filterFunction = filterFunction;
 
         this.addSubscription(
@@ -58,8 +60,13 @@ export class MenuItems extends DestroyableContainer {
 
     private checkEnabledItems(items: Array<MenuItemBase>): boolean {
         ArrayUtil.sort(items);
-
+        let isMainItems = items === this._items;
         let isAllEnabled = true;
+
+        if (isMainItems) {
+            ArrayUtil.clear(this._enabledItems);
+        }
+
         for (let item of items) {
             if (!item.name && item.nameId) {
                 this.translateItem(item);
@@ -75,6 +82,10 @@ export class MenuItems extends DestroyableContainer {
             }
 
             item.isEnabled = isEnabled;
+            if (isEnabled) {
+                this._enabledItems.push(item);
+            }
+
             if (isAllEnabled && !isEnabled) {
                 isAllEnabled = false;
             }
@@ -95,7 +106,9 @@ export class MenuItems extends DestroyableContainer {
 
     public remove(item: MenuItemBase): MenuItemBase {
         let index = this._items.indexOf(item);
-        if (index > -1) this._items.slice(index, 1);
+        if (index > -1) {
+            this._items.slice(index, 1);
+        }
         return item;
     }
 
@@ -112,6 +125,7 @@ export class MenuItems extends DestroyableContainer {
     public destroy(): void {
         super.destroy();
         this._items = null;
+        this._enabledItems = null;
     }
 
     // --------------------------------------------------------------------------
@@ -120,7 +134,11 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public get items(): MenuItemBase[] {
+    public get items(): Array<MenuItemBase> {
         return this._items;
+    }
+
+    public get enabledItems(): Array<MenuItemBase> {
+        return this._enabledItems;
     }
 }

@@ -57,8 +57,9 @@ export abstract class UserBaseService<U, V extends IUser> {
     // --------------------------------------------------------------------------
 
     public isUser(value: any): boolean {
-        if (!value || !this.user) return false;
-
+        if (!value || !this.user) {
+            return false;
+        }
         if (value.hasOwnProperty('id')) {
             return this.user.id === value.id;
         }
@@ -67,6 +68,9 @@ export abstract class UserBaseService<U, V extends IUser> {
     }
 
     public updateUser(data: any): void {
+        if (!this.hasUser) {
+            return;
+        }
         this.user.update(data);
         this.observer.next(new ObservableData(UserBaseServiceEvent.CHANGED));
     }
