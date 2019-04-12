@@ -57,19 +57,25 @@ export class SettingsBaseService {
         let array: string[] = value.split(SettingsBaseService.LANGUAGE_SEPARATOR);
         array.forEach(item => {
             let language = item.split(SettingsBaseService.LANGUAGE_CODE_SEPARATOR);
-            if (language.length === 2) map.set(language[0], language[1]);
+            if (language.length === 2) {
+                map.set(language[0], language[1]);
+            }
         });
         return map;
     }
 
     protected parseLanguage(value: any): string {
-        if (value === null) return value;
+        if (value === null) {
+            return value;
+        }
 
         value = value.toString();
-        if (value === SettingsBaseService.LANGUAGE_EN_CODE) return SettingsBaseService.LANGUAGE_EN;
-
-        if (value === SettingsBaseService.LANGUAGE_RU_CODE) return SettingsBaseService.LANGUAGE_RU;
-
+        if (value === SettingsBaseService.LANGUAGE_EN_CODE) {
+            return SettingsBaseService.LANGUAGE_EN;
+        }
+        if (value === SettingsBaseService.LANGUAGE_RU_CODE) {
+            return SettingsBaseService.LANGUAGE_RU;
+        }
         return value;
     }
 

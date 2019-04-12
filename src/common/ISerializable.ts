@@ -1,3 +1,3 @@
-export abstract class ISerializable<T = any> {
+export abstract class ISerializable<T> {
     abstract serialize(): T;
 }

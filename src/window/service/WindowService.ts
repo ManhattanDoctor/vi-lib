@@ -222,7 +222,7 @@ export class WindowService {
         config.setDefaultProperties();
 
         let dialog = this.dialog as any;
-        //dialog._getOverlayState = config.isModal ? dialog.getOverlayStateModal : dialog.getOverlayStateNonModal;
+        // dialog._getOverlayState = config.isModal ? dialog.getOverlayStateModal : dialog.getOverlayStateNonModal;
 
         let reference: MatDialogRef<IWindowContent> = this.dialog.open(component, config);
         let properties: WindowProperties = {} as WindowProperties;
