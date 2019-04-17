@@ -33,19 +33,26 @@ export abstract class UserBaseService<U, V extends IUser> {
 
     protected initialize(): void {
         if (this.login.isLoggedIn) {
-            this._user = this.createUser(this.login.loginData);
-            this.observer.next(new ObservableData(UserBaseServiceEvent.LOGINED, this.user));
+            this.loginedHandler();
         }
 
         this.login.events.subscribe(data => {
             if (data.type === LoginBaseServiceEvent.LOGIN_COMPLETE) {
-                this._user = this.createUser(this.login.loginData);
-                this.observer.next(new ObservableData(UserBaseServiceEvent.LOGINED, this.user));
+                this.loginedHandler();
             } else if (data.type === LoginBaseServiceEvent.LOGOUT_FINISHED) {
-                this._user = null;
-                this.observer.next(new ObservableData(UserBaseServiceEvent.LOGOUTED));
+                this.logoutedHandler();
             }
         });
+    }
+
+    protected loginedHandler(): void {
+        this._user = this.createUser(this.login.loginData);
+        this.observer.next(new ObservableData(UserBaseServiceEvent.LOGINED, this.user));
+    }
+
+    protected logoutedHandler(): void {
+        this._user = null;
+        this.observer.next(new ObservableData(UserBaseServiceEvent.LOGOUTED));
     }
 
     protected abstract createUser(data: any): V;
@@ -86,7 +93,7 @@ export abstract class UserBaseService<U, V extends IUser> {
     }
 
     public get hasUser(): boolean {
-        return this._user != null;
+        return this._user !== null;
     }
 
     public get isLogined(): boolean {

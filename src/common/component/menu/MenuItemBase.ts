@@ -5,11 +5,13 @@ export class MenuItemBase {
     //
     // --------------------------------------------------------------------------
 
-    public checkEnabled: (item: MenuItemBase) => boolean;
     public items?: Array<MenuItemBase>;
+    public enabledItems?: Array<MenuItemBase>;
 
     protected _name: string;
     protected _isEnabled: boolean = true;
+
+    public checkEnabled: (item: MenuItemBase) => boolean;
 
     // --------------------------------------------------------------------------
     //
