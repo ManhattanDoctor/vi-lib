@@ -50,7 +50,6 @@ export class StringUtil {
         if (!text) {
             return null;
         }
-
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
@@ -58,7 +57,6 @@ export class StringUtil {
         if (!text) {
             return null;
         }
-
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
 

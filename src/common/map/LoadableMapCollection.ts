@@ -46,10 +46,6 @@ export abstract class LoadableMapCollection<U, V> extends DestroyableMapCollecti
     protected parseResponse(response: any): void {}
     protected parseErrorResponse(response: any): void {}
 
-    protected isAbleToLoad(): boolean {
-        return true;
-    }
-
     protected makeRequest(): Observable<any> {
         return null;
     }
@@ -77,7 +73,7 @@ export abstract class LoadableMapCollection<U, V> extends DestroyableMapCollecti
     }
 
     public load(): void {
-        if (this.isLoading || this.isAllLoaded || !this.isAbleToLoad()) {
+        if (!this.isLoadable()) {
             return;
         }
         this._isDirty = true;
@@ -101,6 +97,13 @@ export abstract class LoadableMapCollection<U, V> extends DestroyableMapCollecti
             }
             this.observer.next(new ObservableData(LoadableMapCollectionEvent.LOADING_FINISHED));
         });
+    }
+
+    public isLoadable(): boolean {
+        if (this.isLoading || this.isAllLoaded) {
+            return false;
+        }
+        return true;
     }
 
     public reset(): void {
