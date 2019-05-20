@@ -28,7 +28,9 @@ export class LanguageMatPaginatorIntl extends MatPaginatorIntl {
 
         this.commitLanguageProperties();
         this.language.events.subscribe(data => {
-            if (data.type === LoadableEvent.COMPLETE) this.commitLanguageProperties();
+            if (data.type === LoadableEvent.COMPLETE) {
+                this.commitLanguageProperties();
+            }
         });
     }
 

@@ -27,7 +27,6 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language | E
     private _availableLanguages: MapCollection<Language>;
 
     private parser: LanguageMessageFormatParser;
-
     private subscription: Subscription;
 
     // --------------------------------------------------------------------------
@@ -55,8 +54,9 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language | E
     // --------------------------------------------------------------------------
 
     public static createTranslateAuthorProperties(user: any, properties: any = null): any {
-        if (!properties) properties = {};
-
+        if (!properties) {
+            properties = {};
+        }
         if (user) {
             properties.authorId = user.id;
             properties.authorName = user.name;
@@ -216,7 +216,6 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language | E
         if (value === this._language || (this.language && this.language.isEqual(value))) {
             return;
         }
-
         if (value) {
             this.loadLanguage(value);
         } else {

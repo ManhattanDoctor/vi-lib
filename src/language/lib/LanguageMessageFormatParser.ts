@@ -1,7 +1,7 @@
 import { TranslateParser } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ObservableData } from '../../common/observer/ObservableData';
+import { ObjectUtil } from '../../common/util/ObjectUtil';
 import { LanguageServiceEvent } from '../service/LanguageService';
 
 export class LanguageMessageFormatParser extends TranslateParser {
@@ -15,6 +15,9 @@ export class LanguageMessageFormatParser extends TranslateParser {
     private formatter: any;
 
     private lastKey: string;
+    private lastTarget: any;
+    private linkSymbol: string = '⇛';
+
     private formatters: Map<string, any>;
     private translations: Map<string, string>;
 
@@ -40,31 +43,37 @@ export class LanguageMessageFormatParser extends TranslateParser {
     //
     // --------------------------------------------------------------------------
 
-    private getKey(expression: string, params?: any): string {
-        let value = expression;
-        if (params) value += JSON.stringify(params);
-        return value;
+    private getLink(text: string): string {
+        if (ObjectUtil.isNullOrUndefined(this.linkSymbol)) {
+            return null;
+        }
+        if (text.indexOf(this.linkSymbol) !== 0) {
+            return null;
+        }
+        return text.substr(1).trim();
+    }
+
+    private getUniqueKey(key: string, params?: any): string {
+        if (ObjectUtil.isNullOrUndefined(params)) {
+            return key;
+        }
+        return key + '_' + JSON.stringify(ObjectUtil.sortKeys(params));
     }
 
     private getFormatter(locale: string): any {
         let value = this.formatters.get(locale);
-        if (value) return value;
-
+        if (value) {
+            return value;
+        }
         try {
             value = new MessageFormat(locale);
         } catch (error) {
             locale = 'en';
             value = this.formatters.get(locale);
-            if (!value) value = new MessageFormat(locale);
+            if (!value) {
+                value = new MessageFormat(locale);
+            }
         }
-        return value;
-    }
-
-    public compile(text: string, params?: any): string {
-        if (!params) params = {};
-
-        let value = this.formatter.compile(text)(params);
-        this.translations.set(name, value);
         return value;
     }
 
@@ -75,25 +84,43 @@ export class LanguageMessageFormatParser extends TranslateParser {
     // --------------------------------------------------------------------------
 
     public interpolate(expression: string, params?: any): string {
-        let key = this.getKey(expression, params);
-        let name = this.lastKey;
-        let text = this.translations.get(key);
+        let uniqueKey = this.getUniqueKey(this.lastKey, params);
+        let text = this.translations.get(uniqueKey);
+        if (!ObjectUtil.isNullOrUndefined(text)) {
+            return text;
+        }
 
-        if (!text && this.formatter) {
+        if (!expression) {
+            text = this.lastKey;
+            this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR, new Error(`Expression is undefined`)));
+        }
+
+        if (!this.formatter) {
+            text = this.lastKey;
+            this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR, new Error(`Formatter is undefined`)));
+        }
+
+        if (!text) {
             try {
                 text = this.compile(expression, params);
+                let link = this.getLink(text);
+                if (link) {
+                    text = this.interpolate(this.getValue(this.lastTarget, link), params);
+                }
             } catch (error) {
-                text = name;
-                let message = `Error parsing ${name} :\n\n ${error.message}`;
-                this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR, new Error(message)));
+                text = this.lastKey;
+                this.observer.next(new ObservableData(LanguageServiceEvent.PARSE_ERROR, new Error(`Error parsing ${name} :\n\n ${error.message}`)));
             }
         }
 
+        this.translations.set(uniqueKey, text);
         return text;
     }
 
     public getValue(target: any, key: string): string {
         this.lastKey = key;
+        this.lastTarget = target;
+
         let keys = key.split('.');
         key = '';
         do {
@@ -107,8 +134,15 @@ export class LanguageMessageFormatParser extends TranslateParser {
                 key += '.';
             }
         } while (keys.length);
-
         return target;
+    }
+
+    public compile(text: string, params?: any): string {
+        if (ObjectUtil.isNullOrUndefined(params)) {
+            params = {};
+        }
+        let value = this.formatter.compile(text)(params);
+        return value;
     }
 
     // --------------------------------------------------------------------------
@@ -126,13 +160,16 @@ export class LanguageMessageFormatParser extends TranslateParser {
     }
 
     public set locale(value: string) {
-        if (value === this._locale) return;
-
+        if (value === this._locale) {
+            return;
+        }
         this._locale = value;
         this.translations.clear();
 
         this.formatter = value ? this.getFormatter(value) : null;
-        if (this.formatter) this.formatters.set(this.locale, this.formatter);
+        if (this.formatter) {
+            this.formatters.set(this.locale, this.formatter);
+        }
     }
 }
 

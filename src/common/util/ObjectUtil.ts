@@ -154,6 +154,27 @@ export class ObjectUtil {
         }
     }
 
+    public static sortKeys(data: any): any {
+        if (ObjectUtil.isNullOrUndefined(data)) {
+            return;
+        }
+        if (!ObjectUtil.isObject(data)) {
+            return data.toString();
+        }
+
+        let keys = Object.keys(data);
+        if (keys.length === 0) {
+            return data.toString();
+        }
+
+        keys.sort();
+        let item = {};
+        for (let key of keys) {
+            item[key] = data[key];
+        }
+        return item;
+    }
+
     public static keys<U, V extends keyof U>(from: U): Array<V> {
         return Object.getOwnPropertyNames(from) as any;
     }

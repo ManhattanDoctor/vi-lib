@@ -52,7 +52,7 @@ export abstract class PagedLoadableMapCollection<U extends IDestroyable, V> exte
 
         if (this._isAllLoaded) return;
 
-        this._page++;
+        this._pageIndex++;
         this._currentPageItems = [];
         for (let item of items) {
             let value: U = this.parseItem(item);
