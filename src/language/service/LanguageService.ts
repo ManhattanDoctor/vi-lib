@@ -122,9 +122,9 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language | E
 
         this.cookies.put('language', language.locale);
 
+        this.parser.locale = language.locale;
         this.translation.setTranslation(language.locale, translation);
         this.translation.use(language.locale);
-        this.parser.locale = language.locale;
 
         this.status = LoadableStatus.LOADED;
         this.observer.next(new ObservableData(LoadableEvent.COMPLETE, language));
