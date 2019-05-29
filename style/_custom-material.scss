@@ -189,8 +189,17 @@
         @include mouse-disabled();
     }
 
+    .scroll-no {
+        @include scroll-no();
+    }
+    .scroll-auto {
+        @include scroll-auto();
+    }
     .vertical-scroll-only {
         @include vertical-scroll-only();
+    }
+    .horizontal-scroll-only {
+        @include horizontal-scroll-only();
     }
 }
 @mixin custom-material-dialog() {

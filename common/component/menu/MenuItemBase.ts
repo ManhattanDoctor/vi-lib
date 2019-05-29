@@ -5,8 +5,8 @@ export class MenuItemBase {
     //
     // --------------------------------------------------------------------------
 
-    public items?: Array<MenuItemBase>;
-    public enabledItems?: Array<MenuItemBase>;
+    // public items?: Array<MenuItemBase>;
+    // public enabledItems?: Array<MenuItemBase>;
 
     protected _name: string;
     protected _isEnabled: boolean = true;

@@ -101,6 +101,7 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language | E
                 this.subscription.unsubscribe();
                 this.subscription = this.http.get(this.getCustomLanguageUrl(language)).subscribe(
                     jsonCustom => {
+                        console.log(jsonCustom);
                         this.setLanguage(language, ObjectUtil.deepExtend(json, jsonCustom));
                     },
                     error => {

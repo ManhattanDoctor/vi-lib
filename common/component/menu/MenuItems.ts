@@ -48,9 +48,6 @@ export class MenuItems extends DestroyableContainer {
     private translateItems(items: Array<MenuItemBase>): void {
         for (let item of items) {
             this.translateItem(item);
-            if (item.items && item.items.length > 0) {
-                this.translateItems(item.items);
-            }
         }
     }
 
@@ -70,10 +67,6 @@ export class MenuItems extends DestroyableContainer {
         for (let item of items) {
             if (!item.name && item.nameId) {
                 this.translateItem(item);
-            }
-
-            if (item.items && item.items.length > 0) {
-                isAllEnabled = this.checkEnabledItems(item.items);
             }
 
             let isEnabled = item.checkEnabled ? item.checkEnabled(item) : true;

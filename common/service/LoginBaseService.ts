@@ -2,7 +2,7 @@ import { Observable, Subject } from 'rxjs';
 import { ApiResponse } from '../api/ApiResponse';
 import { ObservableData } from '../observer/ObservableData';
 
-export abstract class LoginBaseService<U> {
+export abstract class LoginBaseService<T = any, K = any, U = any, V = any> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -12,7 +12,7 @@ export abstract class LoginBaseService<U> {
     protected _sid: string;
 
     protected _resource: string;
-    protected _loginData: any;
+    protected _loginData: V;
     protected _isLoading: boolean = false;
     protected _isLoggedIn: boolean = false;
 
@@ -95,12 +95,18 @@ export abstract class LoginBaseService<U> {
 
     protected abstract getSavedSid(): string;
 
+    // --------------------------------------------------------------------------
+    //
+    // 	Parse Methods
+    //
+    // --------------------------------------------------------------------------
+
     protected abstract parseLoginResponse<T>(response: ApiResponse<T>): void;
 
     protected parseLoginErrorResponse<T>(response: ApiResponse<T>): void {}
 
     protected parseLoginSidResponse<T>(response: ApiResponse<T>): void {
-        this._loginData = response.data;
+        this._loginData = response.data as any;
     }
 
     protected parseLoginSidErrorResponse<T>(response: ApiResponse<T>): void {
@@ -114,6 +120,10 @@ export abstract class LoginBaseService<U> {
     // 	Public Methods
     //
     // --------------------------------------------------------------------------
+
+    public abstract login(param: T): void;
+
+    public abstract registration(param: K): void;
 
     public tryLoginBySid(isNeedHandleError: boolean = true, isHandleLoading: boolean = false): boolean {
         if (!this.isCanLoginWithSid()) {
@@ -160,7 +170,7 @@ export abstract class LoginBaseService<U> {
         return this._resource;
     }
 
-    public get loginData(): any {
+    public get loginData(): V {
         return this._loginData;
     }
 
@@ -178,5 +188,10 @@ export enum LoginBaseServiceEvent {
     LOGIN_COMPLETE = 'LOGIN_COMPLETE',
     LOGIN_FINISHED = 'LOGIN_FINISHED',
     LOGOUT_STARTED = 'LOGOUT_STARTED',
-    LOGOUT_FINISHED = 'LOGOUT_FINISHED'
+    LOGOUT_FINISHED = 'LOGOUT_FINISHED',
+
+    REGISTRATION_ERROR = 'REGISTRATION_ERROR',
+    REGISTRATION_STARTED = 'REGISTRATION_STARTED',
+    REGISTRATION_COMPLETE = 'REGISTRATION_COMPLETE',
+    REGISTRATION_FINISHED = 'REGISTRATION_FINISHED',
 }
