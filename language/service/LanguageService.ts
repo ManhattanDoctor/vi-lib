@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { Loadable, LoadableEvent, LoadableStatus } from '../../common/lib/Loadable';
 import { MapCollection } from '../../common/map/MapCollection';
 import { ObservableData } from '../../common/observer/ObservableData';
-import { ObjectUtil } from '../../common/util/ObjectUtil';
+import { CloneUtil } from '../../common/util/CloneUtil';
 import { Language } from '../lib/Language';
 import { LanguageMessageFormatParser } from '../lib/LanguageMessageFormatParser';
 
@@ -102,7 +102,7 @@ export class LanguageService extends Loadable<LanguageServiceEvent, Language | E
                 this.subscription = this.http.get(this.getCustomLanguageUrl(language)).subscribe(
                     jsonCustom => {
                         console.log(jsonCustom);
-                        this.setLanguage(language, ObjectUtil.deepExtend(json, jsonCustom));
+                        this.setLanguage(language, CloneUtil.deepExtend(json, jsonCustom));
                     },
                     error => {
                         this.setLanguage(language, json);

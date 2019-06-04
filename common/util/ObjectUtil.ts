@@ -1,124 +1,47 @@
 export class ObjectUtil {
     // --------------------------------------------------------------------------
     //
-    // 	Clone Methods
-    //
-    // --------------------------------------------------------------------------
-
-    public static deepExtend(...params): any {
-        if (arguments.length < 1 || typeof arguments[0] !== 'object') {
-            return false;
-        }
-
-        if (arguments.length < 2) {
-            return arguments[0];
-        }
-
-        let target = arguments[0];
-        let args = Array.prototype.slice.call(arguments, 1);
-        let val, src, clone;
-
-        args.forEach(obj => {
-            if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return;
-
-            Object.keys(obj).forEach(key => {
-                src = ObjectUtil.safeGetProperty(target, key); // source value
-                val = ObjectUtil.safeGetProperty(obj, key); // new value
-
-                if (val === target) {
-                    return;
-                } else if (typeof val !== 'object' || val === null) {
-                    target[key] = val;
-                    return;
-                } else if (Array.isArray(val)) {
-                    target[key] = ObjectUtil.deepCloneArray(val);
-                    return;
-                } else if (ObjectUtil.isSpecificValue(val)) {
-                    target[key] = ObjectUtil.cloneSpecificValue(val);
-                    return;
-                } else if (typeof src !== 'object' || src === null || Array.isArray(src)) {
-                    target[key] = ObjectUtil.deepExtend({}, val);
-                    return;
-                } else {
-                    target[key] = ObjectUtil.deepExtend(src, val);
-                    return;
-                }
-            });
-        });
-        return target;
-    }
-
-    private static isSpecificValue(val): boolean {
-        return val instanceof Buffer || val instanceof Date || val instanceof RegExp;
-    }
-
-    private static cloneSpecificValue(val) {
-        if (val instanceof Buffer) {
-            let x = Buffer.alloc ? Buffer.alloc(val.length) : new Buffer(val.length);
-            val.copy(x);
-            return x;
-        } else if (val instanceof Date) {
-            return new Date(val.getTime());
-        } else if (val instanceof RegExp) {
-            return new RegExp(val);
-        } else {
-            throw new Error('Unexpected situation');
-        }
-    }
-    private static safeGetProperty(object, property): any {
-        return property === '__proto__' ? undefined : object[property];
-    }
-
-    private static deepCloneArray(arr: any): any {
-        let clone = [];
-        arr.forEach((item, index) => {
-            if (typeof item === 'object' && item != null) {
-                if (Array.isArray(item)) {
-                    clone[index] = ObjectUtil.deepCloneArray(item);
-                } else if (ObjectUtil.isSpecificValue(item)) {
-                    clone[index] = ObjectUtil.cloneSpecificValue(item);
-                } else {
-                    clone[index] = ObjectUtil.deepExtend({}, item);
-                }
-            } else {
-                clone[index] = item;
-            }
-        });
-        return clone;
-    }
-
-    // --------------------------------------------------------------------------
-    //
     //  Check Methods
     //
     // --------------------------------------------------------------------------
 
-    // --------------------------------------------------------------------------
-    //
-    //  Check Methods
-    //
-    // --------------------------------------------------------------------------
+    public static isBoolean(data: any): boolean {
+        return typeof data === 'boolean';
+    }
+
+    public static isFunction(data: any): boolean {
+        return typeof data === 'function';
+    }
 
     public static isNumber(data: any): boolean {
         return typeof data === 'number' && !isNaN(data);
     }
 
+    public static isString(data: any): boolean {
+        return typeof data === 'string';
+    }
+
+    public static isStringBoolean(data: any): boolean {
+        return ObjectUtil.isString(data) && (data === 'true' || data === 'false');
+    }
+
     public static isObject(data: any): boolean {
         return typeof data === 'object';
+    }
+    public static isArray(data: any): boolean {
+        return Array.isArray(data);
     }
 
     public static isEmpty(data: any): boolean {
         if (ObjectUtil.isNullOrUndefined(data)) {
             return true;
         }
-        if (Array.isArray(data)) {
+        if (ObjectUtil.isArray(data)) {
             return data.length === 0;
         }
-
         if (ObjectUtil.isObject(data)) {
             return ObjectUtil.keys(data).length === 0;
         }
-
         data = data.toString();
         return data === 'null' || data === 'undefined' || data.length === 0;
     }
@@ -129,12 +52,12 @@ export class ObjectUtil {
 
     // --------------------------------------------------------------------------
     //
-    //  Public Static Methods
+    //  Object Methods
     //
     // --------------------------------------------------------------------------
 
     public static instanceOf(data: any, properties: Array<string>): boolean {
-        if (ObjectUtil.isNullOrUndefined(data)) {
+        if (ObjectUtil.isNullOrUndefined(data) || ObjectUtil.isBoolean(data) || data !== Object(data)) {
             return false;
         }
         for (let name of properties) {
@@ -145,6 +68,10 @@ export class ObjectUtil {
         return true;
     }
 
+    public static hasOwnProperty(data: any, property: string): boolean {
+        return !ObjectUtil.isNullOrUndefined(data) ? Object.getOwnPropertyNames(data).includes(property) : false;
+    }
+
     public static clear(data: any): void {
         if (!ObjectUtil.isObject(data)) {
             return;
@@ -152,27 +79,6 @@ export class ObjectUtil {
         for (let key of ObjectUtil.keys(data)) {
             delete data[key];
         }
-    }
-
-    public static sortKeys(data: any): any {
-        if (ObjectUtil.isNullOrUndefined(data)) {
-            return;
-        }
-        if (!ObjectUtil.isObject(data)) {
-            return data.toString();
-        }
-
-        let keys = Object.keys(data);
-        if (keys.length === 0) {
-            return data.toString();
-        }
-
-        keys.sort();
-        let item = {};
-        for (let key of keys) {
-            item[key] = data[key];
-        }
-        return item;
     }
 
     public static keys<U, V extends keyof U>(from: U): Array<V> {
@@ -198,6 +104,31 @@ export class ObjectUtil {
         }
         return to;
     }
-}
 
-declare let Buffer: any;
+    // --------------------------------------------------------------------------
+    //
+    //  Crypto Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static sortKeys(data: any): any {
+        if (ObjectUtil.isNullOrUndefined(data)) {
+            return;
+        }
+        if (!ObjectUtil.isObject(data)) {
+            return data.toString();
+        }
+
+        let keys = Object.keys(data);
+        if (keys.length === 0) {
+            return data.toString();
+        }
+
+        keys.sort();
+        let item = {};
+        for (let key of keys) {
+            item[key] = data[key];
+        }
+        return item;
+    }
+}
